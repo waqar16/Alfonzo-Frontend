@@ -1,33 +1,35 @@
 import './App.css';
-import React, { useEffect } from 'react';
-import AOS from 'aos';
-import 'aos/dist/aos.css';
+import React from 'react';
+import Index from './pages/Home/Index';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Signup from './pages/Authentication/Signup';
+import Login from './pages/Authentication/Login';
 import Header from './components/Header/Navbar';
-import HeroSection from './components/Hero/Hero';
-import Features from './components/Features/Features';
-import Services from './components/Services/Services';
-import BlogSection from './components/Blog/Blogs';
-import Testimonials from './components/Testimonials/Testimonials';
-import Contact from './components/Contact/Contact';
 import Footer from './components/Footer/Footer';
-
+import ActivationEmailSent from './pages/Authentication/Activation';
+import HomePage from './pages/UserProfile/HomePage';
+import CreateDocumentPage from './pages/Document/CreateDocument';
+import VerifyDocumentPage from './pages/Document/VerifyDocument';
+import ProfileManagementPage from './pages/UserProfile/ManageProfile';
 
 function App() {
-  useEffect(() => {
-    AOS.init({ duration: 1000 });
-  }, []);
-
   return (
-    <div className="App">
-      <Header />
-      <HeroSection />
-      <Features /> 
-      <Services />
-      <BlogSection />
-      <Testimonials />
-      <Contact />
-      <Footer />
-    </div>
+    <Router>
+      <div className="App">
+        <Header />
+      <Routes>
+          <Route path="/" element={<Index />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/activation-email-sent" element={<ActivationEmailSent />} />
+          <Route path="/profile" element={<HomePage />} />
+          <Route path="/create-document" element={<CreateDocumentPage />} />
+          <Route path="/verify-document" element={<VerifyDocumentPage />} />
+          <Route path="/manage-profile" element={<ProfileManagementPage />} />
+        </Routes>
+        <Footer />
+      </div>
+    </Router>
   );
 }
 

@@ -52,7 +52,7 @@ const ContactInformation = () => {
             className="bg-white border border-gray-200 rounded-lg shadow-lg p-6 flex items-start space-x-4 transition-transform transform hover:scale-105 hover:shadow-2xl"
             data-aos="fade-up"
           >
-            <FaPhoneAlt className="w-8 h-8 text-indigo-500" />
+            <FaPhoneAlt className="w-8 h-8 text-gray-500" />
             <div>
               <h3 className="text-lg font-semibold text-gray-900">Phone</h3>
               <p className="mt-2 text-gray-600">{contactInfo.phone}</p>
@@ -64,7 +64,7 @@ const ContactInformation = () => {
             data-aos="fade-up"
             data-aos-delay="100"
           >
-            <FaEnvelope className="w-8 h-8 text-indigo-500" />
+            <FaEnvelope className="w-8 h-8 text-gray-500" />
             <div>
               <h3 className="text-lg font-semibold text-gray-900">Email</h3>
               <p className="mt-2 text-gray-600">{contactInfo.email}</p>
@@ -76,7 +76,7 @@ const ContactInformation = () => {
             data-aos="fade-up"
             data-aos-delay="200"
           >
-            <FaMapMarkerAlt className="w-8 h-8 text-indigo-500" />
+            <FaMapMarkerAlt className="w-8 h-8 text-gray-500" />
             <div>
               <h3 className="text-lg font-semibold text-gray-900">Address</h3>
               <p className="mt-2 text-gray-600">{contactInfo.address}</p>
@@ -85,7 +85,7 @@ const ContactInformation = () => {
         </div>
 
         <div className="mt-12">
-          <h3 className="text-xl font-bold text-gray-900 text-center mb-8">Contact Form</h3>
+          {/* <h3 className="text-xl font-bold text-gray-900 text-center mb-8">Contact Form</h3> */}
           <form onSubmit={handleSubmit} className="bg-white p-8 border border-gray-200 rounded-lg shadow-lg mx-auto max-w-4xl">
             {formStatus && (
               <div className="mb-4 text-center text-green-600">
@@ -145,7 +145,7 @@ const ContactInformation = () => {
             <div className="text-center">
               <button
                 type="submit"
-                className="bg-indigo-600 text-white px-6 py-3 rounded-md shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-300"
+                className="bg-gray-800 text-white px-6 py-3 rounded-md shadow-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-300"
               >
                 Send Message
               </button>

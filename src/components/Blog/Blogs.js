@@ -8,19 +8,19 @@ const blogPosts = [
     title: 'Understanding Industry Trends',
     summary: 'A deep dive into the latest trends in the legal industry and how they impact your business.',
     link: '/blog/industry-trends',
-    image: 'https://via.placeholder.com/400x300?text=Industry+Trends'
+    image: 'https://th.bing.com/th/id/OIP.9MeGuTkhsQ-yDzOyacOEXAHaEo?rs=1&pid=ImgDetMain'
   },
   {
     title: 'Product Update: New Features',
     summary: 'Explore the latest features and improvements we’ve made to enhance your user experience.',
     link: '/blog/product-update',
-    image: 'https://via.placeholder.com/400x300?text=Product+Update'
+    image: 'https://thumbs.dreamstime.com/b/judge-books-wooden-table-195252511.jpg'
   },
   {
     title: 'How to Stay Compliant',
     summary: 'Essential tips for ensuring compliance with industry regulations and avoiding common pitfalls.',
     link: '/blog/stay-compliant',
-    image: 'https://via.placeholder.com/400x300?text=Stay+Compliant'
+    image: 'https://thumbs.dreamstime.com/b/justice-concept-court-library-law-attorney-lawyer-gavel-judge-legal-conception-79613380.jpg'
   }
 ];
 
