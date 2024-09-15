@@ -23,8 +23,8 @@ const Signup = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 p-6">
-      <div className="w-full max-w-md sm:max-w-lg bg-white p-8 rounded-lg shadow-lg">
+        <div className="min-h-screen flex items-start justify-center py-8 sm:py-32 px-4 sm:px-6 lg:px-8 bg-gray-100">  
+        <div className="w-full max-w-md sm:max-w-lg bg-white p-8 rounded-lg shadow-lg">
         {!showForm ? (
           <div className="text-center">
             <h2 className="text-2xl sm:text-3xl font-semibold text-gray-900 mb-4">Welcome! Begin Your Journey</h2>

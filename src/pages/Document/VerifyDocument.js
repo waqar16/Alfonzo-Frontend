@@ -1,13 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUpload, faCheckCircle, faTimesCircle, faEye } from '@fortawesome/free-solid-svg-icons';
+import { faUpload, faCheckCircle, faTimesCircle, faEye, faAdd } from '@fortawesome/free-solid-svg-icons';
 
 const VerifyDocumentPage = () => {
   const [document, setDocument] = useState(null);
   const [verificationStatus, setVerificationStatus] = useState(null);
   const [statusDetails, setStatusDetails] = useState('');
+  const fileInputRef = useRef(null);
+  
+    const handleDocumentSelect = () => {
+      fileInputRef.current.click();
+      setDocument({ name: 'Sample Document.pdf' });
+      setVerificationStatus('pending');
+      setStatusDetails('Document is pending verification.');
+    };
 
-  // Function to handle document upload
+    
+   // Function to handle document upload
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -21,17 +30,11 @@ const VerifyDocumentPage = () => {
     }
   };
 
-  // Function to handle document selection
-  const handleDocumentSelect = () => {
-    // Simulate document selection
-    setDocument({ name: 'Sample Document.pdf' });
-    setVerificationStatus('pending');
-    setStatusDetails('Document is pending verification.');
-  };
+
 
   return (
-    <section className="bg-gray-100 p-6" style={{ marginTop: '30px' }}>
-      <div className="max-w-7xl mx-auto">
+    <section className="min-h-screen flex items-center py-8 sm:py-32 px-4 sm:px-6 lg:px-8 bg-gray-100 ">  
+      <div className="max-w-7xl w-full mx-auto">
         <div className="bg-white p-6 rounded-lg shadow-md border border-gray-200 mb-6">
           <h1 className="text-2xl font-bold text-gray-900 mb-4">Verify Document</h1>
           
@@ -40,16 +43,17 @@ const VerifyDocumentPage = () => {
             <div className="flex items-center space-x-4">
               <button
                 onClick={handleDocumentSelect}
-                className="bg-blue-600 text-white px-4 py-2 rounded-lg shadow-md hover:bg-blue-500 transition-all duration-200 flex items-center"
+                className="bg-blue-600 text-white sm:w-80 px-4 py-2 rounded-lg shadow-md hover:bg-blue-500 transition-all duration-200 flex items-center"
               >
-                <FontAwesomeIcon icon={faEye} className="mr-2" />
+                <FontAwesomeIcon icon={faAdd} className="mr-2" />
                 Select Document
               </button>
               <input
                 type="file"
                 id="uploadDocument"
+                ref={fileInputRef}
                 onChange={handleFileChange}
-                className="form-input w-full p-3 border border-gray-300 rounded-lg bg-white text-gray-900"
+                className="hidden"
               />
             </div>
           </div>

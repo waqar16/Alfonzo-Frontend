@@ -11,12 +11,14 @@ import HomePage from './pages/UserProfile/HomePage';
 import CreateDocumentPage from './pages/Document/CreateDocument';
 import VerifyDocumentPage from './pages/Document/VerifyDocument';
 import ProfileManagementPage from './pages/UserProfile/ManageProfile';
+import ScrollToTop from './utilities/ScrollToTop';
 
 function App() {
   return (
     <Router>
+      <ScrollToTop />
+      <Header />
       <div className="App">
-        <Header />
       <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/signup" element={<Signup />} />
@@ -27,8 +29,8 @@ function App() {
           <Route path="/verify-document" element={<VerifyDocumentPage />} />
           <Route path="/manage-profile" element={<ProfileManagementPage />} />
         </Routes>
-        <Footer />
       </div>
+      <Footer />
     </Router>
   );
 }

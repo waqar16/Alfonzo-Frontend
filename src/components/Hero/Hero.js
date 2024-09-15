@@ -3,56 +3,40 @@ import { Link } from "react-router-dom";
 
 const Hero = () => {
   return (
-    <section className="min-h-screen flex items-center bg-gray-900">
-      <div className="relative w-full h-full sm:px-6 lg:px-8 max-w-7xl mx-auto">
-        <div className="max-w-xl mx-auto text-center lg:max-w-md xl:max-w-xl lg:text-left lg:mx-0">
-          <h1 className="text-3xl font-bold text-white sm:text-4xl xl:text-5xl xl:leading-tight">
-            Build SaaS Landing Page without Writing a Single Code
-          </h1>
-          <p className="mt-8 text-base font-normal leading-7 text-gray-400 lg:max-w-md xl:pr-0 lg:pr-16">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. In nunc nisl eu consectetur. Mi massa elementum odio eu viverra amet.
-          </p>
-
-          <div className="flex items-center justify-center mt-8 space-x-5 xl:mt-16 lg:justify-start">
-            <Link
-              to={"/signup"}
-              title="Sign Up"
-              className="
-                inline-flex items-center justify-center
-                px-3 py-3 text-base font-bold leading-7 text-gray-900
-                transition-all duration-200 bg-white border border-transparent rounded-md
-                sm:px-6 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-900 focus:ring-white
-                hover:bg-gray-200
-              "
-              role="button"
-            >
-              Sign Up
-            </Link>
-
-            <a
-              href="#"
-              title="Learn More"
-              className="
-                inline-flex items-center justify-center
-                px-2 py-3 text-base font-bold leading-7 text-white
-                transition-all duration-200 bg-transparent border border-transparent rounded-md
-                sm:px-4 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-900 focus:ring-gray-700
-                hover:bg-gray-700
-              "
-              role="button"
-            >
-              Learn More
-            </a>
-          </div>
+    <section className="pt-8 lg:pt-32 bg-[url('https://pagedone.io/asset/uploads/1691055810.png')] bg-center bg-cover h-screen flex items-center justify-center">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative text-center">
+        <div className="border border-indigo-600 p-1 w-60 mx-auto rounded-full flex items-center justify-between mb-4">
+          <span className="font-inter text-xs font-medium text-gray-900 ml-3">
+            Discover document templates.
+          </span>
+          <a href="javascript:;" className="w-8 h-8 rounded-full flex justify-center items-center bg-indigo-600">
+            <svg width="17" height="16" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M2.83398 8.00019L12.9081 8.00019M9.75991 11.778L13.0925 8.44541C13.3023 8.23553 13.4073 8.13059 13.4073 8.00019C13.4073 7.86979 13.3023 7.76485 13.0925 7.55497L9.75991 4.22241"
+                stroke="white" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </a>
         </div>
-
-        {/* <div className="mt-8 lg:hidden">
-          <img
-            className="object-cover w-full h-full"
-            src="https://cdn.rareblocks.xyz/collection/clarity-ecommerce/images/hero/1/bg.png"
-            alt="Hero Background"
-          />
-        </div> */}
+        <h1
+          className="max-w-2xl mx-auto text-center font-manrope font-bold text-4xl text-gray-900 mb-5 md:text-5xl leading-[50px]"
+        >
+          Simplify Your Document Creation with Our
+          <span className="text-indigo-600">Innovative Templates</span>
+        </h1>
+        <p className="max-w-sm mx-auto text-center text-base font-normal leading-7 text-gray-500 mb-9">
+          Streamline document creation, verification, and management with ease. Our platform offers powerful features for users and admins alike.
+        </p>
+        <Link
+          to="/signup"
+          className="w-full md:w-auto mb-14 inline-flex items-center justify-center py-3 px-7 text-base font-semibold text-center text-white rounded-full bg-indigo-600 shadow-xs hover:bg-indigo-700 transition-all duration-500"
+        >
+          Create Your account Now
+          <svg className="ml-2" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M7.5 15L11.0858 11.4142C11.7525 10.7475 12.0858 10.4142 12.0858 10C12.0858 9.58579 11.7525 9.25245 11.0858 8.58579L7.5 5"
+              stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </Link>
       </div>
     </section>
   );

@@ -5,7 +5,7 @@ import { faSearch, faBell, faLock, faCog, faFile, faFileAlt, faUserEdit } from '
 
 const HomePage = () => {
   return (
-    <section className="min-h-screen bg-gray-100 p-6" style={{ marginTop: '30px' }}>
+    <section className="min-h-screen flex items-start justify-center py-8 sm:py-32 px-4 sm:px-6 lg:px-8 bg-gray-100">  
       <div className="max-w-7xl mx-auto grid gap-6">
         {/* Profile Section */}
         <div className="bg-white p-6 rounded-lg shadow-md border border-gray-200 flex items-center space-x-4 mb-6">

@@ -89,7 +89,7 @@ const CreateDocumentPage = () => {
   };
 
   return (
-    <section className="p-6" style={{ marginTop: '30px' }}>
+    <section className="min-h-screen flex items-start justify-center py-8 sm:py-32 px-4 sm:px-6 lg:px-8 bg-gray-100">  
       <div className="max-w-7xl mx-auto">
         <div className="bg-white p-6 rounded-lg shadow-md border border-gray-200 mb-6">
           <h1 className="text-2xl font-bold text-gray-900 mb-4">Create New Document</h1>

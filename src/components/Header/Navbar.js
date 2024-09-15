@@ -2,11 +2,15 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 const Header = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+  
+    const toggleMenu = () => {
+      setIsMenuOpen(!isMenuOpen);
+    };
+  
+    const closeMenu = () => {
+      setIsMenuOpen(false);
+    };
 
   return (
     <header className="fixed top-0 inset-x-0 z-50 bg-white shadow-md py-4 md:py-6">
@@ -15,7 +19,7 @@ const Header = () => {
           {/* Logo */}
           <div className="flex-shrink-0">
             <Link to={'/'} title="Home" className="flex items-center rounded outline-none focus:ring-1 focus:ring-gray-900 focus:ring-offset-2">
-              <h1 className="text-2xl font-bold text-gray-900">Alfonzo</h1>
+              <h1 className="text-2xl font-bold text-gray-900">LOGO</h1>
             </Link >
           </div>
 
@@ -43,17 +47,18 @@ const Header = () => {
             className={`absolute top-full left-0 w-full bg-white lg:hidden transition-all duration-300 ease-in-out overflow-hidden ${isMenuOpen ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0'} shadow-md`}
           >
             <div className="p-6 space-y-6">
-              <Link to={'/profile'} title="Press" className="block text-lg font-semibold text-gray-900 transition hover:text-gray-700">Profile</Link>
-              <Link to={'/create-document'} title="Press" className="block text-lg font-semibold text-gray-900 transition hover:text-gray-700">Create Document</Link>
-              <Link to={'/verify-document'} title="Press" className="block text-lg font-semibold text-gray-900 transition hover:text-gray-700">Verify Document</Link>
+              <Link to={'/profile'} title="Press" className="block text-lg font-semibold text-gray-900 transition hover:text-gray-700" onClick={closeMenu}>Profile</Link>
+              <Link to={'/create-document'} title="Press" className="block text-lg font-semibold text-gray-900 transition hover:text-gray-700" onClick={closeMenu}>Create Document</Link>
+              <Link to={'/verify-document'} title="Press" className="block text-lg font-semibold text-gray-900 transition hover:text-gray-700" onClick={closeMenu}>Verify Document</Link>
               {/* <Link to={'/profile'} title="Press" className="block text-lg font-semibold text-gray-900 transition hover:text-gray-700">Profile</Link> */}
               {/* <Link to={'/profile'} title="Press" className="block text-lg font-semibold text-gray-900 transition hover:text-gray-700">Profile</Link> */}
               <div className="border-t border-gray-200 pt-4">
-                <Link to={'/login'} title="Login" className="block text-lg font-semibold text-gray-900 transition hover:text-gray-700">Login</Link>
+                <Link to={'/login'} title="Login" className="block text-lg font-semibold text-gray-900 transition hover:text-gray-700" onClick={closeMenu}>Login</Link>
                 <a
                   href="#"
                   title="See Demo"
                   className="block w-full mt-4 py-2 text-center text-lg font-semibold text-gray-900 bg-transparent border border-gray-900 rounded-xl transition hover:bg-gray-900 hover:text-white"
+                  onClick={closeMenu}
                 >
                   See Demo
                 </a>
