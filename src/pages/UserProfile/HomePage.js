@@ -5,7 +5,7 @@ import { faSearch, faBell, faLock, faCog, faFile, faFileAlt, faUserEdit } from '
 
 const HomePage = () => {
   return (
-    <section className="min-h-screen flex items-start justify-center py-8 sm:py-32 px-4 sm:px-6 lg:px-8 bg-gray-100">  
+    <section className="min-h-screen flex items-start justify-center py-4 pt-16 lg:py-24 px-4 sm:px-6 lg:px-8 bg-gray-100">  
       <div className="max-w-7xl mx-auto grid gap-6">
         {/* Profile Section */}
         <div className="bg-white p-6 rounded-lg shadow-md border border-gray-200 flex items-center space-x-4 mb-6">
@@ -18,7 +18,7 @@ const HomePage = () => {
             <p className="text-gray-600">[User Position]</p>
             <button className="mt-2 bg-gray-800 text-white px-4 py-2 rounded-lg shadow-md hover:bg-gray-700 transition-all duration-200 flex items-center">
               <FontAwesomeIcon icon={faUserEdit} className="mr-2" />
-              <Link to={'/manage-profile'}>Edit Profile</Link>
+              <Link to={'/settings'}>Edit Profile</Link>
             </button>
           </div>
         </div>

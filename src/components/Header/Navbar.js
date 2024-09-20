@@ -71,6 +71,8 @@ const Header = () => {
           <Link to={'/profile'} title="Press" className="block text-lg font-semibold text-gray-900 transition hover:text-gray-700">Profile</Link>
               <Link to={'/create-document'} title="Press" className="block text-lg font-semibold text-gray-900 transition hover:text-gray-700">Create Document</Link>
               <Link to={'/verify-document'} title="Press" className="block text-lg font-semibold text-gray-900 transition hover:text-gray-700">Verify Document</Link>
+              <Link to={'/news'} title="Press" className="block text-lg font-semibold text-gray-900 transition hover:text-gray-700">News & Updates</Link>
+
             {/* <a href="#" title="Equipments" className="text-base font-medium text-gray-900 transition hover:text-gray-700">Equipments</a>
             <a href="#" title="FAQs" className="text-base font-medium text-gray-900 transition hover:text-gray-700">FAQs</a> */}
           </div>

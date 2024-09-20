@@ -69,7 +69,7 @@ const ProfileManagementPage = () => {
   };
 
   return (
-    <section className="min-h-screen flex items-start justify-center py-8 sm:py-32 px-4 sm:px-6 lg:px-8 bg-gray-100">  
+    <section className="min-h-screen flex items-start justify-center py-4 pt-16 lg:py-24 px-4 sm:px-6 lg:px-8 bg-gray-100">  
       <div className="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-md border border-gray-200">
         <h1 className="text-2xl font-bold text-gray-900 mb-4">Profile Management</h1>
 

@@ -1,28 +1,9 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { FaFacebookF, FaTwitter, FaLinkedinIn, FaInstagram } from 'react-icons/fa';
+import { Link } from 'react-router-dom'; // Import Link from react-router-dom
 import AOS from 'aos';
 import 'aos/dist/aos.css'; // Import AOS styles
-
-const blogPosts = [
-  {
-    title: 'Understanding Industry Trends',
-    summary: 'A deep dive into the latest trends in the legal industry and how they impact your business.',
-    link: '/blog/industry-trends',
-    image: 'https://th.bing.com/th/id/OIP.9MeGuTkhsQ-yDzOyacOEXAHaEo?rs=1&pid=ImgDetMain'
-  },
-  {
-    title: 'Product Update: New Features',
-    summary: 'Explore the latest features and improvements we’ve made to enhance your user experience.',
-    link: '/blog/product-update',
-    image: 'https://thumbs.dreamstime.com/b/judge-books-wooden-table-195252511.jpg'
-  },
-  {
-    title: 'How to Stay Compliant',
-    summary: 'Essential tips for ensuring compliance with industry regulations and avoiding common pitfalls.',
-    link: '/blog/stay-compliant',
-    image: 'https://thumbs.dreamstime.com/b/justice-concept-court-library-law-attorney-lawyer-gavel-judge-legal-conception-79613380.jpg'
-  }
-];
 
 const BlogPost = ({ title, summary, link, image }) => (
   <div
@@ -31,26 +12,51 @@ const BlogPost = ({ title, summary, link, image }) => (
     data-aos-duration="1000"
   >
     <img
-      src={image}
+      src={image || 'https://via.placeholder.com/600x400'}
       alt={title}
       className="w-full h-48 object-cover rounded-md group-hover:opacity-75 transition-opacity duration-300"
     />
     <div className="mt-6">
       <h3 className="text-xl font-semibold text-gray-900">{title}</h3>
       <p className="mt-2 text-base text-gray-600">{summary}</p>
-      <a
-        href={link}
+      <Link
+        to={link}
         className="mt-4 inline-block text-indigo-600 hover:text-indigo-800 transition-colors duration-300"
       >
         Read More
-      </a>
+      </Link>
     </div>
   </div>
 );
 
 const BlogSection = () => {
+  const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
   useEffect(() => {
     AOS.init({ duration: 1000 });
+  }, []);
+
+  useEffect(() => {
+    const fetchNews = async () => {
+      try {
+        const response = await axios.get('https://newsapi.org/v2/everything', {
+          params: {
+            apiKey: '3fa38a7ec3164c6dbd8c9f116484cd44', // Replace with your News API key
+            q: 'legal law', // Search query for legal news
+            language: 'es',
+            pageSize: 6, // Number of articles to fetch
+          },
+        });
+        setPosts(response.data.articles);
+      } catch (error) {
+        setError('Failed to fetch news. Please try again later.');
+      }
+      setLoading(false);
+    };
+
+    fetchNews();
   }, []);
 
   return (
@@ -65,16 +71,28 @@ const BlogSection = () => {
           </p>
         </div>
 
+        {loading && <p className="text-center mt-8">Loading news...</p>}
+        {error && <p className="text-center mt-8 text-red-600">{error}</p>}
+
         <div className="mt-10 grid gap-12 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-          {blogPosts.map((post, index) => (
+          {posts.map((post, index) => (
             <BlogPost
               key={index}
               title={post.title}
-              summary={post.summary}
-              link={post.link}
-              image={post.image}
+              summary={post.description}
+              link={post.url}
+              image={post.urlToImage}
             />
           ))}
+        </div>
+
+        <div className="mt-12 text-center">
+          <Link
+            to="/news"
+            className="inline-block px-6 py-3 text-base font-medium text-gray-800 hover:bg-text-700 rounded-lg transition-colors duration-300"
+          >
+            View More
+          </Link>
         </div>
 
         <div className="mt-12 flex justify-center space-x-6">

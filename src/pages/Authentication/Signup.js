@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { FaGoogle, FaLinkedin } from 'react-icons/fa';
+import { FaEye, FaEyeSlash, FaGoogle, FaLinkedin } from 'react-icons/fa';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
 const Signup = () => {
   const [showForm, setShowForm] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const { register, handleSubmit, formState: { errors } } = useForm();
 
   const handleEmailClick = () => {
@@ -23,7 +24,7 @@ const Signup = () => {
   };
 
   return (
-        <div className="min-h-screen flex items-start justify-center py-8 sm:py-32 px-4 sm:px-6 lg:px-8 bg-gray-100">  
+        <div className="min-h-screen flex items-start justify-center py-4 pt-16 lg:py-24 px-4 sm:px-6 lg:px-8 bg-gray-100">  
         <div className="w-full max-w-md sm:max-w-lg bg-white p-8 rounded-lg shadow-lg">
         {!showForm ? (
           <div className="text-center">
@@ -82,13 +83,27 @@ const Signup = () => {
               </div>
 
               <div>
-                <label htmlFor="password" className="block text-sm font-medium text-gray-700">Password</label>
-                <input
-                  {...register('password', { required: 'Password is required', minLength: { value: 6, message: 'Password must be at least 6 characters long' } })}
-                  type="password"
-                  id="password"
-                  className="mt-1 block w-full px-3 py-2 border border-gray-300 bg-gray-50 text-gray-900 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-500"
+              <label htmlFor="password" className="block text-sm font-medium text-gray-700">Password</label>
+          <div className="relative flex flex-col items-center justify-center">
+            <input
+              {...register('password', { required: 'Password is required', minLength: { value: 6, message: 'Password must be at least 6 characters' } })}
+              type={showPassword ? 'text' : 'password'}
+              id="password"
+              className="w-full px-3 py-2 pr-10 border border-gray-300 bg-gray-50 text-gray-900 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-500"
+            />
+              {showPassword ? (
+                
+                <FaEye className="text-gray-500 absolute cursor-pointer right-4" 
+              onClick={() => setShowPassword(!showPassword)}
+                
                 />
+              ) : (
+                <FaEyeSlash className="text-gray-500 absolute cursor-pointer right-4" 
+              onClick={() => setShowPassword(!showPassword)}
+              />
+              )} 
+            {errors.password && <p className="text-red-500 text-sm">{errors.password.message}</p>}
+          </div>
                 {errors.password && <p className="text-red-500 text-sm">{errors.password.message}</p>}
               </div>
 

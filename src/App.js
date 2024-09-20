@@ -12,7 +12,15 @@ import CreateDocumentPage from './pages/Document/CreateDocument';
 import VerifyDocumentPage from './pages/Document/VerifyDocument';
 import ProfileManagementPage from './pages/UserProfile/ManageProfile';
 import ScrollToTop from './utilities/ScrollToTop';
-
+import Paywall from './pages/Payment/Paywall';
+import SettingsPage from './pages/Settings/Settings';
+import LanguageSettings from './components/Settings/LanguageSettings';
+import ThemeSettings from './components/Settings/ThemeSettings';
+import NotificationSettings from './components/Settings/NotificationSettings';
+import MFASettings from './components/Settings/MfaSettings';
+import NewsUpdatesPage from './pages/News/News';
+import AdminDashboard from './pages/Admin/Dashboard';
+import CreateTemplate from './pages/Admin/AddTemplate';
 function App() {
   return (
     <Router>
@@ -27,7 +35,18 @@ function App() {
           <Route path="/profile" element={<HomePage />} />
           <Route path="/create-document" element={<CreateDocumentPage />} />
           <Route path="/verify-document" element={<VerifyDocumentPage />} />
-          <Route path="/manage-profile" element={<ProfileManagementPage />} />
+          <Route path="/settings/manage-profile" element={<ProfileManagementPage />} />
+          <Route path="/paywall" element={<Paywall />} />
+          <Route path="/settings" element={<SettingsPage />} />
+          <Route path="/settings/language" element={<LanguageSettings />}/>
+          <Route path="/settings/manage-profile" element={<ProfileManagementPage />} />
+          <Route path="/settings/theme" element={<ThemeSettings />}/>
+          <Route path="/settings/notifications" element={<NotificationSettings />}/>
+          <Route path="/settings/mfa" element={<MFASettings />}/>
+          <Route path="/news" element={<NewsUpdatesPage />} />
+          <Route path="/admin" element={<AdminDashboard />} />
+          <Route path="/admin/add-template" element={<CreateTemplate />} />
+          
         </Routes>
       </div>
       <Footer />

@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const ActivationEmailSent = () => {
   return (
-    <section className="min-h-screen flex items-center justify-center bg-gray-100 p-6">
+    <section className="min-h-screen flex items-start justify-center py-4 pt-16 lg:py-24 px-4 sm:px-6 lg:px-8 bg-gray-100">  
       <div className="w-full max-w-md bg-white p-8 rounded-lg shadow-lg border border-gray-200">
         <div className="text-center">
           <h1 className="text-3xl font-extrabold text-gray-900 mb-4">Activation Email Sent</h1>

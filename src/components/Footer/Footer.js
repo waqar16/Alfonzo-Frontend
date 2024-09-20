@@ -3,7 +3,7 @@ import { FaFacebookF, FaTwitter, FaLinkedinIn, FaInstagram } from 'react-icons/f
 
 const Footer = () => {
   return (
-    <footer className="bg-gray-900 text-white py-12">
+    <footer className=" text-white py-12 mt-auto" style={{ backgroundColor: '#00171F' }}>
       <div className="px-4 mx-auto max-w-7xl">
         <div className="grid gap-8 md:grid-cols-3 lg:grid-cols-4">
           {/* Navigation Links */}
@@ -57,7 +57,8 @@ const Footer = () => {
               />
               <button
                 type="submit"
-                className="w-full sm:w-auto bg-indigo-600 text-white px-6 py-2 rounded-md shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-colors duration-300"
+                className="w-full sm:w-auto text-white px-6 py-2 rounded-md shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-colors duration-300"
+                style={{ backgroundColor: '#007EA7' }}
               >
                 Subscribe
               </button>

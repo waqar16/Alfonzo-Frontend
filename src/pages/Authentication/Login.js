@@ -19,13 +19,13 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-start justify-center py-8 sm:py-32 px-4 sm:px-6 lg:px-8 bg-gray-100">  
+    <div className="min-h-screen flex items-start justify-center py-4 pt-16 lg:py-24 px-4 sm:px-6 lg:px-8 bg-gray-100">  
       <div className="w-full max-w-lg bg-white p-8 rounded-lg shadow-lg">
         <h2 className="text-3xl font-semibold text-gray-900 mb-6">Welcome Back!</h2>
         <p className="text-gray-700 mb-6">Log in to continue where you left off.</p>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-          <div>
             <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email Address</label>
+          <div>
             <input
               {...register('email', { required: 'Email address is required', pattern: { value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, message: 'Invalid email address' } })}
               type="email"
@@ -35,26 +35,25 @@ const Login = () => {
             {errors.email && <p className="text-red-500 text-sm">{errors.email.message}</p>}
           </div>
 
-          <div className="relative">
             <label htmlFor="password" className="block text-sm font-medium text-gray-700">Password</label>
+          <div className="relative flex flex-col items-center justify-center">
             <input
               {...register('password', { required: 'Password is required', minLength: { value: 6, message: 'Password must be at least 6 characters' } })}
               type={showPassword ? 'text' : 'password'}
               id="password"
               className="w-full px-3 py-2 pr-10 border border-gray-300 bg-gray-50 text-gray-900 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-500"
             />
-            <button
-              type="button"
-              onClick={() => setShowPassword(!showPassword)}
-              className="absolute inset-y-0 right-0 flex items-center pr-3"
-            >
               {showPassword ? (
                 
-                <FaEye className="text-gray-500" />
+                <FaEye className="text-gray-500 absolute cursor-pointer right-4" 
+              onClick={() => setShowPassword(!showPassword)}
+                
+                />
               ) : (
-                <FaEyeSlash className="text-gray-500" />
-              )}
-            </button>
+                <FaEyeSlash className="text-gray-500 absolute cursor-pointer right-4" 
+              onClick={() => setShowPassword(!showPassword)}
+              />
+              )} 
             {errors.password && <p className="text-red-500 text-sm">{errors.password.message}</p>}
           </div>
 
