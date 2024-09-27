@@ -1,32 +1,41 @@
-import React from 'react';
-import { FaRocket, FaStar, FaUserShield, FaHandHoldingUsd } from 'react-icons/fa';
-import AOS from 'aos';
-import 'aos/dist/aos.css'; // Import AOS styles
+import React from "react";
+import {
+  FaRocket,
+  FaStar,
+  FaUserShield,
+  FaHandHoldingUsd,
+} from "react-icons/fa";
+import AOS from "aos";
+import "aos/dist/aos.css"; // Import AOS styles
 
 const features = [
   {
-    title: 'Fast and Reliable',
-    description: 'Experience quick performance and reliable service with our optimized infrastructure.',
+    title: "Fast and Reliable",
+    description:
+      "Experience quick performance and reliable service with our optimized infrastructure.",
     icon: <FaRocket className="w-12 h-12 text-white" />,
-    aos: 'fade-up', // AOS animation
+    aos: "fade-up", // AOS animation
   },
   {
-    title: 'User-Friendly Interface',
-    description: 'Navigate easily with our intuitive and user-friendly interface designed for all skill levels.',
+    title: "User-Friendly Interface",
+    description:
+      "Navigate easily with our intuitive and user-friendly interface designed for all skill levels.",
     icon: <FaStar className="w-12 h-12 text-white" />,
-    aos: 'fade-up', // AOS animation
+    aos: "fade-up", // AOS animation
   },
   {
-    title: 'Secure and Private',
-    description: 'Your data is protected with the latest security measures to ensure privacy and safety.',
+    title: "Secure and Private",
+    description:
+      "Your data is protected with the latest security measures to ensure privacy and safety.",
     icon: <FaUserShield className="w-12 h-12 text-white" />,
-    aos: 'fade-up', // AOS animation
+    aos: "fade-up", // AOS animation
   },
   {
-    title: '24/7 Support',
-    description: 'Our dedicated support team is available 24/7 to help with any questions or issues.',
+    title: "24/7 Support",
+    description:
+      "Our dedicated support team is available 24/7 to help with any questions or issues.",
     icon: <FaHandHoldingUsd className="w-12 h-12 text-white" />,
-    aos: 'fade-up', // AOS animation
+    aos: "fade-up", // AOS animation
   },
 ];
 
@@ -36,11 +45,9 @@ const Feature = ({ title, description, icon, aos }) => (
     data-aos={aos}
     data-aos-duration="1000"
   >
-    <div className="relative flex items-center justify-center bg-gradient-to-r from-indigo-400 to-indigo-600 p-4 rounded-full shadow-lg mb-4">
-      <div className="absolute inset-0 rounded-full bg-gradient-to-r from-indigo-400 to-indigo-600 opacity-30 blur-md"></div>
-      <div className="relative z-10">
-        {icon}
-      </div>
+    <div className="relative flex items-center justify-center bg-[#00A8E8] p-4 rounded-full shadow-lg mb-4">
+      <div className="absolute inset-0 rounded-full bg-[#00A8E8] opacity-30 blur-md"></div>
+      <div className="relative z-10">{icon}</div>
     </div>
     <h3 className="text-xl font-semibold text-gray-900">{title}</h3>
     <p className="mt-2 text-base text-gray-600 text-center">{description}</p>
@@ -60,7 +67,8 @@ const Features = () => {
             Our Key Features
           </h2>
           <p className="mt-4 text-base leading-7 text-gray-600 sm:mt-8">
-            Discover the powerful features that set our app apart and help you achieve your goals more effectively.
+            Discover the powerful features that set our app apart and help you
+            achieve your goals more effectively.
           </p>
         </div>
 

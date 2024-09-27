@@ -1,9 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { FaFacebookF, FaTwitter, FaLinkedinIn, FaInstagram } from 'react-icons/fa';
-import { Link } from 'react-router-dom'; // Import Link from react-router-dom
-import AOS from 'aos';
-import 'aos/dist/aos.css'; // Import AOS styles
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import {
+  FaFacebookF,
+  FaTwitter,
+  FaLinkedinIn,
+  FaInstagram,
+} from "react-icons/fa";
+import { Link } from "react-router-dom"; // Import Link from react-router-dom
+import AOS from "aos";
+import "aos/dist/aos.css"; // Import AOS styles
 
 const BlogPost = ({ title, summary, link, image }) => (
   <div
@@ -12,7 +17,7 @@ const BlogPost = ({ title, summary, link, image }) => (
     data-aos-duration="1000"
   >
     <img
-      src={image || 'https://via.placeholder.com/600x400'}
+      src={image || "https://via.placeholder.com/600x400"}
       alt={title}
       className="w-full h-48 object-cover rounded-md group-hover:opacity-75 transition-opacity duration-300"
     />
@@ -41,17 +46,17 @@ const BlogSection = () => {
   useEffect(() => {
     const fetchNews = async () => {
       try {
-        const response = await axios.get('https://newsapi.org/v2/everything', {
+        const response = await axios.get("https://newsapi.org/v2/everything", {
           params: {
-            apiKey: '3fa38a7ec3164c6dbd8c9f116484cd44', // Replace with your News API key
-            q: 'legal law', // Search query for legal news
-            language: 'es',
+            apiKey: "3fa38a7ec3164c6dbd8c9f116484cd44", // Replace with your News API key
+            q: "legal law", // Search query for legal news
+            language: "es",
             pageSize: 6, // Number of articles to fetch
           },
         });
         setPosts(response.data.articles);
       } catch (error) {
-        setError('Failed to fetch news. Please try again later.');
+        setError("Failed to fetch news. Please try again later.");
       }
       setLoading(false);
     };
@@ -88,38 +93,11 @@ const BlogSection = () => {
 
         <div className="mt-12 text-center">
           <Link
-            to="/news"
-            className="inline-block px-6 py-3 text-base font-medium text-gray-800 hover:bg-text-700 rounded-lg transition-colors duration-300"
+            to={"/news"}
+            className={`p-2 border border-[#00A8E8] hover:border-white hover:bg-[#00A8E8] hover:text-white  inline-block px-6 py-3 text-base font-medium text-[#00A8E8]   rounded-lg transition-colors duration-300`}
           >
-            View More
+            View More ...
           </Link>
-        </div>
-
-        <div className="mt-12 flex justify-center space-x-6">
-          <a
-            href="https://facebook.com"
-            className="text-gray-500 hover:text-gray-700 transition-colors duration-300"
-          >
-            <FaFacebookF className="w-6 h-6" />
-          </a>
-          <a
-            href="https://twitter.com"
-            className="text-gray-500 hover:text-gray-700 transition-colors duration-300"
-          >
-            <FaTwitter className="w-6 h-6" />
-          </a>
-          <a
-            href="https://linkedin.com"
-            className="text-gray-500 hover:text-gray-700 transition-colors duration-300"
-          >
-            <FaLinkedinIn className="w-6 h-6" />
-          </a>
-          <a
-            href="https://instagram.com"
-            className="text-gray-500 hover:text-gray-700 transition-colors duration-300"
-          >
-            <FaInstagram className="w-6 h-6" />
-          </a>
         </div>
       </div>
     </section>
