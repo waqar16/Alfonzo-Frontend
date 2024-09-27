@@ -1,21 +1,45 @@
-import React, { useState, useEffect } from 'react';
-import { FaPhoneAlt, FaEnvelope, FaMapMarkerAlt, FaFacebookF, FaTwitter, FaLinkedinIn } from 'react-icons/fa';
-import AOS from 'aos';
-import 'aos/dist/aos.css';
+import React, { useState, useEffect } from "react";
+import {
+  FaPhoneAlt,
+  FaEnvelope,
+  FaMapMarkerAlt,
+  FaFacebookF,
+  FaTwitter,
+  FaLinkedinIn,
+} from "react-icons/fa";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 const contactInfo = {
-  phone: '+1 (123) 456-7890',
-  email: 'contact@example.com',
-  address: '123 Business Road, Suite 456, City, Country',
+  phone: "+1 (123) 456-7890",
+  email: "contact@example.com",
+  address: "123 Business Road, Suite 456, City, Country",
   social: [
-    { name: 'Facebook', icon: <FaFacebookF className="w-6 h-6 text-blue-600" />, link: 'https://facebook.com' },
-    { name: 'Twitter', icon: <FaTwitter className="w-6 h-6 text-blue-400" />, link: 'https://twitter.com' },
-    { name: 'LinkedIn', icon: <FaLinkedinIn className="w-6 h-6 text-blue-700" />, link: 'https://linkedin.com' }
-  ]
+    {
+      name: "Facebook",
+      icon: <FaFacebookF className="w-6 h-6 text-[#00A8E8]" />,
+      link: "https://facebook.com",
+    },
+    {
+      name: "Twitter",
+      icon: <FaTwitter className="w-6 h-6 text-[#00A8E8]" />,
+      link: "https://twitter.com",
+    },
+    {
+      name: "LinkedIn",
+      icon: <FaLinkedinIn className="w-6 h-6 text-[#00A8E8]" />,
+      link: "https://linkedin.com",
+    },
+  ],
 };
 
 const ContactInformation = () => {
-  const [formData, setFormData] = useState({ name: '', email: '', subject: '', message: '' });
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    subject: "",
+    message: "",
+  });
   const [formStatus, setFormStatus] = useState(null);
 
   useEffect(() => {
@@ -31,8 +55,8 @@ const ContactInformation = () => {
     e.preventDefault();
     // For demonstration purposes, we'll just show a success message.
     // In a real-world application, you'd send this data to a server.
-    setFormStatus('Your message has been sent successfully!');
-    setFormData({ name: '', email: '', subject: '', message: '' });
+    setFormStatus("Your message has been sent successfully!");
+    setFormData({ name: "", email: "", subject: "", message: "" });
   };
 
   return (
@@ -43,7 +67,8 @@ const ContactInformation = () => {
             Get in Touch
           </h2>
           <p className="mt-4 text-base leading-7 text-gray-600 sm:mt-6">
-            We’d love to hear from you! Reach out to us via any of the following methods or use the contact form below.
+            We’d love to hear from you! Reach out to us via any of the following
+            methods or use the contact form below.
           </p>
         </div>
 
@@ -52,7 +77,7 @@ const ContactInformation = () => {
             className="bg-white border border-gray-200 rounded-lg shadow-lg p-6 flex items-start space-x-4 transition-transform transform hover:scale-105 hover:shadow-2xl"
             data-aos="fade-up"
           >
-            <FaPhoneAlt className="w-8 h-8 text-gray-500" />
+            <FaPhoneAlt className="w-8 h-8 text-[#00A8E8]" />
             <div>
               <h3 className="text-lg font-semibold text-gray-900">Phone</h3>
               <p className="mt-2 text-gray-600">{contactInfo.phone}</p>
@@ -64,7 +89,7 @@ const ContactInformation = () => {
             data-aos="fade-up"
             data-aos-delay="100"
           >
-            <FaEnvelope className="w-8 h-8 text-gray-500" />
+            <FaEnvelope className="w-8 h-8 text-[#00A8E8]" />
             <div>
               <h3 className="text-lg font-semibold text-gray-900">Email</h3>
               <p className="mt-2 text-gray-600">{contactInfo.email}</p>
@@ -76,7 +101,7 @@ const ContactInformation = () => {
             data-aos="fade-up"
             data-aos-delay="200"
           >
-            <FaMapMarkerAlt className="w-8 h-8 text-gray-500" />
+            <FaMapMarkerAlt className="w-8 h-8 text-[#00A8E8]" />
             <div>
               <h3 className="text-lg font-semibold text-gray-900">Address</h3>
               <p className="mt-2 text-gray-600">{contactInfo.address}</p>
@@ -86,7 +111,10 @@ const ContactInformation = () => {
 
         <div className="mt-12">
           {/* <h3 className="text-xl font-bold text-gray-900 text-center mb-8">Contact Form</h3> */}
-          <form onSubmit={handleSubmit} className="bg-white p-8 border border-gray-200 rounded-lg shadow-lg mx-auto max-w-4xl">
+          <form
+            onSubmit={handleSubmit}
+            className="bg-white p-8 border border-gray-200 rounded-lg shadow-lg mx-auto max-w-4xl"
+          >
             {formStatus && (
               <div className="mb-4 text-center text-green-600">
                 {formStatus}
@@ -94,7 +122,12 @@ const ContactInformation = () => {
             )}
             <div className="grid gap-6 mb-6 sm:grid-cols-2">
               <div>
-                <label htmlFor="name" className="block text-gray-700 font-semibold">Name</label>
+                <label
+                  htmlFor="name"
+                  className="block text-gray-700 font-semibold"
+                >
+                  Name
+                </label>
                 <input
                   id="name"
                   name="name"
@@ -106,7 +139,12 @@ const ContactInformation = () => {
                 />
               </div>
               <div>
-                <label htmlFor="email" className="block text-gray-700 font-semibold">Email</label>
+                <label
+                  htmlFor="email"
+                  className="block text-gray-700 font-semibold"
+                >
+                  Email
+                </label>
                 <input
                   id="email"
                   name="email"
@@ -119,7 +157,12 @@ const ContactInformation = () => {
               </div>
             </div>
             <div className="mb-6">
-              <label htmlFor="subject" className="block text-gray-700 font-semibold">Subject</label>
+              <label
+                htmlFor="subject"
+                className="block text-gray-700 font-semibold"
+              >
+                Subject
+              </label>
               <input
                 id="subject"
                 name="subject"
@@ -131,7 +174,12 @@ const ContactInformation = () => {
               />
             </div>
             <div className="mb-6">
-              <label htmlFor="message" className="block text-gray-700 font-semibold">Message</label>
+              <label
+                htmlFor="message"
+                className="block text-gray-700 font-semibold"
+              >
+                Message
+              </label>
               <textarea
                 id="message"
                 name="message"

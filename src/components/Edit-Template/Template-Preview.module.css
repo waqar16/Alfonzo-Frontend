@@ -1,0 +1,7 @@
+ul, ol {
+    margin-left: 20px; /* Indent the list */
+}
+
+li {
+    margin-bottom: 5px; /* Spacing between list items */
+}

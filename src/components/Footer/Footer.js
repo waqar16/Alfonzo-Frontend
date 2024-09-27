@@ -1,35 +1,68 @@
-import React from 'react';
-import { FaFacebookF, FaTwitter, FaLinkedinIn, FaInstagram } from 'react-icons/fa';
+import React from "react";
+import {
+  FaFacebookF,
+  FaTwitter,
+  FaLinkedinIn,
+  FaInstagram,
+} from "react-icons/fa";
 
 const Footer = () => {
   return (
-    <footer className=" text-white py-12 mt-auto" style={{ backgroundColor: '#00171F' }}>
+    <footer
+      className=" text-white py-12 mt-auto"
+      style={{ backgroundColor: "#00171F" }}
+    >
       <div className="px-4 mx-auto max-w-7xl">
         <div className="grid gap-8 md:grid-cols-3 lg:grid-cols-4">
           {/* Navigation Links */}
           <div className="space-y-6">
-            <h3 className="text-lg font-semibold border-b-2 border-gray-600 pb-2">Quick Links</h3>
+            <h3 className="text-lg font-semibold border-b-2 border-gray-600 pb-2">
+              Quick Links
+            </h3>
             <ul className="space-y-2">
               <li>
-                <a href="#" className="hover:text-gray-400 transition-colors duration-300">Home</a>
+                <a
+                  href="#"
+                  className="hover:text-gray-400 transition-colors duration-300"
+                >
+                  Home
+                </a>
               </li>
               <li>
-                <a href="#" className="hover:text-gray-400 transition-colors duration-300">About</a>
+                <a
+                  href="#"
+                  className="hover:text-gray-400 transition-colors duration-300"
+                >
+                  About
+                </a>
               </li>
               <li>
-                <a href="#" className="hover:text-gray-400 transition-colors duration-300">Services</a>
+                <a
+                  href="#"
+                  className="hover:text-gray-400 transition-colors duration-300"
+                >
+                  Services
+                </a>
               </li>
               <li>
-                <a href="#" className="hover:text-gray-400 transition-colors duration-300">Contact</a>
+                <a
+                  href="#"
+                  className="hover:text-gray-400 transition-colors duration-300"
+                >
+                  Contact
+                </a>
               </li>
             </ul>
           </div>
 
           {/* Contact Information */}
           <div className="space-y-6">
-            <h3 className="text-lg font-semibold border-b-2 border-gray-600 pb-2">Contact Us</h3>
+            <h3 className="text-lg font-semibold border-b-2 border-gray-600 pb-2">
+              Contact Us
+            </h3>
             <p className="text-sm mb-2">
-              <span className="font-medium">Address:</span> 123 Business Road, Suite 456, City, Country
+              <span className="font-medium">Address:</span> 123 Business Road,
+              Suite 456, City, Country
             </p>
             <p className="text-sm mb-2">
               <span className="font-medium">Phone:</span> +1 (123) 456-7890
@@ -39,7 +72,7 @@ const Footer = () => {
             </p>
             <a
               href="mailto:contact@example.com"
-              className="text-indigo-400 hover:text-indigo-300 transition-colors duration-300"
+              className="text-[#00A8E8] hover:text-indigo-300 transition-colors duration-300"
             >
               Send us an email
             </a>
@@ -47,8 +80,12 @@ const Footer = () => {
 
           {/* Newsletter Signup */}
           <div className="space-y-6">
-            <h3 className="text-lg font-semibold border-b-2 border-gray-600 pb-2">Newsletter</h3>
-            <p className="text-sm mb-4">Subscribe to our newsletter for the latest updates and offers.</p>
+            <h3 className="text-lg font-semibold border-b-2 border-gray-600 pb-2">
+              Newsletter
+            </h3>
+            <p className="text-sm mb-4">
+              Subscribe to our newsletter for the latest updates and offers.
+            </p>
             <form className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
               <input
                 type="email"
@@ -58,7 +95,7 @@ const Footer = () => {
               <button
                 type="submit"
                 className="w-full sm:w-auto text-white px-6 py-2 rounded-md shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-colors duration-300"
-                style={{ backgroundColor: '#007EA7' }}
+                style={{ backgroundColor: "#007EA7" }}
               >
                 Subscribe
               </button>
@@ -67,7 +104,9 @@ const Footer = () => {
 
           {/* Social Media Links */}
           <div className="space-y-6">
-            <h3 className="text-lg font-semibold border-b-2 border-gray-600 pb-2">Follow Us</h3>
+            <h3 className="text-lg font-semibold border-b-2 border-gray-600 pb-2">
+              Follow Us
+            </h3>
             <div className="flex space-x-4">
               <a
                 href="https://facebook.com"
