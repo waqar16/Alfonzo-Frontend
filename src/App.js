@@ -37,6 +37,7 @@ import SelectLawyer from "./pages/SelectLawyer/SelectLawyer";
 import FinalizeTemplate from "./pages/FinalizeTemplate/FinalizeTemplate";
 import UserDocument from "./pages/UserDocument/UserDocument";
 import UserQueries from "./pages/UserQueries/UserQueries";
+import UserRequests from "./pages/UserRequests/UserRequests";
 
 function App() {
   return (
@@ -69,7 +70,7 @@ function Content() {
           <Route path="/templates" element={<Templates />} />
           <Route path="/templates/edit-template" element={<EditTemplate />} />
           <Route path="/user-queries" element={<UserQueries />} />
-          <Route path="/user-requests" element={<UserQueries />} />
+          <Route path="/user-requests" element={<UserRequests />} />
           <Route
             path="/templates/finalize-template"
             element={<FinalizeTemplate />}
