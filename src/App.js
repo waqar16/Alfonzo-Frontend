@@ -1,5 +1,5 @@
 import "./App.css";
-import React from "react";
+import React, { useEffect } from "react";
 import Index from "./pages/Home/Index";
 import {
   BrowserRouter as Router,
@@ -34,12 +34,16 @@ import Profile from "./components/Profile";
 import Templates from "./pages/Templates/Templates";
 import EditTemplate from "./pages/Edit-Template/Edit-Template";
 import SelectLawyer from "./pages/SelectLawyer/SelectLawyer";
-import FinalizeTemplate from "./pages/FinalizeTemplate/FinalizeTemplate";
+import FinalizeTemplate from "./pages/FinalizeTemplate/FinalizeTemplate"; 
+import AOS from 'aos';
 import UserDocument from "./pages/UserDocument/UserDocument";
 import UserQueries from "./pages/UserQueries/UserQueries";
 import UserRequests from "./pages/UserRequests/UserRequests";
 
 function App() {
+  useEffect(()=>{
+    AOS.init()
+  },[])
   return (
     <Router>
       <ScrollToTop />
