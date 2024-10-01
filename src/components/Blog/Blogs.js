@@ -46,7 +46,7 @@ const BlogSection = () => {
   useEffect(() => {
     const fetchNews = async () => {
       try {
-        const response = await axios.get("https://newsapi.org/v2/everything", {
+        const response = await axios.get("https://cors-anywhere.herokuapp.com/https://newsapi.org/v2/everything", {
           params: {
             apiKey: "3fa38a7ec3164c6dbd8c9f116484cd44", // Replace with your News API key
             q: "legal law", // Search query for legal news
