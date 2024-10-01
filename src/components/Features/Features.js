@@ -11,31 +11,27 @@ import "aos/dist/aos.css"; // Import AOS styles
 const features = [
   {
     title: "Fast and Reliable",
-    description:
-      "Experience quick performance and reliable service with our optimized infrastructure.",
+    description: "Experience quick performance and reliable service with our optimized infrastructure.",
     icon: <FaRocket className="w-12 h-12 text-white" />,
-    aos: "fade-up", // AOS animation
+    aos: "fade-up",
   },
   {
     title: "User-Friendly Interface",
-    description:
-      "Navigate easily with our intuitive and user-friendly interface designed for all skill levels.",
+    description: "Navigate easily with our intuitive and user-friendly interface designed for all skill levels.",
     icon: <FaStar className="w-12 h-12 text-white" />,
-    aos: "fade-up", // AOS animation
+    aos: "fade-up",
   },
   {
     title: "Secure and Private",
-    description:
-      "Your data is protected with the latest security measures to ensure privacy and safety.",
+    description: "Your data is protected with the latest security measures to ensure privacy and safety.",
     icon: <FaUserShield className="w-12 h-12 text-white" />,
-    aos: "fade-up", // AOS animation
+    aos: "fade-up",
   },
   {
     title: "24/7 Support",
-    description:
-      "Our dedicated support team is available 24/7 to help with any questions or issues.",
+    description: "Our dedicated support team is available 24/7 to help with any questions or issues.",
     icon: <FaHandHoldingUsd className="w-12 h-12 text-white" />,
-    aos: "fade-up", // AOS animation
+    aos: "fade-up",
   },
 ];
 
@@ -46,11 +42,11 @@ const Feature = ({ title, description, icon, aos }) => (
     data-aos-duration="1000"
   >
     <div className="relative flex items-center justify-center bg-[#00A8E8] p-4 rounded-full shadow-lg mb-4">
-      <div className="absolute inset-0 rounded-full bg-[#00A8E8] opacity-30 blur-md"></div>
+      <div className="absolute inset-0 rounded-full bg-[#00A8E8] opacity-20 blur-md"></div>
       <div className="relative z-10">{icon}</div>
     </div>
     <h3 className="text-xl font-semibold text-gray-900">{title}</h3>
-    <p className="mt-2 text-base text-gray-600 text-center">{description}</p>
+    <p className="mt-2 text-base text-gray-700 text-center">{description}</p>
   </div>
 );
 
