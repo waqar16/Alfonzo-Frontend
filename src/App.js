@@ -35,7 +35,9 @@ import Templates from "./pages/Templates/Templates";
 import EditTemplate from "./pages/Edit-Template/Edit-Template";
 import SelectLawyer from "./pages/SelectLawyer/SelectLawyer";
 import FinalizeTemplate from "./pages/FinalizeTemplate/FinalizeTemplate"; 
+import Faqs from "./pages/Faqs/Faqs";
 import AOS from 'aos'
+import AboutUs from "./pages/About-us/AboutUs";
 function App() {
   useEffect(()=>{
     AOS.init()
@@ -137,6 +139,9 @@ function Content() {
               </DefaultLayout>
             }
           />
+
+          <Route path="/faqs" element={<Faqs />} />
+          <Route path="/about-us" element={<AboutUs />} />
         </Routes>
       </div>
       {!isAdminRoute && <Footer />}

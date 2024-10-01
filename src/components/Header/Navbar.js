@@ -14,7 +14,6 @@ const Header = () => {
 
 
   return (
-    
     <header
       className="fixed top-0 inset-x-0 supports-backdrop-blur:bg-background/90 z-40 w-full bg-background/40 backdrop-blur-lg transition-transform duration-300">
      <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
@@ -23,15 +22,15 @@ const Header = () => {
             <Link
               to={"/"}
               title="Home"
-              className="flex items-center rounded outline-none focus:ring-1 focus:ring-gray-900 focus:ring-offset-2"
+              className="flex items-center focus:outline-none"
             >
-              {/* <h1 className="text-2xl font-bold text-gray-900">LOGO</h1> */}
               <img
                 src="/logo.png"
                 alt="Alfonzo Logo"
                 className="w-40 h-auto"
               />
             </Link>
+            
           </div>
           <div className="flex lg:hidden">
             <button
@@ -81,6 +80,14 @@ const Header = () => {
           >
             <div className="p-6 space-y-6">
               <Link
+                to={"/"}
+                title="Home"
+                className="block text-lg font-semibold text-gray-900 transition hover:text-gray-700"
+                onClick={closeMenu}
+              >
+                Home
+              </Link>
+              <Link
                 to={"/profile"}
                 title="Press"
                 className="block text-lg font-semibold text-gray-900 transition hover:text-gray-700"
@@ -88,24 +95,37 @@ const Header = () => {
               >
                 Profile
               </Link>
-              {/* <Link
-                to={"/create-document"}
-                title="Press"
-                className="block text-lg font-semibold text-gray-900 transition hover:text-gray-700"
-                onClick={closeMenu}
-              >
-                Create Document
-              </Link>
               <Link
-                to={"/verify-document"}
-                title="Press"
-                className="block text-lg font-semibold text-gray-900 transition hover:text-gray-700"
-                onClick={closeMenu}
-              >
-                Verify Document
-              </Link> */}
-              {/* <Link to={'/profile'} title="Press" className="block text-lg font-semibold text-gray-900 transition hover:text-gray-700">Profile</Link> */}
-              {/* <Link to={'/profile'} title="Press" className="block text-lg font-semibold text-gray-900 transition hover:text-gray-700">Profile</Link> */}
+              to={"/faqs"}
+              title="faqs"
+              className="block text-lg text-gray-900 transition hover:text-gray-700"
+            >
+              FAQs
+            </Link>
+
+            <Link
+              to={"/about-us"}
+              title="about-us"
+              className="block text-lg text-gray-900 transition hover:text-gray-700"
+            >
+              About us
+            </Link>
+
+            <Link
+              to={"/services"}
+              title="Press"
+              className="block text-lg text-gray-900 transition hover:text-gray-700"
+            >
+              Services
+            </Link>
+
+            <Link
+              to={"/lawyers"}
+              title="Press"
+              className="block text-lg  text-gray-900 transition hover:text-gray-700"
+            >
+              Lawyers
+            </Link>
               <div className="border-t border-gray-200 pt-4">
                 <Link
                   to={"/login"}
@@ -121,7 +141,7 @@ const Header = () => {
                   className="block w-full mt-4 py-2 text-center text-lg font-semibold text-gray-900 bg-transparent border border-gray-900 rounded-xl transition hover:bg-gray-900 hover:text-white"
                   onClick={closeMenu}
                 >
-                  See Demo
+                  Signup
                 </a>
               </div>
             </div>
@@ -129,6 +149,13 @@ const Header = () => {
 
           {/* Desktop Menu */}
           <div className="hidden lg:flex lg:items-center lg:space-x-12">
+            <Link
+              to={"/"}
+              title="Home"
+              className="block text-lg text-gray-900 transition hover:text-gray-700"
+            >
+              Home
+            </Link>
             <Link
               to={"/profile"}
               title="Press"
@@ -206,7 +233,7 @@ const Header = () => {
               to={"/create-document"}
               title="See Demo"
               className="px-5 py-2 text-base font-semibold text-white bg-gray-900 border border-gray-900 rounded-xl transition hover:bg-white hover:text-gray-900"            >
-              See Demo
+              Sign Up
             </Link>
           </div>
         </div>
