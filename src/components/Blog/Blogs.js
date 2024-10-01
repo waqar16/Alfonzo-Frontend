@@ -1,11 +1,5 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import {
-  FaFacebookF,
-  FaTwitter,
-  FaLinkedinIn,
-  FaInstagram,
-} from "react-icons/fa";
 import { Link } from "react-router-dom"; // Import Link from react-router-dom
 import AOS from "aos";
 import "aos/dist/aos.css"; // Import AOS styles
@@ -46,15 +40,16 @@ const BlogSection = () => {
   useEffect(() => {
     const fetchNews = async () => {
       try {
-        const response = await axios.get("https://cors-anywhere.herokuapp.com/https://newsapi.org/v2/everything", {
+        const response = await axios.get('https://gnews.io/api/v4/search', {
           params: {
-            apiKey: "3fa38a7ec3164c6dbd8c9f116484cd44", // Replace with your News API key
-            q: "legal law", // Search query for legal news
-            language: "es",
-            pageSize: 6, // Number of articles to fetch
+            q: 'legal law', // Your search query
+            lang: 'es', // Language of the articles
+            max: 6, // Maximum number of articles to fetch
+            token: '5de45e642e539d520472a1863750f66b' // Replace with your GNews API key
           },
         });
         setPosts(response.data.articles);
+        console.log(response.data.articles);
       } catch (error) {
         setError("Failed to fetch news. Please try again later.");
       }
@@ -86,7 +81,7 @@ const BlogSection = () => {
               title={post.title}
               summary={post.description}
               link={post.url}
-              image={post.urlToImage}
+              image={post.image}
             />
           ))}
         </div>
