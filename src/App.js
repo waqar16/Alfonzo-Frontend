@@ -38,6 +38,9 @@ import FinalizeTemplate from "./pages/FinalizeTemplate/FinalizeTemplate";
 import Faqs from "./pages/Faqs/Faqs";
 import AOS from 'aos'
 import AboutUs from "./pages/About-us/AboutUs";
+import UserQueries from "./pages/UserQueries/UserQueries";
+import UserRequests from "./pages/UserRequests/UserRequests"; 
+import UserDocument from "./pages/UserDocument/UserDocument";
 function App() {
   useEffect(()=>{
     AOS.init()
