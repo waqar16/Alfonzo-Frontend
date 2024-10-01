@@ -71,6 +71,8 @@ function Content() {
           <Route path="/profile" element={<HomePage />} />
           <Route path="/templates" element={<Templates />} />
           <Route path="/templates/edit-template" element={<EditTemplate />} />
+          <Route path="/user-queries" element={<UserQueries />} />
+          <Route path="/user-requests" element={<UserRequests />} />
           <Route
             path="/templates/finalize-template"
             element={<FinalizeTemplate />}
@@ -78,6 +80,7 @@ function Content() {
           <Route path="/templates/lawyer" element={<SelectLawyer />} />
           <Route path="/verify-document" element={<VerifyDocumentPage />} />
           <Route path="/create-document" element={<CreateDocumentPage />} />
+          <Route path="/your-documents" element={<UserDocument />} />
           <Route
             path="/settings/manage-profile"
             element={<ProfileManagementPage />}
@@ -85,7 +88,6 @@ function Content() {
           <Route path="/paywall" element={<Paywall />} />
           <Route path="/settings" element={<SettingsPage />} />
           <Route path="/settings/language" element={<LanguageSettings />} />
-          <Route path="/your-documents" element={<LanguageSettings />} />
           <Route
             path="/settings/manage-profile"
             element={<ProfileManagementPage />}
