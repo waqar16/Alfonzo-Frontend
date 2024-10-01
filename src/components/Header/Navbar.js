@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-
+import "../../images/logo/logo.png"
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -12,17 +12,25 @@ const Header = () => {
     setIsMenuOpen(false);
   };
 
+
   return (
-    <header className="fixed top-0 inset-x-0 z-50 bg-white shadow-md py-4 md:py-6">
-      <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
-        <div className="relative flex items-center justify-between">
+    
+    <header
+      className="fixed top-0 inset-x-0 supports-backdrop-blur:bg-background/90 z-40 w-full bg-background/40 backdrop-blur-lg transition-transform duration-300">
+     <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
+        <div className="relative flex items-center justify-between h-20">
           <div className="flex-shrink-0">
             <Link
               to={"/"}
               title="Home"
               className="flex items-center rounded outline-none focus:ring-1 focus:ring-gray-900 focus:ring-offset-2"
             >
-              <h1 className="text-2xl font-bold text-gray-900">LOGO</h1>
+              {/* <h1 className="text-2xl font-bold text-gray-900">LOGO</h1> */}
+              <img
+                src="/logo.png"
+                alt="Alfonzo Logo"
+                className="w-40 h-auto"
+              />
             </Link>
           </div>
           <div className="flex lg:hidden">
@@ -124,7 +132,7 @@ const Header = () => {
             <Link
               to={"/profile"}
               title="Press"
-              className="block text-lg font-semibold text-gray-900 transition hover:text-gray-700"
+              className="block text-lg text-gray-900 transition hover:text-gray-700"
             >
               Profile
             </Link>
@@ -145,9 +153,40 @@ const Header = () => {
             <Link
               to={"/news"}
               title="Press"
-              className="block text-lg font-semibold text-gray-900 transition hover:text-gray-700"
+              className="block text-lg  text-gray-900 transition hover:text-gray-700"
             >
-              News & Updates
+              News
+            </Link>
+            <Link
+              to={"/faqs"}
+              title="faqs"
+              className="block text-lg text-gray-900 transition hover:text-gray-700"
+            >
+              FAQs
+            </Link>
+
+            <Link
+              to={"/about-us"}
+              title="about-us"
+              className="block text-lg text-gray-900 transition hover:text-gray-700"
+            >
+              About us
+            </Link>
+
+            <Link
+              to={"/services"}
+              title="Press"
+              className="block text-lg text-gray-900 transition hover:text-gray-700"
+            >
+              Services
+            </Link>
+
+            <Link
+              to={"/lawyers"}
+              title="Press"
+              className="block text-lg  text-gray-900 transition hover:text-gray-700"
+            >
+              Lawyers
             </Link>
 
             {/* <a href="#" title="Equipments" className="text-base font-medium text-gray-900 transition hover:text-gray-700">Equipments</a>
@@ -166,8 +205,7 @@ const Header = () => {
             <Link
               to={"/create-document"}
               title="See Demo"
-              className="px-5 py-2 text-base font-semibold text-gray-900 border border-gray-900 rounded-xl transition hover:bg-gray-900 hover:text-white"
-            >
+              className="px-5 py-2 text-base font-semibold text-white bg-gray-900 border border-gray-900 rounded-xl transition hover:bg-white hover:text-gray-900"            >
               See Demo
             </Link>
           </div>
