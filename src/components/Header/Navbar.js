@@ -14,7 +14,6 @@ const Header = () => {
 
 
   return (
-    
     <header
       className="fixed top-0 inset-x-0 supports-backdrop-blur:bg-background/90 z-40 w-full bg-background/40 backdrop-blur-lg transition-transform duration-300">
      <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">

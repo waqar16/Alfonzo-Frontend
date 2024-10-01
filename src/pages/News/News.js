@@ -12,7 +12,7 @@ const NewsList = ({ news }) => (
         className="cursor-pointer bg-white shadow-lg hover:shadow-xl transition-shadow duration-300"
         onClick={() => window.open(item.url, '_blank')}
       >
-        <img src={item.urlToImage || 'https://via.placeholder.com/600x400'} alt={item.title} className="w-full h-48 object-cover" />
+        <img src={item.image || 'https://via.placeholder.com/600x400'} alt={item.title} className="w-full h-48 object-cover" />
         <div className="p-4">
           <h3 className="text-xl font-bold text-black mb-2">{item.title}</h3>
           <p className="text-sm text-gray-700 mb-4">{item.description}</p>
@@ -35,16 +35,17 @@ const NewsUpdatesPage = () => {
     setLoading(true);
     setError(null);
     try {
-      const response = await axios.get(`https://newsapi.org/v2/everything`, {
+      const response = await axios.get('https://gnews.io/api/v4/search', {
         params: {
-          apiKey: '3fa38a7ec3164c6dbd8c9f116484cd44', // Replace with your News API key
-          q: category, // Search query for legal news
-          language: 'es', // News language
-          pageSize: 6,
-          page: pageNum, // Use page number to fetch more news
+          q: 'legal law', // Your search query
+          lang: 'es', // Language of the articles
+          max: 6, // Maximum number of articles to fetch
+          token: '5de45e642e539d520472a1863750f66b' // Replace with your GNews API key
         },
       });
       const newArticles = response.data.articles;
+
+      console.log(newArticles);
 
       // If no new articles, mark hasMore as false
       if (newArticles.length === 0) {
