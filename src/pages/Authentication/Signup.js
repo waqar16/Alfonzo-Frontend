@@ -3,28 +3,33 @@ import { FaEye, FaEyeSlash, FaGoogle, FaLinkedin } from 'react-icons/fa';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import ReCAPTCHA from 'react-google-recaptcha'
+
+
 
 const Signup = () => {
   const [showForm, setShowForm] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const { register, handleSubmit, formState: { errors } } = useForm();
+  const recaptchaRef = React.createRef();
+
 
   const handleEmailClick = () => {
     setShowForm(true);
   };
 
-  const onSubmit = async (data) => {
-    try {
-      await axios.post('/signup', data);
-      alert('Registration successful');
-    } catch (error) {
-      console.error('Registration error', error);
-      alert('Registration failed');
+  const onSubmit = async (event) => {
+    const captchaValue = recaptchaRef.current.getValue();
+    if (!captchaValue) {
+      alert('Please verify the reCAPTCHA!')
+    } else {
+      // make form submission
+      alert('Form submission successful!')
     }
   };
 
   return (
-        <div className="min-h-screen flex items-start justify-center py-4 pt-16 lg:py-24 px-4 sm:px-6 lg:px-8 bg-gray-100">  
+        <div className="min-h-screen flex items-start justify-center py-4 pt-24 lg:py-24 px-4 sm:px-6 lg:px-8 bg-gray-100">  
         <div className="w-full max-w-md sm:max-w-lg bg-white p-8 rounded-lg shadow-lg">
         {!showForm ? (
           <div className="text-center">
@@ -84,7 +89,7 @@ const Signup = () => {
 
               <div>
               <label htmlFor="password" className="block text-sm font-medium text-gray-700">Password</label>
-          <div className="relative flex flex-col items-center justify-center">
+          <div className="relative">
             <input
               {...register('password', { required: 'Password is required', minLength: { value: 6, message: 'Password must be at least 6 characters' } })}
               type={showPassword ? 'text' : 'password'}
@@ -93,34 +98,35 @@ const Signup = () => {
             />
               {showPassword ? (
                 
-                <FaEye className="text-gray-500 absolute cursor-pointer right-4" 
+                <FaEye className="text-gray-500 absolute cursor-pointer right-4 top-3" 
               onClick={() => setShowPassword(!showPassword)}
                 
                 />
               ) : (
-                <FaEyeSlash className="text-gray-500 absolute cursor-pointer right-4" 
+                <FaEyeSlash className="text-gray-500 absolute cursor-pointer right-4 top-3" 
               onClick={() => setShowPassword(!showPassword)}
               />
               )} 
             {errors.password && <p className="text-red-500 text-sm">{errors.password.message}</p>}
           </div>
-                {errors.password && <p className="text-red-500 text-sm">{errors.password.message}</p>}
-              </div>
+               </div>
 
               <div>
-                <label htmlFor="userType" className="block text-sm font-medium text-gray-700">Register as</label>
+                <label htmlFor="userType" className="block text-sm font-medium text-gray-700">Account Type</label>
                 <select
                   {...register('userType')}
                   id="userType"
                   className="mt-1 block w-full px-3 py-2 border border-gray-300 bg-gray-50 text-gray-900 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-500"
                 >
-                  <option value="user">Normal User</option>
-                  <option value="member">Member</option>
-                  <option value="lawyer">Lawyer</option>
+                  <option value="member">Normal Account</option>
+                  <option value="lawyer">Lawyer Account</option>
                 </select>
               </div>
 
               <div>
+              <div className="flex items-center justify-center m-8">
+            <ReCAPTCHA sitekey="6LeNiVQqAAAAABJ9MDszcbfLBChE8YrGlyAZBL2M" ref={recaptchaRef} />
+            </div>
                 <button
                   type="submit"
                   className="w-full px-4 py-2 bg-gray-800 text-white font-semibold rounded-lg shadow-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-600"

@@ -35,7 +35,12 @@ import Templates from "./pages/Templates/Templates";
 import EditTemplate from "./pages/Edit-Template/Edit-Template";
 import SelectLawyer from "./pages/SelectLawyer/SelectLawyer";
 import FinalizeTemplate from "./pages/FinalizeTemplate/FinalizeTemplate"; 
+import Faqs from "./pages/Faqs/Faqs";
 import AOS from 'aos'
+import AboutUs from "./pages/About-us/AboutUs";
+import UserQueries from "./pages/UserQueries/UserQueries";
+import UserRequests from "./pages/UserRequests/UserRequests"; 
+import UserDocument from "./pages/UserDocument/UserDocument";
 function App() {
   useEffect(()=>{
     AOS.init()
@@ -69,6 +74,8 @@ function Content() {
           <Route path="/profile" element={<HomePage />} />
           <Route path="/templates" element={<Templates />} />
           <Route path="/templates/edit-template" element={<EditTemplate />} />
+          <Route path="/user-queries" element={<UserQueries />} />
+          <Route path="/user-requests" element={<UserRequests />} />
           <Route
             path="/templates/finalize-template"
             element={<FinalizeTemplate />}
@@ -76,6 +83,7 @@ function Content() {
           <Route path="/templates/lawyer" element={<SelectLawyer />} />
           <Route path="/verify-document" element={<VerifyDocumentPage />} />
           <Route path="/create-document" element={<CreateDocumentPage />} />
+          <Route path="/your-documents" element={<UserDocument />} />
           <Route
             path="/settings/manage-profile"
             element={<ProfileManagementPage />}
@@ -83,7 +91,6 @@ function Content() {
           <Route path="/paywall" element={<Paywall />} />
           <Route path="/settings" element={<SettingsPage />} />
           <Route path="/settings/language" element={<LanguageSettings />} />
-          <Route path="/your-documents" element={<LanguageSettings />} />
           <Route
             path="/settings/manage-profile"
             element={<ProfileManagementPage />}
@@ -137,6 +144,9 @@ function Content() {
               </DefaultLayout>
             }
           />
+
+          <Route path="/faqs" element={<Faqs />} />
+          <Route path="/about-us" element={<AboutUs />} />
         </Routes>
       </div>
       {!isAdminRoute && <Footer />}
