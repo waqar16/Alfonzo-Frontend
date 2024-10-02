@@ -82,7 +82,7 @@ const Header = () => {
               <Link
                 to={"/"}
                 title="Home"
-                className="block text-lg font-semibold text-gray-900 transition hover:text-gray-700"
+                className="block text-lg text-gray-900 transition hover:text-gray-700"
                 onClick={closeMenu}
               >
                 Home
@@ -90,7 +90,7 @@ const Header = () => {
               <Link
                 to={"/profile"}
                 title="Press"
-                className="block text-lg font-semibold text-gray-900 transition hover:text-gray-700"
+                className="block text-lg text-gray-900 transition hover:text-gray-700"
                 onClick={closeMenu}
               >
                 Profile
