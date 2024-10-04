@@ -34,21 +34,28 @@ import Profile from "./components/Profile";
 import Templates from "./pages/Templates/Templates";
 import EditTemplate from "./pages/Edit-Template/Edit-Template";
 import SelectLawyer from "./pages/SelectLawyer/SelectLawyer";
-import FinalizeTemplate from "./pages/FinalizeTemplate/FinalizeTemplate"; 
+import FinalizeTemplate from "./pages/FinalizeTemplate/FinalizeTemplate";
 import Faqs from "./pages/Faqs/Faqs";
-import AOS from 'aos'
+import AOS from "aos";
 import AboutUs from "./pages/About-us/AboutUs";
 import UserQueries from "./pages/UserQueries/UserQueries";
-import UserRequests from "./pages/UserRequests/UserRequests"; 
+import UserRequests from "./pages/UserRequests/UserRequests";
 import UserDocument from "./pages/UserDocument/UserDocument";
+import VerifyMfa from "./pages/VerifyMfa/VerifyMfa";
+import { AuthProvider } from "./utilities/AuthProvider";
+import PrivateRoutes from "./components/PrivateRoutes/PrivateRoutes";
+
 function App() {
-  useEffect(()=>{
-    AOS.init()
-  },[])
+  useEffect(() => {
+    AOS.init();
+  }, []);
+
   return (
     <Router>
       <ScrollToTop />
-      <Content />
+      <AuthProvider>
+        <Content />
+      </AuthProvider>
     </Router>
   );
 }
@@ -67,11 +74,14 @@ function Content() {
           <Route path="/" element={<Index />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/verify-mfa" element={<VerifyMfa />} />
           <Route
             path="/activation-email-sent"
             element={<ActivationEmailSent />}
           />
-          <Route path="/profile" element={<HomePage />} />
+          <Route element={<PrivateRoutes />}>
+            <Route path="/profile" element={<HomePage />} />
+          </Route>
           <Route path="/templates" element={<Templates />} />
           <Route path="/templates/edit-template" element={<EditTemplate />} />
           <Route path="/user-queries" element={<UserQueries />} />
@@ -91,10 +101,6 @@ function Content() {
           <Route path="/paywall" element={<Paywall />} />
           <Route path="/settings" element={<SettingsPage />} />
           <Route path="/settings/language" element={<LanguageSettings />} />
-          <Route
-            path="/settings/manage-profile"
-            element={<ProfileManagementPage />}
-          />
           <Route path="/settings/theme" element={<ThemeSettings />} />
           <Route
             path="/settings/notifications"
@@ -105,34 +111,28 @@ function Content() {
           <Route
             path="/admin"
             element={
-              <>
-                <DefaultLayout>
-                  <PageTitle title="eCommerce Dashboard | TailAdmin - Tailwind CSS Admin Dashboard Template" />
-                  <ECommerce />
-                </DefaultLayout>
-              </>
+              <DefaultLayout>
+                <PageTitle title="eCommerce Dashboard | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+                <ECommerce />
+              </DefaultLayout>
             }
           />
           <Route
             path="/manage-users"
             element={
-              <>
-                <DefaultLayout>
-                  <PageTitle title="Tables | TailAdmin - Tailwind CSS Admin Dashboard Template" />
-                  <Tables />
-                </DefaultLayout>
-              </>
+              <DefaultLayout>
+                <PageTitle title="Tables | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+                <Tables />
+              </DefaultLayout>
             }
           />
           <Route
             path="/admin/profile"
             element={
-              <>
-                <DefaultLayout>
-                  <PageTitle title="Tables | TailAdmin - Tailwind CSS Admin Dashboard Template" />
-                  <Profile />
-                </DefaultLayout>
-              </>
+              <DefaultLayout>
+                <PageTitle title="Tables | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+                <Profile />
+              </DefaultLayout>
             }
           />
           <Route
@@ -144,7 +144,6 @@ function Content() {
               </DefaultLayout>
             }
           />
-
           <Route path="/faqs" element={<Faqs />} />
           <Route path="/about-us" element={<AboutUs />} />
         </Routes>

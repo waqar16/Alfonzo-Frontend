@@ -1,6 +1,7 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Loader from "../../components/Loader/Loader";
 import {
   faSearch,
   faBell,
@@ -10,13 +11,35 @@ import {
   faFileAlt,
   faUserEdit,
 } from "@fortawesome/free-solid-svg-icons";
+import { fetchUserBasicDetails } from "../../services/user-services";
 
 const HomePage = () => {
+  const navigate = useNavigate();
   const [selected, setSelected] = React.useState("user"); // Default selected value
-
+  const [loading, setLoading] = React.useState(false);
+  const [user, setUser] = React.useState(null);
   const handleToggle = () => {
     setSelected((prev) => (prev === "user" ? "lawyer" : "user"));
   };
+  useEffect(() => {
+    const fetchdetails = async () => {
+      setLoading(true);
+      const details = await fetchUserBasicDetails(setLoading);
+      if (details.status != 200) {
+        navigate("/login");
+      } else {
+        localStorage.setItem("email", details.data.email);
+        localStorage.setItem("username", details.data.username);
+        localStorage.setItem("firstname", details.data.first_name);
+        localStorage.setItem("lastname", details.data.last_name);
+        localStorage.setItem("phone", details.data.phone);
+
+        setUser(details.data);
+        console.log(details);
+      }
+    };
+    fetchdetails();
+  }, []);
   return (
     <section className="min-h-screen flex items-start justify-center py-4 pt-16 lg:py-24 px-4 sm:px-6 lg:px-8 bg-gray-100">
       <div className="max-w-7xl mx-auto grid gap-6">
@@ -53,34 +76,39 @@ const HomePage = () => {
 
         {/* Profile Section */}
         <div className="bg-white p-6 rounded-lg shadow-md border border-gray-200 flex items-center space-x-4 mb-6">
-          <div className="w-16 h-16 rounded-full bg-gray-200 flex items-center justify-center">
-            <FontAwesomeIcon
-              icon={faUserEdit}
-              className="text-3xl text-gray-600"
-            />
-          </div>
-          <div>
-            <h1 className="text-2xl font-bold text-gray-900">[User Name]</h1>
-            <p className="text-gray-600">[User Email]</p>
-            <p className="text-gray-600">[User Position]</p>
-            <button className="mt-2 bg-gray-800 text-white px-4 py-2 rounded-lg shadow-md hover:bg-gray-700 transition-all duration-200 flex items-center">
-              <FontAwesomeIcon icon={faUserEdit} className="mr-2" />
-              <Link to={"/settings"}>Edit Profile</Link>
-            </button>
-          </div>
+          {user ? (
+            <div className="w-16 h-16 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden">
+              <img
+                className="w-full h-full  object-cover"
+                src={localStorage.getItem("profilepic")}
+                alt="user image"
+              />
+            </div>
+          ) : (
+            <div className="w-16 h-16 rounded-full bg-gray-200 flex items-center justify-center">
+              <FontAwesomeIcon
+                icon={faUserEdit}
+                className="text-3xl text-gray-600"
+              />
+            </div>
+          )}
+          {loading ? (
+            <Loader />
+          ) : (
+            <div>
+              <h1 className="text-2xl font-bold text-gray-900">
+                {`Welcome, ${user?.first_name} ${user?.last_name}`}
+              </h1>
+              <p className="text-gray-600">{`@ ${user?.username}`}</p>
+              {/* <p className="text-gray-600">{user.first_name}</p> */}
+              <button className="mt-2 bg-gray-800 text-white px-4 py-2 rounded-lg shadow-md hover:bg-gray-700 transition-all duration-200 flex items-center">
+                <FontAwesomeIcon icon={faUserEdit} className="mr-2" />
+                <Link to={"/settings"}>Edit Profile</Link>
+              </button>
+            </div>
+          )}
         </div>
 
-        {/* Dashboard Header */}
-        <div className="bg-white p-6 rounded-lg shadow-md border border-gray-200 mb-6">
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">
-            Welcome back, [User]!
-          </h1>
-          <p className="text-gray-600">
-            Here’s a quick overview of your recent activities and updates.
-          </p>
-        </div>
-
-        {/* Quick Links */}
         {selected == "user" ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
             <Link
@@ -275,67 +303,6 @@ const HomePage = () => {
               Set Preferred Lawyer
             </button>
           </div>
-        </div>
-
-        {/* Settings Section */}
-        <div className="bg-white p-6 rounded-lg shadow-md border border-gray-200">
-          <h2 className="text-xl font-bold text-gray-900 mb-4">Settings</h2>
-          <ul className="space-y-4">
-            <li>
-              <Link
-                to="/settings"
-                className="text-gray-800 hover:text-gray-600 font-medium flex items-center space-x-2"
-              >
-                <FontAwesomeIcon icon={faCog} className="text-gray-600" />
-                <span>Account Settings</span>
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/settings/language"
-                className="text-gray-800 hover:text-gray-600 font-medium flex items-center space-x-2"
-              >
-                <FontAwesomeIcon icon={faCog} className="text-gray-600" />
-                <span>Language Preferences</span>
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/settings/mfa"
-                className="text-gray-800 hover:text-gray-600 font-medium flex items-center space-x-2"
-              >
-                <FontAwesomeIcon icon={faCog} className="text-gray-600" />
-                <span>MFA Settings</span>
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/settings/theme"
-                className="text-gray-800 hover:text-gray-600 font-medium flex items-center space-x-2"
-              >
-                <FontAwesomeIcon icon={faCog} className="text-gray-600" />
-                <span>Theme Preferences</span>
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/settings/email-notifications"
-                className="text-gray-800 hover:text-gray-600 font-medium flex items-center space-x-2"
-              >
-                <FontAwesomeIcon icon={faCog} className="text-gray-600" />
-                <span>Email Notifications</span>
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/settings/delete-account"
-                className="text-gray-800 hover:text-gray-600 font-medium flex items-center space-x-2"
-              >
-                <FontAwesomeIcon icon={faCog} className="text-gray-600" />
-                <span>Account Deletion</span>
-              </Link>
-            </li>
-          </ul>
         </div>
       </div>
     </section>

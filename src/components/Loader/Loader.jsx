@@ -1,12 +1,12 @@
 import React from "react";
 
-function Loader({ color, className, size }) {
+function Loader({ color, className, size = 24 }) {
   return (
     <div
       className={`flex flex-row items-center justify-center ${className} w-full`}
     >
       <div
-        className={`mr-4 animate-spin rounded-full border-2 border-t-transparent border-${color}`}
+        className={`  animate-spin rounded-full border-2 border-t-transparent border-${color}`}
         style={{
           width: `${size}px`,
           height: `${size}px`,

@@ -11,11 +11,19 @@ import "flatpickr/dist/flatpickr.min.css";
 import { store } from "./redux/store";
 import "./i18n";
 import "aos/dist/aos.css";
+import { GoogleOAuthProvider } from "@react-oauth/google";
+const clientId = process.env.REACT_APP_GOOGLE_CLIENT_ID;
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <App />
+      <GoogleOAuthProvider
+        clientId={
+          "980242435605-g4q5cprimnfcm38uhgfso0trbno75s3h.apps.googleusercontent.com"
+        }
+      >
+        <App />
+      </GoogleOAuthProvider>
     </Provider>
   </React.StrictMode>
 );

@@ -1,41 +1,113 @@
-import React, { useState } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit, faSave, faUserCircle, faLock, faBell, faUserEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+import React, { useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faEdit,
+  faSave,
+  faUserCircle,
+  faLock,
+  faUserEdit,
+  faTrashAlt,
+} from "@fortawesome/free-solid-svg-icons";
+import { Toaster } from "react-hot-toast";
+import { notify } from "../../utilities/toast";
+import { useNavigate } from "react-router-dom";
+import Loader from "../../components/Loader/Loader";
+import { changePassword, changeUsername } from "../../services/user-services";
 
 // Sample function to simulate fetching user data
 const fetchUserData = () => ({
-  name: 'John Doe',
-  email: 'john.doe@example.com',
+  name: "John Doe",
+  email: "john.doe@example.com",
   profilePicture: null,
   notifications: true,
-  language: 'English',
-  theme: 'light',
+  language: "English",
+  theme: "light",
   mfaEnabled: false,
   sharingLinks: true,
-  password: '',
+  password: "",
 });
 
+// Modal Component
+const Modal = ({ isOpen, onClose, children }) => {
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+      <div className="bg-white p-6 rounded-lg shadow-lg max-w-lg w-full relative">
+        <button
+          onClick={onClose}
+          className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
+        >
+          &times;
+        </button>
+        {children}
+      </div>
+    </div>
+  );
+};
+
 const ProfileManagementPage = () => {
+  const navigate = useNavigate();
   const [profile, setProfile] = useState(fetchUserData());
+  const [loading, setLoading] = useState(false);
   const [editing, setEditing] = useState(false);
+  const [username, setUsername] = useState(localStorage.getItem("username"));
   const [newProfile, setNewProfile] = useState({ ...profile });
-  const [password, setPassword] = useState('');
-  const [newPassword, setNewPassword] = useState('');
-  const [notifications, setNotifications] = useState(profile.notifications);
+  const [password, setPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [newUsername, setNewUsername] = useState(""); // New state for username
+  const [notifications, setNotifications] = useState();
   const [language, setLanguage] = useState(profile.language);
   const [theme, setTheme] = useState(profile.theme);
   const [mfaEnabled, setMfaEnabled] = useState(profile.mfaEnabled);
   const [sharingLinks, setSharingLinks] = useState(profile.sharingLinks);
-
-  const handleEditClick = () => setEditing(true);
-  const handleSaveClick = () => {
-    setProfile({ ...newProfile, notifications, language, theme, mfaEnabled, sharingLinks });
-    setEditing(false);
+  const handlePasswordChange = async () => {
+    setLoading(true);
+    const response = await changePassword(
+      { current_password: password, new_password: newPassword },
+      setLoading
+    );
+    if (response.status == 401) {
+      navigate("/login");
+    } else if (response.status == 200) {
+      notify(response.data.success, "success");
+      setIsPasswordModalOpen(false);
+    } else {
+      notify(response.error, "error");
+    }
+    console.log("response", response);
   };
 
-  const handlePasswordChange = () => {
-    // Logic to handle password change
-    console.log('Password changed:', newPassword);
+  const handleEditClick = () => setEditing(true);
+
+  const handleUsernameChange = async () => {
+    setLoading(true);
+    const response = await changeUsername(
+      { username: newUsername }, // Update with the new username
+      setLoading
+    );
+    if (response.status === 401) {
+      navigate("/login");
+    } else if (response.status === 200) {
+      setUsername(newUsername);
+      localStorage.setItem("username", newUsername);
+      notify(response.data.message, "success");
+
+      setIsUsernameModalOpen(false);
+    } else {
+      notify(response.error, "error");
+    }
+  };
+  const handleDeleteAccount = async () => {
+    setLoading(true);
+    // const response = await deleteAccount(); // Assuming you have this function in services
+    // if (response.status === 200) {
+    //   notify("Account deleted successfully", "success");
+    //   navigate("/login"); // Redirect after account deletion
+    // } else {
+    //   notify(response.error, "error");
+    // }
+    setLoading(false);
   };
 
   const handleChange = (e) => {
@@ -43,83 +115,116 @@ const ProfileManagementPage = () => {
     setNewProfile((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleNotificationToggle = () => {
-    setNotifications((prev) => !prev);
+  const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
+  const [isUsernameModalOpen, setIsUsernameModalOpen] = useState(false); // New state for username modal
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false); // New state for delete modal
+  const [newProfilePicture, setNewProfilePicture] = useState(
+    localStorage.getItem("profilepic")
+  ); // Store the new uploaded image
+
+  const handleSaveClick = () => {
+    // Save the new profile picture URL and stop editing
+    setProfile((prevProfile) => ({
+      ...prevProfile,
+      profilePicture: newProfilePicture || prevProfile.profilePicture,
+    }));
+    setEditing(false);
   };
 
-  const handleLanguageChange = (e) => {
-    setLanguage(e.target.value);
-  };
+  const handleProfilePictureUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      // Convert the uploaded image to a temporary URL for previewing
+      const imageUrl = URL.createObjectURL(file);
 
-  const handleThemeChange = (e) => {
-    setTheme(e.target.value);
-  };
-
-  const handleMfaToggle = () => {
-    setMfaEnabled((prev) => !prev);
-  };
-
-  const handleSharingLinksToggle = () => {
-    setSharingLinks((prev) => !prev);
-  };
-
-  const handleAccountDeletion = () => {
-    // Logic to handle account deletion
-    console.log('Account deletion initiated');
+      setNewProfilePicture(imageUrl);
+      localStorage.setItem("profilepic", imageUrl);
+      notify("User Image Updated Succesfully", "success");
+    }
   };
 
   return (
-    <section className="min-h-screen flex items-start justify-center py-4 pt-16 lg:py-24 px-4 sm:px-6 lg:px-8 bg-gray-100">  
-      <div className="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-md border border-gray-200">
-        <h1 className="text-2xl font-bold text-gray-900 mb-4">Profile Management</h1>
+    <section className="min-h-screen flex items-start justify-center py-4 pt-16 lg:py-24 px-4 sm:px-6 lg:px-8 bg-gray-100">
+      <div className="w-11/12 md:w-16/12 mx-auto bg-white p-6 rounded-lg shadow-md border border-gray-200">
+        <h1 className="text-2xl font-bold text-gray-900 mb-4">
+          Profile Management
+        </h1>
 
-        <div className="flex items-center mb-6">
-          <div className="w-24 h-24 bg-gray-300 rounded-full flex items-center justify-center overflow-hidden">
-            {profile.profilePicture ? (
-              <img src={profile.profilePicture} alt="Profile" className="w-full h-full object-cover" />
+        <div className="flex items-center mb-6 relative">
+          <div className="relative w-28 h-28 bg-gray-300 rounded-full flex items-center justify-center  overflow-hidden">
+            {newProfilePicture ? (
+              <img
+                src={newProfilePicture}
+                alt="Profile"
+                className="w-full h-full object-cover  "
+              />
             ) : (
-              <FontAwesomeIcon icon={faUserCircle} className="text-4xl text-gray-500" />
+              <FontAwesomeIcon
+                icon={faUserCircle}
+                className="text-4xl text-gray-500"
+              />
             )}
           </div>
-          <div className="ml-4">
-            {editing ? (
-              <button
-                onClick={handleSaveClick}
-                className="bg-green-600 text-white px-4 py-2 rounded-lg shadow-md hover:bg-green-500 transition-all duration-200"
-              >
-                <FontAwesomeIcon icon={faSave} className="mr-2" />
-                Save
-              </button>
-            ) : (
-              <button
-                onClick={handleEditClick}
-                className="bg-gray-700 text-white px-4 py-2 rounded-lg shadow-md hover:bg-gray-600 transition-all duration-200"
-              >
-                <FontAwesomeIcon icon={faEdit} className="mr-2" />
-                Edit
-              </button>
-            )}
-          </div>
+          <div className="absolute bottom-0 left-20">
+            <label htmlFor="uploadProfilePicture" className="cursor-pointer">
+              <div className="  text-white rounded-lg  transition-all bg-black-2 w-8 h-8 flex flex-col items-center justify-center">
+                <FontAwesomeIcon icon={faEdit} />
+              </div>
+            </label>
+            <input
+              id="uploadProfilePicture"
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={handleProfilePictureUpload}
+            />
+          </div>{" "}
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-          <div>
-            <label className="block text-gray-700 font-semibold mb-2">Name</label>
+          <div className="col-span-2">
+            <label className="block text-gray-700 font-semibold mb-2">
+              Name
+            </label>
             <input
               type="text"
               name="name"
-              value={newProfile.name}
+              value={`${localStorage.getItem(
+                "firstname"
+              )} ${localStorage.getItem("lastname")}`}
               onChange={handleChange}
               disabled={!editing}
               className="form-input w-full p-3 border border-gray-300 rounded-lg bg-white text-gray-900"
             />
           </div>
-          <div>
-            <label className="block text-gray-700 font-semibold mb-2">Email</label>
+          <div className="col-span-2">
+            <label className="block text-gray-700 font-semibold mb-2">
+              Email
+            </label>
             <input
               type="email"
               name="email"
-              value={newProfile.email}
+              value={localStorage.getItem("email")}
+              onChange={handleChange}
+              disabled={!editing}
+              className="form-input w-full p-3 border border-gray-300 rounded-lg bg-white text-gray-900"
+            />
+          </div>
+          <div className="col-span-2">
+            <div className="flex lex-col items-center mb-2">
+              <label className="block text-gray-700 font-semibold ">
+                Username
+              </label>
+              <button
+                onClick={() => setIsUsernameModalOpen(true)} // Open the username modal
+              >
+                <FontAwesomeIcon icon={faEdit} className="ml-2" />
+              </button>
+            </div>
+            <input
+              type="username"
+              name="username"
+              value={username}
               onChange={handleChange}
               disabled={!editing}
               className="form-input w-full p-3 border border-gray-300 rounded-lg bg-white text-gray-900"
@@ -127,16 +232,103 @@ const ProfileManagementPage = () => {
           </div>
         </div>
 
-        <div className="mb-6">
-          <h2 className="text-xl font-semibold text-gray-800 mb-4">Change Password</h2>
-          <label className="block text-gray-700 font-semibold mb-2">Current Password</label>
+        <div className="flex flex-col items-start w-full">
+          <button
+            onClick={() => setIsPasswordModalOpen(true)}
+            className="w-[200px] my-2 bg-black text-white px-4 py-2 rounded-lg shadow-md hover:bg-gray-600 transition-all duration-200"
+          >
+            <FontAwesomeIcon icon={faLock} className="mr-2" />
+            Change Password
+          </button>
+          <button
+            onClick={() => setIsDeleteModalOpen(true)}
+            className="w-[200px] my-2 bg-red-600 text-white px-4 py-2 rounded-lg shadow-md hover:bg-red-500 transition-all duration-200"
+          >
+            <FontAwesomeIcon icon={faTrashAlt} className="mr-2" />
+            Delete Account
+          </button>
+        </div>
+        <Modal
+          isOpen={isDeleteModalOpen}
+          onClose={() => setIsDeleteModalOpen(false)}
+        >
+          <h2 className="text-xl font-semibold text-gray-800 mb-4">
+            Confirm Account Deletion
+          </h2>
+          <p className="mb-4 text-gray-600">
+            Are you sure you want to delete your account? This action cannot be
+            undone.
+          </p>
+          <div className="flex justify-between">
+            <button
+              onClick={handleDeleteAccount}
+              className="bg-red-600 text-white px-4 py-2 rounded-lg shadow-md hover:bg-red-500 transition-all duration-200"
+            >
+              {loading ? <Loader color={"white"} /> : "Confirm"}
+            </button>
+            <button
+              onClick={() => setIsDeleteModalOpen(false)}
+              className="bg-gray-300 px-4 py-2 rounded-lg shadow-md hover:bg-gray-400 transition-all duration-200"
+            >
+              Cancel
+            </button>
+          </div>
+        </Modal>
+        <Modal
+          isOpen={isUsernameModalOpen}
+          onClose={() => setIsUsernameModalOpen(false)}
+        >
+          <h2 className="text-xl font-semibold text-gray-800 mb-4">
+            Change Username
+          </h2>
+          <label className="block text-gray-700 font-semibold mb-2">
+            New Username
+          </label>
+          <input
+            type="text"
+            value={newUsername}
+            onChange={(e) => setNewUsername(e.target.value)}
+            className="form-input w-full p-3 border border-gray-300 rounded-lg bg-white text-gray-900 mb-4"
+          />
+          <button
+            onClick={
+              newUsername
+                ? handleUsernameChange
+                : () => notify("Enter a Username", "error")
+            }
+            className="bg-blue-600 text-white px-4 py-2 rounded-lg shadow-md hover:bg-blue-500 transition-all duration-200 w-[200px]"
+          >
+            {loading ? (
+              <Loader color={"white"} />
+            ) : (
+              <>
+                <FontAwesomeIcon icon={faUserEdit} className="mr-2" />
+                Change Username
+              </>
+            )}
+          </button>
+        </Modal>
+
+        {/* Password Modal */}
+        <Modal
+          isOpen={isPasswordModalOpen}
+          onClose={() => setIsPasswordModalOpen(false)}
+        >
+          <h2 className="text-xl font-semibold text-gray-800 mb-4">
+            Change Password
+          </h2>
+          <label className="block text-gray-700 font-semibold mb-2">
+            Current Password
+          </label>
           <input
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             className="form-input w-full p-3 border border-gray-300 rounded-lg bg-white text-gray-900 mb-4"
           />
-          <label className="block text-gray-700 font-semibold mb-2">New Password</label>
+          <label className="block text-gray-700 font-semibold mb-2">
+            New Password
+          </label>
           <input
             type="password"
             value={newPassword}
@@ -144,124 +336,26 @@ const ProfileManagementPage = () => {
             className="form-input w-full p-3 border border-gray-300 rounded-lg bg-white text-gray-900 mb-4"
           />
           <button
-            onClick={handlePasswordChange}
-            className="bg-red-600 text-white px-4 py-2 rounded-lg shadow-md hover:bg-red-500 transition-all duration-200"
+            onClick={
+              password && newPassword
+                ? handlePasswordChange
+                : () => notify("Enter Both Fields", "error")
+            }
+            className="bg-red-600 text-white px-4 py-2 rounded-lg shadow-md hover:bg-red-500 transition-all duration-200 w-[200px]"
           >
-            <FontAwesomeIcon icon={faLock} className="mr-2" />
-            Change Password
+            {loading ? (
+              <Loader color={"white"} />
+            ) : (
+              <>
+                <FontAwesomeIcon icon={faLock} className="mr-2" />
+                Change Password
+              </>
+            )}
           </button>
-        </div>
-
-        <div className="mb-6">
-          <h2 className="text-xl font-semibold text-gray-800 mb-4">Notification Settings</h2>
-          <label className="inline-flex items-center">
-            <input
-              type="checkbox"
-              checked={notifications}
-              onChange={handleNotificationToggle}
-              className="form-checkbox h-5 w-5 text-blue-600"
-            />
-            <span className="ml-2 text-gray-700">Receive notifications</span>
-          </label>
-        </div>
-
-        <div className="mb-6">
-          <h2 className="text-xl font-semibold text-gray-800 mb-4">Language Preferences</h2>
-          <select
-            value={language}
-            onChange={handleLanguageChange}
-            disabled={!editing}
-            className="form-select w-full p-3 border border-gray-300 rounded-lg bg-white text-gray-900"
-          >
-            <option value="English">English</option>
-            <option value="Spanish">Spanish</option>
-            <option value="French">French</option>
-            {/* Add more languages as needed */}
-          </select>
-        </div>
-
-        <div className="mb-6">
-          <h2 className="text-xl font-semibold text-gray-800 mb-4">Theme Selection</h2>
-          <label className="inline-flex items-center">
-            <input
-              type="radio"
-              value="light"
-              checked={theme === 'light'}
-              onChange={handleThemeChange}
-              disabled={!editing}
-              className="form-radio h-5 w-5 text-blue-600"
-            />
-            <span className="ml-2 text-gray-700">Light Theme</span>
-          </label>
-          <br />
-          <label className="inline-flex items-center">
-            <input
-              type="radio"
-              value="dark"
-              checked={theme === 'dark'}
-              onChange={handleThemeChange}
-              disabled={!editing}
-              className="form-radio h-5 w-5 text-blue-600"
-            />
-            <span className="ml-2 text-gray-700">Dark Theme</span>
-          </label>
-        </div>
-
-        <div className="mb-6">
-          <h2 className="text-xl font-semibold text-gray-800 mb-4">Multi-Factor Authentication</h2>
-          <label className="inline-flex items-center">
-            <input
-              type="checkbox"
-              checked={mfaEnabled}
-              onChange={handleMfaToggle}
-              disabled={!editing}
-              className="form-checkbox h-5 w-5 text-blue-600"
-            />
-            <span className="ml-2 text-gray-700">Enable MFA</span>
-          </label>
-        </div>
-
-        <div className="mb-6">
-          <h2 className="text-xl font-semibold text-gray-800 mb-4">Sharing Links</h2>
-          <label className="inline-flex items-center">
-            <input
-              type="checkbox"
-              checked={sharingLinks}
-              onChange={handleSharingLinksToggle}
-              disabled={!editing}
-              className="form-checkbox h-5 w-5 text-blue-600"
-            />
-            <span className="ml-2 text-gray-700">Enable sharing links for benefits</span>
-          </label>
-        </div>
-
-        <div className="mb-6">
-          <h2 className="text-xl font-semibold text-gray-800 mb-4">Email Notification Preferences</h2>
-          <label className="inline-flex items-center">
-            <input
-              type="checkbox"
-              checked={notifications}
-              onChange={handleNotificationToggle}
-              disabled={!editing}
-              className="form-checkbox h-5 w-5 text-blue-600"
-            />
-            <span className="ml-2 text-gray-700">Receive email notifications</span>
-          </label>
-        </div>
-
-        <div>
-          <h2 className="text-xl font-semibold text-gray-800 mb-4">Account Management</h2>
-          <button
-            onClick={handleAccountDeletion}
-            className="bg-red-600 text-white px-4 py-2 rounded-lg shadow-md hover:bg-red-500 transition-all duration-200"
-          >
-            <FontAwesomeIcon icon={faTrashAlt} className="mr-2" />
-            Delete Account
-          </button>
-        </div>
+        </Modal>
+        <Toaster />
       </div>
     </section>
   );
 };
-
 export default ProfileManagementPage;
