@@ -1,14 +1,25 @@
 import React, { useState } from "react";
+import { updateMfa } from "../../services/authentication-services";
+import { notify } from "../../utilities/toast";
+import { Toaster } from "react-hot-toast";
 
-const SMSAuth = ({ isEnabled, isSetup, onToggle, handleSetupSMSClick }) => (
+const SMSAuth = ({
+  isEnabled,
+  isSetup,
+  onToggle,
+  handleSetupSMSClick,
+  smsToggleClicked,
+}) => (
   <div className="border-b border-gray-300 pb-4 mb-4">
-    <h3 className="text-lg font-semibold text-gray-700">SMS Authentication</h3>
-    <p className="text-gray-600 mb-4">
+    <h3 className="text-lg font-semibold dark:text-zinc-200 text-gray-700">
+      SMS Authentication
+    </h3>
+    <p className="dark:text-zinc-400 text-gray-600 mb-4">
       Receive a code via SMS for additional security. Ensure your phone number
       is up-to-date.
     </p>
     <div className="flex items-center justify-between">
-      <span className="text-sm text-gray-600">
+      <span className="text-sm dark:text-zinc-400 text-gray-600">
         {isEnabled ? (isSetup ? "Enabled" : "Setup Required") : "Disabled"}
       </span>
       <div className="relative inline-flex items-center cursor-pointer">
@@ -36,7 +47,7 @@ const SMSAuth = ({ isEnabled, isSetup, onToggle, handleSetupSMSClick }) => (
         </label>
       </div>
     </div>
-    {!isSetup && isEnabled && (
+    {!isSetup && smsToggleClicked && (
       <div className="mt-4 p-4 bg-yellow-100 text-yellow-800 rounded-md">
         <p className="text-sm">
           SMS authentication is enabled but not yet set up. Please follow the
@@ -56,15 +67,15 @@ const SMSAuth = ({ isEnabled, isSetup, onToggle, handleSetupSMSClick }) => (
 // Email Authentication Component
 const EmailAuth = ({ isEnabled, isSetup, onToggle }) => (
   <div className="border-b border-gray-300 pb-4 mb-4">
-    <h3 className="text-lg font-semibold text-gray-700">
+    <h3 className="text-lg font-semibold dark:text-zinc-200 text-gray-700">
       Email Authentication
     </h3>
-    <p className="text-gray-600 mb-4">
+    <p className="dark:text-zinc-400 text-gray-600 mb-4">
       Receive a code via email for additional security. Make sure your email
       address is verified.
     </p>
     <div className="flex items-center justify-between">
-      <span className="text-sm text-gray-600">
+      <span className="text-sm dark:text-zinc-400 text-gray-600">
         {isEnabled ? "Enabled" : "Disabled"}
       </span>
       <div className="relative inline-flex items-center cursor-pointer">
@@ -98,14 +109,16 @@ const EmailAuth = ({ isEnabled, isSetup, onToggle }) => (
 // Authenticator App Authentication Component
 const AuthenticatorAppAuth = ({ isEnabled, isSetup, onToggle }) => (
   <div className="border-b border-gray-300 pb-4 mb-4">
-    <h3 className="text-lg font-semibold text-gray-700">Authenticator App</h3>
-    <p className="text-gray-600 mb-4">
-      Use an authenticator app to generate codes for additional security. Ensure
-      you have the app installed and configured.
+    <h3 className="text-lg font-semibold dark:text-zinc-200 text-gray-700">
+      Time-based OTP
+    </h3>
+    <p className="dark:text-zinc-400 text-gray-600 mb-4">
+      Use our platform to generate codes for additional security. Ensure you can
+      remeber that otp.
     </p>
     <div className="flex items-center justify-between">
-      <span className="text-sm text-gray-600">
-        {isEnabled ? (isSetup ? "Enabled" : "Setup Required") : "Disabled"}
+      <span className="text-sm dark:text-zinc-400 text-gray-600">
+        {isEnabled ? "Enabled" : "Disabled"}
       </span>
       <div className="relative inline-flex items-center cursor-pointer">
         <input
@@ -132,20 +145,6 @@ const AuthenticatorAppAuth = ({ isEnabled, isSetup, onToggle }) => (
         </label>
       </div>
     </div>
-    {!isSetup && isEnabled && (
-      <div className="mt-4 p-4 bg-yellow-100 text-yellow-800 rounded-md">
-        <p className="text-sm">
-          Authenticator app is enabled but not yet set up. Please follow the
-          instructions to complete the setup.
-        </p>
-        <a
-          href="/settings/auth-app-setup"
-          className="text-blue-500 hover:underline"
-        >
-          Setup Authenticator App
-        </a>
-      </div>
-    )}
   </div>
 );
 
@@ -158,7 +157,7 @@ const PhoneNumberModal = ({ isOpen, onClose, onConfirm }) => {
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
       <div className="bg-white rounded-lg p-6 w-full max-w-md">
         <h2 className="text-xl font-semibold mb-4">Setup SMS Authentication</h2>
-        <p className="text-gray-600 mb-4">
+        <p className="dark:text-zinc-400 text-gray-600 mb-4">
           Please enter your phone number to complete SMS authentication setup:
         </p>
         <input
@@ -190,10 +189,14 @@ const PhoneNumberModal = ({ isOpen, onClose, onConfirm }) => {
 // Main MFASettings Component
 
 const MFASettings = () => {
-  const [smsEnabled, setSmsEnabled] = useState(true);
-  const [emailEnabled, setEmailEnabled] = useState(true);
-  const [authAppEnabled, setAuthAppEnabled] = useState(true);
+  let mfaMethod = localStorage.getItem("mfamethod");
 
+  const [smsEnabled, setSmsEnabled] = useState(mfaMethod == "sms");
+  const [emailEnabled, setEmailEnabled] = useState(mfaMethod == "email");
+  const [authAppEnabled, setAuthAppEnabled] = useState(
+    mfaMethod == "authenticator"
+  );
+  const [smsToggleClicked, setSmsToggleClicked] = useState(false);
   const [smsSetup, setSmsSetup] = useState(false); // Track if SMS is set up
   const [emailSetup, setEmailSetup] = useState(false); // Track if Email is set up
   const [authAppSetup, setAuthAppSetup] = useState(false); // Track if Authenticator App is set up
@@ -206,61 +209,102 @@ const MFASettings = () => {
   };
 
   // Function to confirm phone number
-  const handleConfirmPhoneNumber = (phoneNumber) => {
-    console.log("Phone Number:", phoneNumber); // Handle phone number submission logic
-    setSmsSetup(true); // Mark SMS as setup
-    setIsModalOpen(false); // Close the modal
+  const handleConfirmPhoneNumber = async (phoneNumber) => {
+    const smsEnabled = await updateMfa({
+      mfaMethod: "sms",
+      phone: phoneNumber,
+    });
+    console.log("smsEnabldsaded", smsEnabled);
+    if (smsEnabled.error) {
+      if (smsEnabled.error.error == "Phone is required") {
+        // setSmsToggleClicked(true);
+      }
+    } else {
+      setSmsSetup(true);
+      setIsModalOpen(false);
+      setSmsEnabled(true);
+      setEmailEnabled(false);
+      setAuthAppEnabled(false);
+    }
   };
-  const handleToggleSMS = () => {
-    setSmsEnabled(true);
-    setEmailEnabled(false);
-    setAuthAppEnabled(false);
+  const handleToggleSMS = async () => {
+    const smsEnabled = await updateMfa({ mfaMethod: "sms" });
+    console.log("smsEnabled", smsEnabled);
+    if (smsEnabled.error) {
+      if (smsEnabled.error.error == "Phone is required") {
+        setSmsToggleClicked(true);
+      }
+    } else {
+      notify(smsEnabled.data.message, "success");
+
+      setSmsEnabled(true);
+      setEmailEnabled(false);
+      setAuthAppEnabled(false);
+    }
   };
 
-  const handleToggleEmail = () => {
-    setEmailEnabled(true);
-    setSmsEnabled(false);
-    setAuthAppEnabled(false);
+  const handleToggleEmail = async () => {
+    const smsEnabled = await updateMfa({ mfaMethod: "email" });
+    console.log("smsEnabled", smsEnabled);
+    if (smsEnabled.error) {
+      setSmsToggleClicked(true);
+    } else {
+      notify(smsEnabled.data.message, "success");
+      setEmailEnabled(true);
+      setSmsEnabled(false);
+      setAuthAppEnabled(false);
+    }
   };
 
-  const handleToggleAuthApp = () => {
-    setAuthAppEnabled(true);
-    setSmsEnabled(false);
-    setEmailEnabled(false);
+  const handleToggleAuthApp = async () => {
+    const smsEnabled = await updateMfa({ mfaMethod: "authenticator" });
+    console.log("smsEnabled", smsEnabled);
+    if (smsEnabled.error) {
+      setSmsToggleClicked(true);
+    } else {
+      notify(smsEnabled.data.message, "success");
+      setEmailEnabled(false);
+      setSmsEnabled(false);
+      setAuthAppEnabled(true);
+    }
   };
   return (
-    <div className="relative p-6 max-w-2xl mx-auto bg-white shadow-md rounded-lg mt-24 mb-28">
-      <h2 className="text-2xl font-bold mb-4 text-gray-800">
-        Multi-Factor Authentication Settings
-      </h2>
-      <p className="text-gray-600 mb-6">
-        Enhance your account security by enabling multi-factor authentication
-        (MFA). Choose the methods that best suit your needs.
-      </p>
+    <div className="w-full flex flex-col items-center  p-6">
+      <div className="relative max-w-2xl mx-auto   shadow-md rounded-lg mt-24 mb-28">
+        <h2 className="dark:text-white text-2xl font-bold mb-4 text-gray-800">
+          Multi-Factor Authentication Settings
+        </h2>
+        <p className="dark:text-zinc-400 text-gray-600 mb-6">
+          Enhance your account security by enabling multi-factor authentication
+          (MFA). Choose the methods that best suit your needs.
+        </p>
 
-      <SMSAuth
-        isEnabled={smsEnabled}
-        isSetup={smsSetup}
-        onToggle={handleToggleSMS}
-        handleSetupSMSClick={handleSetupSMSClick}
-      />
-      <EmailAuth
-        isEnabled={emailEnabled}
-        isSetup={emailSetup}
-        onToggle={handleToggleEmail}
-      />
-      <AuthenticatorAppAuth
-        isEnabled={authAppEnabled}
-        isSetup={authAppSetup}
-        onToggle={handleToggleAuthApp}
-      />
+        <SMSAuth
+          isEnabled={smsEnabled}
+          isSetup={smsSetup}
+          onToggle={handleToggleSMS}
+          handleSetupSMSClick={handleSetupSMSClick}
+          smsToggleClicked={smsToggleClicked}
+        />
+        <EmailAuth
+          isEnabled={emailEnabled}
+          isSetup={emailSetup}
+          onToggle={handleToggleEmail}
+        />
+        <AuthenticatorAppAuth
+          isEnabled={authAppEnabled}
+          isSetup={authAppSetup}
+          onToggle={handleToggleAuthApp}
+        />
 
-      {/* Phone number modal */}
-      <PhoneNumberModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        onConfirm={handleConfirmPhoneNumber}
-      />
+        {/* Phone number modal */}
+        <PhoneNumberModal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          onConfirm={handleConfirmPhoneNumber}
+        />
+        <Toaster />
+      </div>
     </div>
   );
 };

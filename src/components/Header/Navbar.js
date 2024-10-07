@@ -1,18 +1,26 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
-import "../../images/logo/logo.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCog,
+  faMoon,
   faSignInAlt,
+  faSun,
   faUserCircle,
 } from "@fortawesome/free-solid-svg-icons";
+import { useTranslation } from "react-i18next";
+import { useDispatch, useSelector } from "react-redux";
+import { setTheme } from "../../redux/reducers/theme-reducer";
+
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isUserMenuOpen, setUserMenuOpen] = useState(false);
-  const [isLogoutModalOpen, setLogoutModalOpen] = useState(false); // Modal state
+  const [isLogoutModalOpen, setLogoutModalOpen] = useState(false);
   const navigate = useNavigate();
-  // Toggle menu visibility
+  const language = useSelector((state) => state.language);
+  const theme = useSelector((state) => state.theme);
+  const { t, i18n } = useTranslation();
+
   const toggleUserMenu = () => {
     setUserMenuOpen((prev) => !prev);
   };
@@ -28,40 +36,56 @@ const Header = () => {
   };
 
   const handleLogoutConfirm = () => {
-    localStorage.removeItem("token"); // Clear the token from localStorage
-    localStorage.removeItem("email"); // Clear the token from localStorage
-    localStorage.removeItem("username"); // Clear the token from localStorage
-    localStorage.removeItem("firstname"); // Clear the token from localStorage
-    localStorage.removeItem("lastname"); // Clear the token from localStorage
-    setLogoutModalOpen(false); // Close the modal
+    localStorage.removeItem("token");
+    localStorage.removeItem("phone");
+    localStorage.removeItem("username");
+    localStorage.removeItem("firstname");
+    localStorage.removeItem("lastname");
+    localStorage.removeItem("email");
+    localStorage.removeItem("profilepic");
+    setLogoutModalOpen(false);
     navigate("/login");
   };
 
   const handleLogoutCancel = () => {
-    setLogoutModalOpen(false); // Close the modal if user cancels
+    setLogoutModalOpen(false);
   };
-  console.log(
-    'localStorage.getItem("profilepic")',
-    localStorage.getItem("profilepic")
-  );
+  const dispatch = useDispatch();
+  const toggleTheme = () => {
+    if (theme == "light") {
+      dispatch(setTheme("dark"));
+    } else {
+      dispatch(setTheme("light"));
+    }
+  };
   return (
-    <header className="fixed top-0 inset-x-0 supports-backdrop-blur:bg-background/90 z-40 w-full bg-background/40 backdrop-blur-lg transition-transform duration-300">
+    <header className="fixed top-0 inset-x-0 z-40 w-full   bg-background/40 backdrop-blur-lg transition-transform duration-300">
       <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
         <div className="relative flex items-center justify-between h-20">
           <div className="flex-shrink-0">
-            <Link
-              to={"/"}
-              title="Home"
-              className="flex items-center focus:outline-none"
-            >
-              <img src="/logo.png" alt="Alfonzo Logo" className="w-40 h-auto" />
+            <Link to={"/"} title={t("home")} className="flex items-center">
+              <img
+                src={theme == "dark" ? "/logo-white.png" : "/logo.png"}
+                alt="Logo"
+                className="w-40 h-auto"
+              />
             </Link>
           </div>
           <div className="flex lg:hidden">
+            <div>
+              <button
+                className="mr-2 flex items-center justify-center p-2 rounded-full border border-gray-300 dark:border-gray-600 focus:outline-none"
+                onClick={toggleTheme}
+              >
+                <FontAwesomeIcon
+                  icon={theme == "dark" ? faSun : faMoon}
+                  className="text-gray-800 dark:text-white"
+                />
+              </button>
+            </div>
             <button
-              type="button"
-              className="text-gray-900 focus:outline-none"
               onClick={toggleMenu}
+              className=" dark:text-white text-gray-900"
             >
               {isMenuOpen ? (
                 <svg
@@ -99,84 +123,68 @@ const Header = () => {
 
           {/* Mobile Menu */}
           <div
-            className={`absolute top-full left-0 w-full bg-white lg:hidden transition-all duration-300 ease-in-out overflow-hidden ${
+            className={`absolute top-full left-0 w-full bg-white lg:hidden transition-all duration-300 ease-in-out overflow-auto ${
               isMenuOpen ? "max-h-screen opacity-100" : "max-h-0 opacity-0"
-            } shadow-md`}
+            }`}
           >
             <div className="p-6 space-y-6">
               <Link
                 to={"/"}
-                title="Home"
-                className="block text-lg font-semibold text-gray-900 transition hover:text-gray-700"
                 onClick={closeMenu}
+                className="block text-lg font-semibold  dark:text-white text-gray-900 transition hover:text-gray-700"
               >
-                Home
+                {t("home")}
               </Link>
               <Link
                 to={"/profile"}
-                title="Press"
-                className="block text-lg font-semibold text-gray-900 transition hover:text-gray-700"
                 onClick={closeMenu}
+                className="block text-lg font-semibold  dark:text-white text-gray-900 transition hover:text-gray-700"
               >
-                Profile
+                {t("profile")}
               </Link>
               <Link
                 to={"/faqs"}
-                title="faqs"
-                className="block text-lg text-gray-900 transition hover:text-gray-700"
+                className="block text-lg  dark:text-white text-gray-900 transition hover:text-gray-700"
               >
-                FAQs
+                {t("faqs")}
               </Link>
-
               <Link
                 to={"/about-us"}
-                title="about-us"
-                className="block text-lg text-gray-900 transition hover:text-gray-700"
+                className="block text-lg  dark:text-white text-gray-900 transition hover:text-gray-700"
               >
-                About us
+                {t("about_us")}
               </Link>
-
               <Link
                 to={"/services"}
-                title="Press"
-                className="block text-lg text-gray-900 transition hover:text-gray-700"
+                className="block text-lg  dark:text-white text-gray-900 transition hover:text-gray-700"
               >
-                Services
+                {t("services")}
               </Link>
-
               <Link
                 to={"/lawyers"}
-                title="Press"
-                className="block text-lg  text-gray-900 transition hover:text-gray-700"
+                className="block text-lg  dark:text-white text-gray-900 transition hover:text-gray-700"
               >
-                Lawyers
+                {t("lawyers")}
               </Link>
               {localStorage.getItem("token") ? (
-                <div
-                  className="flex  bg-white border border-gray-300 rounded-lg w-full"
-                  onMouseEnter={() => setUserMenuOpen(true)} // Keep it open while hovering on the menu
-                  onMouseLeave={() => setUserMenuOpen(false)} // Hide when leaving the menu area
-                >
+                <div className="flex bg-white border border-gray-300 rounded-lg w-full">
                   <ul className="py-2">
                     <li>
                       <NavLink
                         to={"/settings"}
                         className="flex items-center w-full px-4 py-2 text-gray-600 hover:bg-gray-100"
-                        onClick={() => console.log("Settings Clicked")}
                       >
                         <FontAwesomeIcon icon={faCog} className="mr-2" />
-                        Settings
+                        {t("settings")}
                       </NavLink>
                     </li>
                     <li>
                       <button
                         className="flex items-center w-full px-4 py-2 text-gray-600 hover:bg-gray-100"
-                        onClick={() => {
-                          handleLogoutConfirm();
-                        }}
+                        onClick={handleLogoutConfirm}
                       >
                         <FontAwesomeIcon icon={faSignInAlt} className="mr-2" />
-                        Logout
+                        {t("logout")}
                       </button>
                     </li>
                   </ul>
@@ -185,20 +193,18 @@ const Header = () => {
                 <div className="border-t border-gray-200 pt-4">
                   <Link
                     to={"/login"}
-                    title="Login"
-                    className="block text-lg font-semibold text-gray-900 transition hover:text-gray-700"
+                    className="block text-lg font-semibold  dark:text-white text-gray-900 transition hover:text-gray-700"
                     onClick={closeMenu}
                   >
-                    Login
+                    {t("login")}
                   </Link>
-                  <a
-                    href="#"
-                    title="See Demo"
-                    className="block w-full mt-4 py-2 text-center text-lg font-semibold text-gray-900 bg-transparent border border-gray-900 rounded-xl transition hover:bg-gray-900 hover:text-white"
+                  <Link
+                    to={"/signup"}
+                    className="mt-4 block text-lg font-semibold  dark:text-white text-gray-900 transition hover:text-gray-700"
                     onClick={closeMenu}
                   >
-                    Signup
-                  </a>
+                    {t("signup")}
+                  </Link>
                 </div>
               )}
             </div>
@@ -208,66 +214,45 @@ const Header = () => {
           <div className="hidden lg:flex lg:items-center lg:space-x-12">
             <Link
               to={"/"}
-              title="Home"
-              className="block text-lg text-gray-900 transition hover:text-gray-700"
+              className=" text-center block text-md  dark:text-white text-gray-900 transition hover:text-gray-700"
             >
-              Home
+              {t("home")}
             </Link>
             <Link
               to={"/profile"}
-              title="Press"
-              className="block text-lg text-gray-900 transition hover:text-gray-700"
+              className=" text-center block text-md  dark:text-white text-gray-900 transition hover:text-gray-700"
             >
-              Profile
-            </Link>
-
-            <Link
-              to={"/news"}
-              title="Press"
-              className="block text-lg  text-gray-900 transition hover:text-gray-700"
-            >
-              News
+              {t("profile")}
             </Link>
             <Link
               to={"/faqs"}
-              title="faqs"
-              className="block text-lg text-gray-900 transition hover:text-gray-700"
+              className=" text-center block text-md  dark:text-white text-gray-900 transition hover:text-gray-700"
             >
-              FAQs
+              {t("faqs")}
             </Link>
-
             <Link
               to={"/about-us"}
-              title="about-us"
-              className="block text-lg text-gray-900 transition hover:text-gray-700"
+              className=" text-center block text-md  dark:text-white text-gray-900 transition hover:text-gray-700"
             >
-              About us
+              {t("about_us")}
             </Link>
-
             <Link
               to={"/services"}
-              title="Press"
-              className="block text-lg text-gray-900 transition hover:text-gray-700"
+              className=" text-center block text-md  dark:text-white text-gray-900 transition hover:text-gray-700"
             >
-              Services
+              {t("services")}
             </Link>
-
             <Link
               to={"/lawyers"}
-              title="Press"
-              className="block text-lg  text-gray-900 transition hover:text-gray-700"
+              className=" text-center block text-md  dark:text-white text-gray-900 transition hover:text-gray-700"
             >
-              Lawyers
+              {t("lawyers")}
             </Link>
-
-            {/* <a href="#" title="Equipments" className="text-base font-medium text-gray-900 transition hover:text-gray-700">Equipments</a>
-            <a href="#" title="FAQs" className="text-base font-medium text-gray-900 transition hover:text-gray-700">FAQs</a> */}
           </div>
 
-          {/* Desktop Actions */}
           {localStorage.getItem("token") ? (
             <div className="hidden relative  lg:flex flex-row items-center">
-              <span>
+              <span className="dark:text-zinc-100">
                 {localStorage.getItem("firstname")
                   ? localStorage.getItem("firstname")
                   : "User"}
@@ -290,7 +275,17 @@ const Header = () => {
                   <FontAwesomeIcon icon={faUserCircle} size="2x" />
                 )}
               </button>
-
+              <div>
+                <button
+                  className="ml-2 flex items-center justify-center p-2 rounded-full border border-gray-300 dark:border-gray-600 focus:outline-none"
+                  onClick={toggleTheme}
+                >
+                  <FontAwesomeIcon
+                    icon={theme == "dark" ? faSun : faMoon}
+                    className="text-gray-800 dark:text-white"
+                  />
+                </button>
+              </div>
               {/* Dropdown Menu */}
               {isUserMenuOpen && (
                 <div
@@ -306,7 +301,7 @@ const Header = () => {
                         onClick={() => console.log("Settings Clicked")}
                       >
                         <FontAwesomeIcon icon={faCog} className="mr-2" />
-                        Settings
+                        {t("Settings")}
                       </NavLink>
                     </li>
                     <li>
@@ -317,7 +312,7 @@ const Header = () => {
                         }}
                       >
                         <FontAwesomeIcon icon={faSignInAlt} className="mr-2" />
-                        Logout
+                        {t("Logout")}
                       </button>
                     </li>
                   </ul>
@@ -328,20 +323,45 @@ const Header = () => {
             <div className="hidden lg:flex lg:items-center lg:space-x-10">
               <Link
                 to={"/login"}
-                title="Login"
-                className="text-base font-medium text-gray-900 transition hover:text-gray-700"
+                className="text-base font-medium  dark:text-white text-gray-900 transition hover:text-gray-700"
               >
-                Login
+                {t("login")}
               </Link>
               <Link
                 to={"/signup"}
-                title="See Demo"
-                className="px-5 py-2 text-base font-semibold text-white bg-gray-900 border border-gray-900 rounded-xl transition hover:bg-white hover:text-gray-900"
+                className="px-5 py-2 text-base font-semibold text-white bg-gray-900 border border-gray-900 rounded-xl transition hover:text-black hover:bg-white hover: dark:text-white text-gray-900"
               >
-                Sign Up
+                {t("signup")}
               </Link>
             </div>
           )}
+          {/* Desktop Actions */}
+          {/* {localStorage.getItem("token") ? (
+            <div className="hidden relative lg:flex items-center">
+              <span>{localStorage.getItem("firstname") || t("user")}</span>
+              <button
+                onClick={toggleUserMenu}
+                className="ml-2 text-gray-600 hover:text-gray-800 focus:outline-none"
+              >
+                <FontAwesomeIcon icon={faUserCircle} size="2x" />
+              </button>
+            </div>
+          ) : (
+            <div className="hidden lg:flex lg:items-center lg:space-x-10">
+              <Link
+                to={"/login"}
+                className="text-base font-medium  dark:text-white text-gray-900 transition hover:text-gray-700"
+              >
+                {t("login")}
+              </Link>
+              <Link
+                to={"/signup"}
+                className="px-5 py-2 text-base font-semibold text-white bg-gray-900 border border-gray-900 rounded-xl transition hover:bg-white hover: dark:text-white text-gray-900"
+              >
+                {t("signup")}
+              </Link>
+            </div>
+          )} */}
         </div>
       </div>
     </header>

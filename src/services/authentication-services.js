@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { getAuthHeaders } from "./header";
 const serverUrl = `${process.env.REACT_APP_SERVER_URL}`;
 
 export const registerUser = async (userData, setLoading) => {
@@ -71,9 +72,28 @@ export const verifyMfa = async (userData) => {
         };
   }
 };
+export const updateMfa = async (data) => {
+  try {
+    const response = await axios.post(
+      `${serverUrl}/auth/mfa-settings/
 
-// export const handleGoogleSuccess = 
-
+`,
+      { mfa_method: data.mfaMethod, phone: data?.phone },
+      getAuthHeaders()
+    );
+    return { data: response.data, status: response.status };
+  } catch (error) {
+    return error.response
+      ? {
+          error: error.response.data,
+          status: error.response.status,
+        }
+      : {
+          error: error.message,
+          status: 500,
+        };
+  }
+};
 export const handleGoogleFailure = (error) => {
   console.error("Google login failure:", error);
   alert("Failed to login with Google.");

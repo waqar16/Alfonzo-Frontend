@@ -1,6 +1,9 @@
 import React, { useState, useRef } from "react";
 import ReactQuill from "react-quill";
 import "./CustomStyles.css"; // Import your custom styles
+import { createNewTemplate } from "../../services/template-services";
+import { notify } from "../../utilities/toast";
+import { Toaster } from "react-hot-toast";
 
 const AdminTemplatePage = () => {
   const [templateName, setTemplateName] = useState("");
@@ -8,6 +11,7 @@ const AdminTemplatePage = () => {
   const [questions, setQuestions] = useState([]); // All questions
   const [newQuestion, setNewQuestion] = useState(""); // Temp new question
   const [templateType, setTemplateType] = useState(""); // Temp new question
+  const [loading, setLoading] = useState(false); // Temp new question
 
   const quillRef = useRef(null); // Ref to access Quill editor
 
@@ -28,7 +32,7 @@ const AdminTemplatePage = () => {
   };
 
   // Handle saving template and printing row data
-  const handleSaveTemplate = () => {
+  const handleSaveTemplate = async () => {
     const cleanTemplateContent = templateContent
       .replace(
         /<h2 class="ql-align-center">/g,
@@ -52,6 +56,19 @@ const AdminTemplatePage = () => {
       questions: rowData,
       templateType,
     });
+    const newTemplate = await createNewTemplate(
+      {
+        name: templateName,
+        content: templateContent,
+        question: questions,
+        category: templateType,
+      },
+      setLoading
+    );
+    if (newTemplate.status == 201) {
+      notify("Template Added Successfully", "success");
+    }
+    console.log("New Template", newTemplate);
   };
 
   return (
@@ -73,16 +90,19 @@ const AdminTemplatePage = () => {
       </div>
 
       {/* Template Content with Quill */}
-      <div className="mb-6">
+      <div className="mb-6 overflow-hidden">
         <label className="block text-gray-700">Template Content</label>
         <ReactQuill
           ref={quillRef}
           value={templateContent}
           onChange={setTemplateContent}
-          className="h-48 bg-white"
+          style={{
+            height: "300px",
+          }}
+          className="h-[200px] bg-white "
           modules={quillModules}
         />
-        <p className="text-sm text-gray-500 mt-2">
+        <p className="text-sm text-gray-500 mt-16">
           Use placeholders like <code>{"{__1__}"}</code> to link user input from
           questions.
         </p>
@@ -95,9 +115,9 @@ const AdminTemplatePage = () => {
         className="my-2 rounded-md border border-gray-400 w-full p-2   bg-white text-gray-700 shadow-sm rounded-r-md"
       >
         <option value="">Select Type</option>
-        <option value="text">Text</option>
-        <option value="multipleChoice">Multiple Choice</option>
-        <option value="boolean">True/False</option>
+        <option value="law">Law</option>
+        <option value="mutuallity">Mutuallity</option>
+        <option value="power">Power</option>
       </select>
       <div className="mb-4">
         <label className="block text-gray-700">Add Question</label>
@@ -146,6 +166,7 @@ const AdminTemplatePage = () => {
       >
         Save Template
       </button>
+      <Toaster />
     </div>
   );
 };

@@ -1,30 +1,36 @@
-import React from "react";
+import React, { useEffect } from "react";
 import TemplatesLeftSection from "../../components/Templates/TemplatesLeftSection";
 import TemplatesRightSection from "../../components/Templates/TemplatesRightSection";
 import { FaTimes } from "react-icons/fa";
 import { faqWithLegalAgreementsArray } from "../../constants/global";
+import { fetchTemplates } from "../../services/template-services";
 
 const Templates = () => {
   const [searchClicked, setSearchCLicked] = React.useState(false);
   const [templates, setTemplates] = React.useState(faqWithLegalAgreementsArray);
-  const [viewingtemplates, setViewingTemplates] = React.useState(
-    faqWithLegalAgreementsArray
-  );
-  const [searchTemplates, setSearchTemplates] = React.useState(
-    faqWithLegalAgreementsArray
-  );
+  const [apiTemplates, setApiTemplates] = React.useState([] || null);
+  const [searchTemplates, setSearchTemplates] = React.useState(apiTemplates);
 
+  const [loading, setLoading] = React.useState(false);
+  useEffect(() => {
+    const templatess = async () => {
+      const templates = await fetchTemplates(setLoading);
+      console.log("templates", templates);
+      setApiTemplates(templates.data.results);
+    };
+    templatess();
+  }, []);
   const searchTemplate = (text) => {
-    const filteredTemplates = templates.filter((template) => {
+    const filteredTemplates = apiTemplates.filter((template) => {
       const titleMatch = template.title
         .toLowerCase()
         .includes(text.toLowerCase());
 
-      const faqMatch = template.questions.some((faqItem) =>
+      const faqMatch = apiTemplates.questions.some((faqItem) =>
         faqItem.question.toLowerCase().includes(text.toLowerCase())
       );
 
-      const type = template.type.toLowerCase().includes(text.toLowerCase());
+      const type = apiTemplates.type.toLowerCase().includes(text.toLowerCase());
 
       // If any field matches, return true for this template
       return titleMatch || faqMatch || type;
@@ -32,15 +38,16 @@ const Templates = () => {
 
     setSearchTemplates(filteredTemplates);
   };
-  const groupedTemplates = templates.reduce((acc, template) => {
-    const { type } = template;
-    if (!acc[type]) {
-      acc[type] = [];
+  const groupedTemplates = apiTemplates.reduce((acc, template) => {
+    const { category } = template;
+    if (!acc[category]) {
+      acc[category] = [];
     }
-    acc[type].push(template);
+    acc[category].push(template);
     return acc;
   }, {});
-  console.log("grouped templates", groupedTemplates);
+  const [viewingtemplates, setViewingTemplates] = React.useState(apiTemplates);
+  console.log(apiTemplates);
   return (
     <div className="w-full flex flex-col items-center  mt-32 px-8 relative my-12">
       <div className="w-full flex flex-col md:flex-row items-center md:justify-between">
@@ -138,14 +145,18 @@ const Templates = () => {
         </div>
       )}
 
-      <div className="w-full grid grid-cols-8 md:gap-x-8">
-        <TemplatesLeftSection
-          allTemplates={templates}
-          templates={groupedTemplates}
-          setViewingTemplates={setViewingTemplates}
-        />
-        <TemplatesRightSection templates={viewingtemplates} />
-      </div>
+      {apiTemplates && apiTemplates.length > 0 && (
+        <div className="w-full grid grid-cols-8 md:gap-x-8">
+          <TemplatesLeftSection
+            allTemplates={apiTemplates}
+            templates={groupedTemplates}
+            setViewingTemplates={setViewingTemplates}
+          />
+          {viewingtemplates && viewingtemplates.length > 0 && (
+            <TemplatesRightSection templates={viewingtemplates} />
+          )}
+        </div>
+      )}
     </div>
   );
 };

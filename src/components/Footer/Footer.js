@@ -5,19 +5,19 @@ import {
   FaLinkedinIn,
   FaInstagram,
 } from "react-icons/fa";
+import { useTranslation } from "react-i18next"; // Import useTranslation hook
 
 const Footer = () => {
+  const { t } = useTranslation(); // Get the translation function
+
   return (
-    <footer
-      className=" text-white py-12 mt-auto"
-      style={{ backgroundColor: "#00171F" }}
-    >
+    <footer className=" text-white py-12 mt-auto dark:bg-black bg-[#00171F]">
       <div className="px-4 mx-auto max-w-7xl">
         <div className="grid gap-8 md:grid-cols-3 lg:grid-cols-4">
           {/* Navigation Links */}
           <div className="space-y-6">
             <h3 className="text-lg font-semibold border-b-2 border-gray-600 pb-2">
-              Quick Links
+              {t("footer.quickLinks")}
             </h3>
             <ul className="space-y-2">
               <li>
@@ -25,7 +25,7 @@ const Footer = () => {
                   href="#"
                   className="hover:text-gray-400 transition-colors duration-300"
                 >
-                  Home
+                  {t("footer.home")}
                 </a>
               </li>
               <li>
@@ -33,7 +33,7 @@ const Footer = () => {
                   href="#"
                   className="hover:text-gray-400 transition-colors duration-300"
                 >
-                  About
+                  {t("footer.about")}
                 </a>
               </li>
               <li>
@@ -41,7 +41,7 @@ const Footer = () => {
                   href="#"
                   className="hover:text-gray-400 transition-colors duration-300"
                 >
-                  Services
+                  {t("footer.services")}
                 </a>
               </li>
               <li>
@@ -49,7 +49,7 @@ const Footer = () => {
                   href="#"
                   className="hover:text-gray-400 transition-colors duration-300"
                 >
-                  Contact
+                  {t("footer.contact")}
                 </a>
               </li>
             </ul>
@@ -58,38 +58,38 @@ const Footer = () => {
           {/* Contact Information */}
           <div className="space-y-6">
             <h3 className="text-lg font-semibold border-b-2 border-gray-600 pb-2">
-              Contact Us
+              {t("footer.contactUs")}
             </h3>
             <p className="text-sm mb-2">
-              <span className="font-medium">Address:</span> 123 Business Road,
-              Suite 456, City, Country
+              <span className="font-medium">{t("footer.address")}:</span> 123
+              Business Road, Suite 456, City, Country
             </p>
             <p className="text-sm mb-2">
-              <span className="font-medium">Phone:</span> +1 (123) 456-7890
+              <span className="font-medium">{t("footer.phone")}:</span> +1 (123)
+              456-7890
             </p>
             <p className="text-sm mb-4">
-              <span className="font-medium">Email:</span> contact@example.com
+              <span className="font-medium">{t("footer.email")}:</span>{" "}
+              contact@example.com
             </p>
             <a
               href="mailto:contact@example.com"
               className="text-[#00A8E8] hover:text-indigo-300 transition-colors duration-300"
             >
-              Send us an email
+              {t("footer.sendEmail")}
             </a>
           </div>
 
           {/* Newsletter Signup */}
           <div className="space-y-6">
             <h3 className="text-lg font-semibold border-b-2 border-gray-600 pb-2">
-              Newsletter
+              {t("footer.newsletter")}
             </h3>
-            <p className="text-sm mb-4">
-              Subscribe to our newsletter for the latest updates and offers.
-            </p>
+            <p className="text-sm mb-4">{t("footer.newsletterText")}</p>
             <form className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
               <input
                 type="email"
-                placeholder="Enter your email"
+                placeholder={t("footer.enterEmail")}
                 className="w-full px-4 py-2 border border-gray-600 rounded-md bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500"
               />
               <button
@@ -97,7 +97,7 @@ const Footer = () => {
                 className="w-full sm:w-auto text-white px-6 py-2 rounded-md shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-colors duration-300"
                 style={{ backgroundColor: "#007EA7" }}
               >
-                Subscribe
+                {t("footer.subscribe")}
               </button>
             </form>
           </div>
@@ -105,7 +105,7 @@ const Footer = () => {
           {/* Social Media Links */}
           <div className="space-y-6">
             <h3 className="text-lg font-semibold border-b-2 border-gray-600 pb-2">
-              Follow Us
+              {t("footer.followUs")}
             </h3>
             <div className="flex space-x-4">
               <a
@@ -146,7 +146,8 @@ const Footer = () => {
 
         <div className="mt-12 border-t border-gray-600 pt-6 text-center">
           <p className="text-sm text-gray-400">
-            &copy; {new Date().getFullYear()} Alfonzo. All rights reserved.
+            &copy; {new Date().getFullYear()} {t("footer.copyright")}.{" "}
+            {t("footer.rightsReserved")}
           </p>
         </div>
       </div>

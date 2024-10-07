@@ -44,6 +44,9 @@ import UserDocument from "./pages/UserDocument/UserDocument";
 import VerifyMfa from "./pages/VerifyMfa/VerifyMfa";
 import { AuthProvider } from "./utilities/AuthProvider";
 import PrivateRoutes from "./components/PrivateRoutes/PrivateRoutes";
+import { useSelector } from "react-redux";
+import Services from "./components/Services/Services";
+import Lawyers from "./pages/Lawyers/Lawyers";
 
 function App() {
   useEffect(() => {
@@ -61,6 +64,15 @@ function App() {
 }
 
 function Content() {
+  const theme = useSelector((state) => state.theme);
+  useEffect(() => {
+    // Toggle the 'dark' class on the <html> element
+    if (theme === "dark") {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  }, [theme]);
   const location = useLocation();
   const isAdminRoute =
     location.pathname.startsWith("/admin") ||
@@ -69,7 +81,7 @@ function Content() {
   return (
     <>
       {!isAdminRoute && <Header />}
-      <div className="App">
+      <div className={`App ${theme == "dark" ? "bg-black" : "bg-white"}`}>
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/signup" element={<Signup />} />
@@ -146,6 +158,8 @@ function Content() {
           />
           <Route path="/faqs" element={<Faqs />} />
           <Route path="/about-us" element={<AboutUs />} />
+          <Route path="/services" element={<Services />} />
+          <Route path="/lawyers" element={<Lawyers />} />
         </Routes>
       </div>
       {!isAdminRoute && <Footer />}

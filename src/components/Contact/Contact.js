@@ -9,6 +9,7 @@ import {
 } from "react-icons/fa";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import { useTranslation } from "react-i18next"; // Import useTranslation
 
 const contactInfo = {
   phone: "+1 (123) 456-7890",
@@ -34,6 +35,7 @@ const contactInfo = {
 };
 
 const ContactInformation = () => {
+  const { t } = useTranslation(); // Get the translation function
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -53,67 +55,75 @@ const ContactInformation = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // For demonstration purposes, we'll just show a success message.
-    // In a real-world application, you'd send this data to a server.
-    setFormStatus("Your message has been sent successfully!");
+    setFormStatus(t("contact.messageSent")); // Use translation for the message
     setFormData({ name: "", email: "", subject: "", message: "" });
   };
 
   return (
-    <section className="py-12 bg-gray-50 sm:py-16 lg:py-20">
+    <section className="dark:bg-black py-12 bg-gray-50 sm:py-16 lg:py-20">
       <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold leading-tight text-gray-900 sm:text-4xl xl:text-5xl">
-            Get in Touch
+          <h2 className="dark:text-white text-3xl font-bold leading-tight text-gray-900 sm:text-4xl xl:text-5xl">
+            {t("contact.getInTouch")}
           </h2>
-          <p className="mt-4 text-base leading-7 text-gray-600 sm:mt-6">
-            We’d love to hear from you! Reach out to us via any of the following
-            methods or use the contact form below.
+          <p className="dark:text-zinc-400 mt-4 text-base leading-7 text-gray-600 sm:mt-6">
+            {t("contact.weLoveToHear")}
           </p>
         </div>
 
         <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-3">
           <div
-            className="bg-white border border-gray-200 rounded-lg shadow-lg p-6 flex items-start space-x-4 transition-transform transform hover:scale-105 hover:shadow-2xl"
+            className="dark:bg-slate-900 dark:border-none bg-white border border-gray-200 rounded-lg shadow-lg p-6 flex items-start space-x-4 transition-transform transform hover:scale-105 hover:shadow-2xl"
             data-aos="fade-up"
           >
             <FaPhoneAlt className="w-8 h-8 text-[#00A8E8]" />
             <div>
-              <h3 className="text-lg font-semibold text-gray-900">Phone</h3>
-              <p className="mt-2 text-gray-600">{contactInfo.phone}</p>
+              <h3 className="dark:text-white  text-lg font-semibold text-gray-900">
+                {t("contact.phone")}
+              </h3>
+              <p className="mt-2 text-gray-600 dark:text-zinc-400">
+                {contactInfo.phone}
+              </p>
             </div>
           </div>
 
           <div
-            className="bg-white border border-gray-200 rounded-lg shadow-lg p-6 flex items-start space-x-4 transition-transform transform hover:scale-105 hover:shadow-2xl"
+            className="  dark:bg-slate-900 dark:border-none bg-white border border-gray-200 rounded-lg shadow-lg p-6 flex items-start space-x-4 transition-transform transform hover:scale-105 hover:shadow-2xl"
             data-aos="fade-up"
             data-aos-delay="100"
           >
             <FaEnvelope className="w-8 h-8 text-[#00A8E8]" />
             <div>
-              <h3 className="text-lg font-semibold text-gray-900">Email</h3>
-              <p className="mt-2 text-gray-600">{contactInfo.email}</p>
+              <h3 className="dark:text-white text-lg font-semibold text-gray-900">
+                {t("contact.email")}
+              </h3>
+              <p className="mt-2 text-gray-600 dark:text-zinc-400">
+                {contactInfo.email}
+              </p>
             </div>
           </div>
 
           <div
-            className="bg-white border border-gray-200 rounded-lg shadow-lg p-6 flex items-start space-x-4 transition-transform transform hover:scale-105 hover:shadow-2xl"
+            className="dark:text-white  dark:bg-slate-900 dark:border-none bg-white border border-gray-200 rounded-lg shadow-lg p-6 flex items-start space-x-4 transition-transform transform hover:scale-105 hover:shadow-2xl"
             data-aos="fade-up"
             data-aos-delay="200"
           >
             <FaMapMarkerAlt className="w-8 h-8 text-[#00A8E8]" />
             <div>
-              <h3 className="text-lg font-semibold text-gray-900">Address</h3>
-              <p className="mt-2 text-gray-600">{contactInfo.address}</p>
+              <h3 className="dark:text-white text-lg font-semibold text-gray-900">
+                {t("contact.address")}
+              </h3>
+              <p className="mt-2 text-gray-600 dark:text-zinc-400">
+                {contactInfo.address}
+              </p>
             </div>
           </div>
         </div>
 
         <div className="mt-12">
-          {/* <h3 className="text-xl font-bold text-gray-900 text-center mb-8">Contact Form</h3> */}
           <form
             onSubmit={handleSubmit}
-            className="bg-white p-8 border border-gray-200 rounded-lg shadow-lg mx-auto max-w-4xl"
+            className="dark:bg-slate-900 dark:border-none bg-white p-8 border border-gray-200 rounded-lg shadow-lg mx-auto max-w-4xl"
           >
             {formStatus && (
               <div className="mb-4 text-center text-green-600">
@@ -124,9 +134,9 @@ const ContactInformation = () => {
               <div>
                 <label
                   htmlFor="name"
-                  className="block text-gray-700 font-semibold"
+                  className="block dark:text-zinc-400 text-gray-700 font-semibold"
                 >
-                  Name
+                  {t("contact.name")}
                 </label>
                 <input
                   id="name"
@@ -141,9 +151,9 @@ const ContactInformation = () => {
               <div>
                 <label
                   htmlFor="email"
-                  className="block text-gray-700 font-semibold"
+                  className="block dark:text-zinc-400 text-gray-700 font-semibold"
                 >
-                  Email
+                  {t("contact.email")}
                 </label>
                 <input
                   id="email"
@@ -159,9 +169,9 @@ const ContactInformation = () => {
             <div className="mb-6">
               <label
                 htmlFor="subject"
-                className="block text-gray-700 font-semibold"
+                className="block dark:text-zinc-400 text-gray-700 font-semibold"
               >
-                Subject
+                {t("contact.subject")}
               </label>
               <input
                 id="subject"
@@ -176,9 +186,9 @@ const ContactInformation = () => {
             <div className="mb-6">
               <label
                 htmlFor="message"
-                className="block text-gray-700 font-semibold"
+                className="block dark:text-zinc-400 text-gray-700 font-semibold"
               >
-                Message
+                {t("contact.message")}
               </label>
               <textarea
                 id="message"
@@ -195,14 +205,16 @@ const ContactInformation = () => {
                 type="submit"
                 className="bg-gray-800 text-white px-6 py-3 rounded-md shadow-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-300"
               >
-                Send Message
+                {t("contact.sendMessage")}
               </button>
             </div>
           </form>
         </div>
 
         <div className="mt-12 text-center">
-          <h3 className="text-xl font-bold text-gray-900 mb-4">Follow Us</h3>
+          <h3 className="text-xl font-bold text-gray-900 mb-4">
+            {t("contact.followUs")}
+          </h3>
           <div className="flex justify-center space-x-6">
             {contactInfo.social.map((social, index) => (
               <a

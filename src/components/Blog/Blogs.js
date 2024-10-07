@@ -40,12 +40,12 @@ const BlogSection = () => {
   useEffect(() => {
     const fetchNews = async () => {
       try {
-        const response = await axios.get('https://gnews.io/api/v4/search', {
+        const response = await axios.get("https://gnews.io/api/v4/search", {
           params: {
-            q: 'legal law', // Your search query
-            lang: 'es', // Language of the articles
+            q: "legal law", // Your search query
+            lang: "es", // Language of the articles
             max: 6, // Maximum number of articles to fetch
-            token: '5de45e642e539d520472a1863750f66b' // Replace with your GNews API key
+            token: "5de45e642e539d520472a1863750f66b", // Replace with your GNews API key
           },
         });
         setPosts(response.data.articles);
@@ -60,13 +60,13 @@ const BlogSection = () => {
   }, []);
 
   return (
-    <section className="py-12 bg-gray-100 sm:py-16 lg:py-20">
+    <section className="py-12 dark:bg-black bg-gray-100 sm:py-16 lg:py-20">
       <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
         <div className="text-center">
-          <h2 className="text-3xl font-bold leading-tight text-gray-900 sm:text-4xl lg:text-5xl">
+          <h2 className="dark:text-white text-3xl font-bold leading-tight text-gray-900 sm:text-4xl lg:text-5xl">
             Latest News & Updates
           </h2>
-          <p className="mt-4 text-base leading-7 text-gray-600 sm:mt-8">
+          <p className="dark:text-zinc-400 mt-4 text-base leading-7 text-gray-600 sm:mt-8">
             Stay up-to-date with our latest news and industry insights.
           </p>
         </div>
