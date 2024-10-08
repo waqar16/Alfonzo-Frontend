@@ -144,9 +144,9 @@ const ProfileManagementPage = () => {
   };
 
   return (
-    <section className="min-h-screen flex items-start justify-center py-4 pt-16 lg:py-24 px-4 sm:px-6 lg:px-8 bg-gray-100">
-      <div className="w-11/12 md:w-16/12 mx-auto bg-white p-6 rounded-lg shadow-md border border-gray-200">
-        <h1 className="text-2xl font-bold text-gray-900 mb-4">
+    <section className="min-h-screen flex items-start justify-center py-4 pt-16 lg:py-24 px-4 sm:px-6 lg:px-8 dark:bg-slate-700 bg-gray-100">
+      <div className="w-11/12 md:w-16/12 mx-auto dark:bg-black bg-white p-6 rounded-lg shadow-md border dark:border-zinc-700 border-gray-200">
+        <h1 className="text-2xl font-bold dark:text-white text-gray-900 mb-4">
           Profile Management
         </h1>
 
@@ -161,7 +161,7 @@ const ProfileManagementPage = () => {
             ) : (
               <FontAwesomeIcon
                 icon={faUserCircle}
-                className="text-4xl text-gray-500"
+                className="text-4xl dark:text-white text-gray-500"
               />
             )}
           </div>
@@ -183,7 +183,7 @@ const ProfileManagementPage = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
           <div className="col-span-2">
-            <label className="block text-gray-700 font-semibold mb-2">
+            <label className="block dark:text-white text-gray-700 font-semibold mb-2">
               Name
             </label>
             <input
@@ -198,7 +198,7 @@ const ProfileManagementPage = () => {
             />
           </div>
           <div className="col-span-2">
-            <label className="block text-gray-700 font-semibold mb-2">
+            <label className="block dark:text-white text-gray-700 font-semibold mb-2">
               Email
             </label>
             <input
@@ -212,7 +212,7 @@ const ProfileManagementPage = () => {
           </div>
           <div className="col-span-2">
             <div className="flex lex-col items-center mb-2">
-              <label className="block text-gray-700 font-semibold ">
+              <label className="dark:text-white block text-gray-700 font-semibold ">
                 Username
               </label>
               <button
@@ -237,7 +237,7 @@ const ProfileManagementPage = () => {
             onClick={() => setIsPasswordModalOpen(true)}
             className="w-[200px] my-2 bg-black text-white px-4 py-2 rounded-lg shadow-md hover:bg-gray-600 transition-all duration-200"
           >
-            <FontAwesomeIcon icon={faLock} className="mr-2" />
+            <FontAwesomeIcon icon={faLock} className="mr-2 " />
             Change Password
           </button>
           <button

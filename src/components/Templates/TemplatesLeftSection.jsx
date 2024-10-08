@@ -24,9 +24,9 @@ const TemplatesLeftSection = ({
           className="p-2 border border-gray-300 rounded-md w-full"
         >
           <option value="all">All</option>
-          {Object.keys(templates).map((type) => (
-            <option key={type} value={type}>
-              {type} ({templates[type].length})
+          {Object.keys(templates).map((category) => (
+            <option key={category} value={category}>
+              {category} ({templates[category].length})
             </option>
           ))}
         </select>
@@ -52,19 +52,19 @@ const TemplatesLeftSection = ({
           </p>
         </div>
 
-        {Object.keys(templates).map((type) => (
+        {Object.keys(templates).map((category) => (
           <div
-            key={type}
+            key={category}
             className={`flex flex-row items-center p-2 ${
-              selected === type ? "bg-black text-gray-200" : "bg-gray-200"
+              selected === category ? "bg-black text-gray-200" : "bg-gray-200"
             } w-full mt-2 rounded-md justify-between cursor-pointer`}
             onClick={() => {
-              setSelected(type);
-              setViewingTemplates(templates[type]);
+              setSelected(category);
+              setViewingTemplates(templates[category]);
             }}
           >
-            <p>{type}</p>
-            <p>{templates[type].length}</p>
+            <p>{category}</p>
+            <p>{templates[category].length}</p>
           </div>
         ))}
       </div>

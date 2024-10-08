@@ -1,79 +1,72 @@
-import React, { useState } from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons'
+import React, { useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus, faMinus } from "@fortawesome/free-solid-svg-icons";
+import { useTranslation } from "react-i18next"; // Import useTranslation
 
 const faqData = [
   {
-    question: "How this theme is different from others in market?",
-    answer: "Our theme offers unique features and a modern design that sets it apart from others in the market."
+    question: "faq.themeDifference",
+    answer: "faq.themeDifferenceAnswer",
   },
   {
-    question: "Does this theme supports plugins?",
-    answer: "Yes, our theme supports a wide range of plugins to extend its functionality."
+    question: "faq.supportsPlugins",
+    answer: "faq.supportsPluginsAnswer",
   },
   {
-    question: "Do you provide any moneyback guarantee in this product?",
-    answer: "We offer a 30-day money-back guarantee if you're not satisfied with our product."
+    question: "faq.moneybackGuarantee",
+    answer: "faq.moneybackGuaranteeAnswer",
   },
   {
-    question: "What payment method do you support?",
-    answer: "We support various payment methods including credit cards, PayPal, and bank transfers."
+    question: "faq.paymentMethods",
+    answer: "faq.paymentMethodsAnswer",
   },
   {
-    question: "Will I get money back if I am not satisfied?",
-    answer: "Yes, we offer a full refund within 30 days if you're not satisfied with our product."
+    question: "faq.refundSatisfaction",
+    answer: "faq.refundSatisfactionAnswer",
   },
   {
-    question: "How do you provide support?",
-    answer: "We provide support through email, live chat, and a comprehensive knowledge base."
-  }
-]
+    question: "faq.supportMethods",
+    answer: "faq.supportMethodsAnswer",
+  },
+];
 
 export default function FAQ() {
-  const [activeIndex, setActiveIndex] = useState(null)
+  const { t } = useTranslation(); // Get the translation function
+  const [activeIndex, setActiveIndex] = useState(null);
 
   const toggleQuestion = (index) => {
-    setActiveIndex(activeIndex === index ? null : index)
-  }
+    setActiveIndex(activeIndex === index ? null : index);
+  };
 
   return (
-     <div className="max-w-3xl mx-auto py-12 pt-24 lg:py-24 px-4 sm:px-6 lg:px-8 bg-gray-100">  
-
-      <h2 className="text-3xl font-bold text-center mb-2">Frequently asked questions</h2>
-      <p className="text-center text-muted-foreground mb-8">
-        Ask everything you need to know about our products and services.
+    <div className="dark:bg-black max-w-3xl mx-auto py-12 pt-24 lg:py-24 px-4 sm:px-6 lg:px-8 bg-gray-100">
+      <h2 className="dark:text-white text-3xl font-bold text-center mb-2">
+        {t("faq.title")}
+      </h2>
+      <p className="dark:text-zinc-400 text-center text-muted-foreground mb-8">
+        {t("faq.subtitle")}
       </p>
       <div className="space-y-4">
         {faqData.map((faq, index) => (
           <div key={index} className="border border-gray-200 rounded-lg">
             <button
-              className="flex justify-between items-center w-full p-4 text-left"
+              className="dark:text-zinc-400 flex justify-between items-center w-full p-4 text-left"
               onClick={() => toggleQuestion(index)}
             >
-              <span className="font-medium">{faq.question}</span>
+              <span className="font-medium">{t(faq.question)}</span>
               <FontAwesomeIcon
                 icon={activeIndex === index ? faMinus : faPlus}
                 className="text-gray-600"
               />
             </button>
             {activeIndex === index && (
-              <div className="p-4 bg-gray-50">
-                <p>{faq.answer}</p>
+              <div className="p-4 dark:text-zinc-400 dark:bg-black bg-gray-50">
+                <p>{t(faq.answer)}</p>
               </div>
             )}
           </div>
         ))}
       </div>
-      {/* <div className="flex justify-center mt-12 space-x-4">
-        {[1, 2, 3].map((i) => (
-          <img
-            key={i}
-            src={`/placeholder.svg?height=40&width=40`}
-            alt={`Profile ${i}`}
-            className="rounded-full w-10 h-10"
-          />
-        ))}
-      </div> */}
     </div>
-  )
+  );
 }

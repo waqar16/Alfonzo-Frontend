@@ -1,61 +1,137 @@
 {
-    "header": {
-      "logo": "LOGO",
-      "login": "Iniciar sesión",
-      "seeDemo": "Ver demostración"
-    },
-    "profile": {
-      "userName": "[Nombre de Usuario]",
-      "userEmail": "[Correo Electrónico del Usuario]",
-      "userPosition": "[Posición del Usuario]",
-      "editProfile": "Editar Perfil",
-      "welcomeBack": "¡Bienvenido de nuevo, [Usuario]!",
-      "overview": "Aquí tienes un resumen de tus actividades recientes y actualizaciones."
-    },
-    "documents": {
-      "templates": "Crea un nuevo documento a partir de Plantillas.",
-      "verifyDocument": "Verifica la autenticidad de un documento.",
-      "yourDocuments": "Ver tus documentos creados.",
-      "notifications": {
-        "statusUpdated": "El estado del documento se actualizó a aprobado.",
-        "paymentConfirmation": "Confirmación de pago recibida."
-      }
-    },
-    "summary": {
-      "pendingActions": "Acciones Pendientes: Revisa los documentos pendientes de tu acción.",
-      "upcomingDeadlines": "Próximos Plazos: Consulta los plazos para la presentación de documentos."
-    },
-    "preferredLawyer": {
-      "lockLawyer": "Bloquea un abogado preferido para todos los documentos. Debes confirmar tu selección antes de finalizar cualquier documento.",
-      "setPreferredLawyer": "Establecer Abogado Preferido"
-    },
-    "settings": {
-      "accountSettings": "Configuraciones de Cuenta",
-      "languagePreferences": "Preferencias de Idioma",
-      "mfaSettings": "Configuraciones de MFA",
-      "themePreferences": "Preferencias de Tema",
-      "emailNotifications": "Notificaciones por Correo Electrónico",
-      "accountDeletion": "Eliminación de Cuenta"
-    },
-    "quickLinks": {
+  "language_settings": {
+    "title": "Configuración de idioma",
+    "description": "Elige tu idioma preferido en el menú desplegable a continuación. Los cambios se aplicarán de inmediato.",
+    "select_language": "Seleccionar idioma:",
+    "current_language": "Idioma actual:"
+  },
+  "home": "Inicio",
+  "profile": "Perfil",
+  "faqs": "Preguntas Frecuentes",
+  "about_us": "Sobre Nosotros",
+  "services": "Servicios",
+  "lawyers": "Abogados",
+  "settings": "Configuraciones",
+  "logout": "Cerrar Sesión",
+  "login": "Iniciar Sesión",
+  "signup": "Regístrate"
+  , 
+    "footer": {
+      "quickLinks": "Enlaces Rápidos",
       "home": "Inicio",
       "about": "Acerca de",
       "services": "Servicios",
-      "contact": "Contacto"
-    },
-    "contactUs": {
-      "address": "Dirección: 123 Business Road, Suite 456, Ciudad, País",
-      "phone": "Teléfono: +1 (123) 456-7890",
-      "email": "Correo Electrónico: contact@example.com",
-      "sendEmail": "Envíanos un correo electrónico"
-    },
-    "newsletter": {
-      "subscribe": "Suscríbete a nuestro boletín para las últimas actualizaciones y ofertas.",
-      "enterEmail": "Introduce tu correo electrónico",
-      "subscribeButton": "Suscribirse"
-    },
-    "followUs": "Síguenos ",
-    "footer": {
-      "copyright": "© 2024 Alfonzo. Todos los derechos reservados."
+      "contact": "Contacto",
+      "contactUs": "Contáctanos",
+      "address": "Dirección",
+      "phone": "Teléfono",
+      "email": "Correo electrónico",
+      "sendEmail": "Envíanos un correo",
+      "newsletter": "Boletín",
+      "newsletterText": "Suscríbete a nuestro boletín para recibir las últimas novedades y ofertas.",
+      "enterEmail": "Ingresa tu correo electrónico",
+      "subscribe": "Suscribirse",
+      "followUs": "Síguenos",
+      "copyright": "Alfonzo",
+      "rightsReserved": "Todos los derechos reservados"
+    } ,
+    "hero": {
+    "discoverTemplates": "Descubre plantillas de documentos.",
+    "simplifyDocumentCreation": "Simplifica la creación de documentos con nuestras",
+    "innovativeTemplates": "Plantillas Innovadoras",
+    "streamlineProcess": "Simplifica la creación, verificación y gestión de documentos con facilidad. Nuestra plataforma ofrece potentes funciones para usuarios y administradores.",
+    "createAccount": "Crea tu cuenta ahora"
+  },
+  "features": {
+    "ourKeyFeatures": "Nuestras Funcionalidades Clave",
+    "discover": "Descubre las potentes funcionalidades que diferencian nuestra aplicación y te ayudan a alcanzar tus objetivos de manera más efectiva.",
+    "fastReliable": "Rápido y Confiable",
+    "fastReliableDesc": "Experimenta un rendimiento rápido y un servicio confiable con nuestra infraestructura optimizada.",
+    "userFriendly": "Interfaz Fácil de Usar",
+    "userFriendlyDesc": "Navega fácilmente con nuestra interfaz intuitiva y fácil de usar diseñada para todos los niveles de habilidad.",
+    "securePrivate": "Seguro y Privado",
+    "securePrivateDesc": "Tus datos están protegidos con las últimas medidas de seguridad para garantizar la privacidad y la seguridad.",
+    "support": "Soporte 24/7",
+    "supportDesc": "Nuestro equipo de soporte está disponible 24/7 para ayudarte con cualquier pregunta o problema."
+  }, 
+    "service": {
+      "ourServices": "Nuestros Servicios",
+      "explore": "Explora la gama de servicios que ofrecemos para apoyar tus necesidades legales y comerciales.",
+      "consultation": "Consulta",
+      "consultationDesc": "Obtén asesoramiento experto adaptado a tus necesidades con nuestros servicios de consulta profesional.",
+      "documentReview": "Revisión de Documentos",
+      "documentReviewDesc": "Nuestro equipo revisará tus documentos para garantizar precisión y cumplimiento con los estándares legales.",
+      "customSolutions": "Soluciones Personalizadas",
+      "customSolutionsDesc": "Proporcionamos soluciones personalizadas para abordar requisitos y desafíos específicos que enfrentas.",
+      "trainingWorkshops": "Capacitación y Talleres",
+      "trainingWorkshopsDesc": "Participa en sesiones de capacitación y talleres para mejorar tus habilidades y conocimientos."
+    } 
+    ,
+      "contact": {
+        "getInTouch": "Ponte en contacto",
+        "weLoveToHear": "¡Nos encantaría saber de ti! Comuníquese con nosotros a través de cualquiera de los siguientes métodos o utilice el formulario de contacto a continuación.",
+        "phone": "Teléfono",
+        "email": "Correo electrónico",
+        "address": "Dirección",
+        "name": "Nombre",
+        "subject": "Asunto",
+        "message": "Mensaje",
+        "sendMessage": "Enviar mensaje",
+        "messageSent": "¡Tu mensaje ha sido enviado con éxito!",
+        "followUs": "Síguenos"
+      } 
+    ,
+    "faq": {
+      "title": "Preguntas Frecuentes",
+      "subtitle": "Pregúntanos todo lo que necesitas saber sobre nuestros productos y servicios.",
+      "themeDifference": "¿Cómo se diferencia este tema de otros en el mercado?",
+      "themeDifferenceAnswer": "Nuestro tema ofrece características únicas y un diseño moderno que lo distingue de otros en el mercado.",
+      "supportsPlugins": "¿Este tema admite plugins?",
+      "supportsPluginsAnswer": "Sí, nuestro tema admite una amplia gama de plugins para ampliar su funcionalidad.",
+      "moneybackGuarantee": "¿Ofrecen alguna garantía de devolución de dinero en este producto?",
+      "moneybackGuaranteeAnswer": "Ofrecemos una garantía de devolución de dinero de 30 días si no estás satisfecho con nuestro producto.",
+      "paymentMethods": "¿Qué métodos de pago aceptan?",
+      "paymentMethodsAnswer": "Aceptamos varios métodos de pago, incluyendo tarjetas de crédito, PayPal y transferencias bancarias.",
+      "refundSatisfaction": "¿Recibiré mi dinero de vuelta si no estoy satisfecho?",
+      "refundSatisfactionAnswer": "Sí, ofrecemos un reembolso completo dentro de los 30 días si no estás satisfecho con nuestro producto.",
+      "supportMethods": "¿Cómo proporcionan soporte?",
+      "innovation": "Innovación",
+      "innovationDescription": "Constantemente empujamos los límites de lo que es posible.",
+      "quality": "Calidad",
+      "qualityDescription": "Nunca comprometemos la calidad de nuestros productos y servicios.",
+      "customerCentric": "Centrado en el Cliente",
+      "customerCentricDescription": "Nuestros clientes están en el centro de todo lo que hacemos.",
+      "integrity": "Integridad",
+      "integrityDescription": "Mantenemos los más altos estándares de honestidad y ética en todas nuestras transacciones.",
+      "yearsInBusiness": "Años en Negocios",
+      "clientsServed": "Clientes Atendidos",
+      "teamMembers": "Miembros del Equipo",
+      "countriesReached": "Países Alcanzados",
+      "supportMethodsAnswer": "Proporcionamos soporte a través de correo electrónico, chat en vivo y una base de conocimientos completa."
     }
-  }
+  , 
+    "aboutUs": {
+      "title": "Sobre Nosotros",
+      "description": "Somos un equipo apasionado de innovadores, dedicados a crear soluciones de vanguardia que transforman la forma en que las personas interactúan con la tecnología. Nuestra misión es hacer que el mundo digital sea más accesible, eficiente y agradable para todos.",
+      "historyTitle": "Nuestra Historia",
+      "historyPart1": "Fundada en 2013, nuestra empresa comenzó como una pequeña startup con una gran visión. Con el tiempo, hemos crecido de un equipo de 5 personas apasionadas a una organización global de más de 50 profesionales talentosos.",
+      "historyPart2": "Nuestro viaje ha estado marcado por la innovación continua, asociaciones estratégicas y un enfoque incansable en la satisfacción del cliente. Desde nuestro primer lanzamiento de producto en 2014 hasta nuestras últimas soluciones innovadoras, siempre hemos permanecido fieles a nuestra misión central de hacer que la tecnología funcione para las personas, y no al revés.",
+      "valuesTitle": "Nuestros Valores",
+      "impactTitle": "Nuestro Impacto",
+      "missionTitle": "Nuestra Misión",
+      "mission": "Empoderar a individuos y empresas a través de soluciones tecnológicas innovadoras, fomentando un mundo donde las interacciones digitales sean fluidas, seguras y accesibles para todos.",
+      "innovation": "Innovación",
+      "innovationDescription": "Constantemente empujamos los límites de lo posible.",
+      "quality": "Calidad",
+      "qualityDescription": "Nunca comprometemos la calidad de nuestros productos y servicios.",
+      "customerCentric": "Centrados en el Cliente",
+      "customerCentricDescription": "Nuestros clientes están en el corazón de todo lo que hacemos.",
+      "integrity": "Integridad",
+      "integrityDescription": "Mantenemos los más altos estándares de honestidad y ética en todos nuestros tratos.",
+      "yearsInBusiness": "Años en el Negocio",
+      "clientsServed": "Clientes Atendidos",
+      "teamMembers": "Miembros del Equipo",
+      "countriesReached": "Países Alcanzados"
+    } 
+  
+}

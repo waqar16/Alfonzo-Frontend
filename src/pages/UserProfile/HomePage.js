@@ -33,6 +33,7 @@ const HomePage = () => {
         localStorage.setItem("firstname", details.data.first_name);
         localStorage.setItem("lastname", details.data.last_name);
         localStorage.setItem("phone", details.data.phone);
+        localStorage.setItem("mfamethod", details.data.mfa_method);
 
         setUser(details.data);
         console.log(details);
@@ -41,19 +42,19 @@ const HomePage = () => {
     fetchdetails();
   }, []);
   return (
-    <section className="min-h-screen flex items-start justify-center py-4 pt-16 lg:py-24 px-4 sm:px-6 lg:px-8 bg-gray-100">
+    <section className="dark:bg-slate-700 min-h-screen flex items-start justify-center py-4 pt-16 lg:py-24 px-4 sm:px-6 lg:px-8 bg-gray-100">
       <div className="max-w-7xl mx-auto grid gap-6">
-        <div className="w-full flex flex-row items-center shadow-md justify-end p-12  rounded-lg bg-white">
+        <div className="w-full flex flex-row items-center shadow-md justify-end p-12  rounded-lg dark:bg-black bg-white">
           <div className="flex items-center space-x-2">
             <span
-              className={`text-sm ${
+              className={`text-sm dark:text-white ${
                 selected === "user" ? "font-semibold" : ""
               }`}
             >
               User
             </span>
             <div
-              className={`relative inline-flex h-5 w-11 cursor-pointer rounded-full transition-colors duration-300 ease-in-out ${
+              className={`relative  inline-flex h-5 w-11 cursor-pointer rounded-full transition-colors duration-300 ease-in-out ${
                 selected === "user" ? "bg-blue-500" : "bg-gray-400"
               }`}
               onClick={handleToggle}
@@ -65,7 +66,7 @@ const HomePage = () => {
               />
             </div>
             <span
-              className={`text-sm ${
+              className={`text-sm dark:text-white ${
                 selected === "lawyer" ? "font-semibold" : ""
               }`}
             >
@@ -75,7 +76,7 @@ const HomePage = () => {
         </div>
 
         {/* Profile Section */}
-        <div className="bg-white p-6 rounded-lg shadow-md border border-gray-200 flex items-center space-x-4 mb-6">
+        <div className="dark:bg-black bg-white p-6 rounded-lg shadow-md border dark:border-zinc-400 flex items-center space-x-4 mb-6">
           {user ? (
             <div className="w-16 h-16 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden">
               <img
@@ -96,11 +97,11 @@ const HomePage = () => {
             <Loader />
           ) : (
             <div>
-              <h1 className="text-2xl font-bold text-gray-900">
+              <h1 className="text-2xl font-bold dark:text-white text-gray-900">
                 {`Welcome, ${user?.first_name} ${user?.last_name}`}
               </h1>
-              <p className="text-gray-600">{`@ ${user?.username}`}</p>
-              {/* <p className="text-gray-600">{user.first_name}</p> */}
+              <p className="dark:text-gray-3 text-gray-600">{`@ ${user?.username}`}</p>
+              {/* <p className="dark:text-white text-gray-600">{user.first_name}</p> */}
               <button className="mt-2 bg-gray-800 text-white px-4 py-2 rounded-lg shadow-md hover:bg-gray-700 transition-all duration-200 flex items-center">
                 <FontAwesomeIcon icon={faUserEdit} className="mr-2" />
                 <Link to={"/settings"}>Edit Profile</Link>
@@ -110,54 +111,54 @@ const HomePage = () => {
         </div>
 
         {selected == "user" ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
+          <div className=" grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
             <Link
               to="/templates"
-              className="bg-white p-6 rounded-lg shadow-md border border-gray-200 flex items-center space-x-4 hover:bg-gray-50 transition-all duration-200"
+              className="dark:bg-black bg-white p-6 rounded-lg shadow-md border dark:border-zinc-400 flex items-center space-x-4 hover:bg-gray-50 transition-all duration-200"
             >
               <FontAwesomeIcon
                 icon={faFile}
-                className="text-3xl text-gray-800"
+                className="text-3xl dark:text-white text-gray-800"
               />
               <div>
-                <h3 className="text-lg font-semibold text-gray-900">
+                <h3 className="text-lg font-semibold dark:text-white text-gray-900">
                   Templates
                 </h3>
-                <p className="text-gray-600">
+                <p className=" dark:text-zinc-400 text-gray-600">
                   Create a new document from Templates.
                 </p>
               </div>
             </Link>
             <Link
               to="/verify-document"
-              className="bg-white p-6 rounded-lg shadow-md border border-gray-200 flex items-center space-x-4 hover:bg-gray-50 transition-all duration-200"
+              className="dark:bg-black bg-white p-6 rounded-lg shadow-md border dark:border-zinc-400 flex items-center space-x-4 hover:bg-gray-50 transition-all duration-200"
             >
               <FontAwesomeIcon
                 icon={faFileAlt}
-                className="text-3xl text-gray-800"
+                className="text-3xl dark:text-white text-gray-800"
               />
               <div>
-                <h3 className="text-lg font-semibold text-gray-900">
+                <h3 className="text-lg font-semibold dark:text-white text-gray-900">
                   Verify Document
                 </h3>
-                <p className="text-gray-600">
+                <p className=" dark:text-zinc-400 text-gray-600">
                   Verify the authenticity of a document.
                 </p>
               </div>
             </Link>
             <Link
               to="/your-documents"
-              className="bg-white p-6 rounded-lg shadow-md border border-gray-200 flex items-center space-x-4 hover:bg-gray-50 transition-all duration-200"
+              className="dark:bg-black bg-white p-6 rounded-lg shadow-md border dark:border-zinc-400 flex items-center space-x-4 hover:bg-gray-50 transition-all duration-200"
             >
               <FontAwesomeIcon
                 icon={faCog}
-                className="text-3xl text-gray-800"
+                className="text-3xl dark:text-white text-gray-800"
               />
               <div>
-                <h3 className="text-lg font-semibold text-gray-900">
+                <h3 className="dark:text-white text-lg font-semibold text-gray-900">
                   Your Documents
                 </h3>
-                <p className="text-gray-600">View your Created documents.</p>
+                <p className="text-zinc-400">View your Created documents.</p>
               </div>
             </Link>
           </div>
@@ -165,83 +166,85 @@ const HomePage = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
             <Link
               to="/templates"
-              className="bg-white p-6 rounded-lg shadow-md border border-gray-200 flex items-center space-x-4 hover:bg-gray-50 transition-all duration-200"
+              className="dark:bg-black bg-white p-6 rounded-lg shadow-md border dark:border-zinc-400 flex items-center space-x-4 hover:bg-gray-50 transition-all duration-200"
             >
               <FontAwesomeIcon
                 icon={faFile}
-                className="text-3xl text-gray-800"
+                className="text-3xl dark:text-white text-gray-800"
               />
               <div>
-                <h3 className="text-lg font-semibold text-gray-900">
+                <h3 className="text-lg font-semibold dark:text-white text-gray-900">
                   Templates
                 </h3>
-                <p className="text-gray-600">
+                <p className="dark:text-zinc-400 text-gray-600">
                   Create a new document from Templates.
                 </p>
               </div>
             </Link>
             <Link
               to="/verify-document"
-              className="bg-white p-6 rounded-lg shadow-md border border-gray-200 flex items-center space-x-4 hover:bg-gray-50 transition-all duration-200"
+              className="dark:bg-black bg-white p-6 rounded-lg shadow-md border dark:border-zinc-400 flex items-center space-x-4 hover:bg-gray-50 transition-all duration-200"
             >
               <FontAwesomeIcon
                 icon={faFileAlt}
-                className="text-3xl text-gray-800"
+                className="text-3xl dark:text-white text-gray-800"
               />
               <div>
-                <h3 className="text-lg font-semibold text-gray-900">
+                <h3 className="dark:text-white text-lg font-semibold text-gray-900">
                   Verify Document
                 </h3>
-                <p className="text-gray-600">
+                <p className=" dark:text-zinc-400 text-gray-600">
                   Verify the authenticity of a document.
                 </p>
               </div>
             </Link>
             <Link
               to="/your-documents"
-              className="bg-white p-6 rounded-lg shadow-md border border-gray-200 flex items-center space-x-4 hover:bg-gray-50 transition-all duration-200"
+              className="dark:bg-black bg-white p-6 rounded-lg shadow-md border dark:border-zinc-400 flex items-center space-x-4 hover:bg-gray-50 transition-all duration-200"
             >
               <FontAwesomeIcon
                 icon={faCog}
-                className="text-3xl text-gray-800"
+                className="text-3xl dark:text-white text-gray-800"
               />
               <div>
-                <h3 className="text-lg font-semibold text-gray-900">
+                <h3 className="dark:text-white text-lg font-semibold text-gray-900">
                   Your Documents
                 </h3>
-                <p className="text-gray-600">View your Created documents.</p>
+                <p className="dark:text-zinc-400 text-gray-600">
+                  View your Created documents.
+                </p>
               </div>
             </Link>
             <Link
               to="/user-queries"
-              className="bg-white p-6 rounded-lg shadow-md border border-gray-200 flex items-center space-x-4 hover:bg-gray-50 transition-all duration-200"
+              className="dark:bg-black bg-white p-6 rounded-lg shadow-md border dark:border-zinc-400 flex items-center space-x-4 hover:bg-gray-50 transition-all duration-200"
             >
               <FontAwesomeIcon
                 icon={faFile}
-                className="text-3xl text-gray-800"
+                className="text-3xl dark:text-white text-gray-800"
               />
               <div>
-                <h3 className="text-lg font-semibold text-gray-900">
+                <h3 className="dark:text-white text-lg font-semibold text-gray-900">
                   User Queries
                 </h3>
-                <p className="text-gray-600">
+                <p className="dark:text-zinc-400 text-gray-600">
                   See user queries specific to yourself.
                 </p>
               </div>
             </Link>
             <Link
               to="/user-requests"
-              className="bg-white p-6 rounded-lg shadow-md border border-gray-200 flex items-center space-x-4 hover:bg-gray-50 transition-all duration-200"
+              className="dark:bg-black bg-white p-6 rounded-lg shadow-md border dark:border-zinc-400 flex items-center space-x-4 hover:bg-gray-50 transition-all duration-200"
             >
               <FontAwesomeIcon
                 icon={faFile}
-                className="text-3xl text-gray-800"
+                className="text-3xl dark:text-white text-gray-800"
               />
               <div>
-                <h3 className="text-lg font-semibold text-gray-900">
+                <h3 className="dark:text-white text-lg font-semibold text-gray-900">
                   Requests
                 </h3>
-                <p className="text-gray-600">
+                <p className="dark:text-zinc-400 text-gray-600">
                   See how many user have requested your services.
                 </p>
               </div>
@@ -252,37 +255,53 @@ const HomePage = () => {
         {/* Side Sections */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
           {/* Notifications Section */}
-          <div className="bg-white p-6 rounded-lg shadow-md border border-gray-200">
-            <h2 className="text-xl font-bold text-gray-900 mb-4">
+          <div className="dark:bg-black bg-white p-6 rounded-lg shadow-md border dark:border-zinc-400">
+            <h2 className="dark:text-white file:text-xl font-bold text-gray-900 mb-4">
               Notifications
             </h2>
             <ul className="space-y-4">
               <li className="flex items-center space-x-3">
-                <FontAwesomeIcon icon={faBell} className="text-gray-600" />
-                <p className="text-gray-800">
+                <FontAwesomeIcon
+                  icon={faBell}
+                  className="dark:text-white text-gray-600"
+                />
+                <p className="dark:text-zinc-400 text-gray-800">
                   Document status updated to approved.
                 </p>
               </li>
               <li className="flex items-center space-x-3">
-                <FontAwesomeIcon icon={faBell} className="text-gray-600" />
-                <p className="text-gray-800">Payment confirmation received.</p>
+                <FontAwesomeIcon
+                  icon={faBell}
+                  className="dark:text-white text-gray-600"
+                />
+                <p className="dark:text-zinc-400 text-gray-800">
+                  Payment confirmation received.
+                </p>
               </li>
             </ul>
           </div>
 
           {/* Summary Section */}
-          <div className="bg-white p-6 rounded-lg shadow-md border border-gray-200">
-            <h2 className="text-xl font-bold text-gray-900 mb-4">Summary</h2>
+          <div className="dark:bg-black bg-white p-6 rounded-lg shadow-md border dark:border-zinc-400">
+            <h2 className="text-xl font-bold dark:text-white text-gray-900 mb-4">
+              Summary
+            </h2>
             <ul className="space-y-4">
               <li className="flex items-center space-x-3">
-                <FontAwesomeIcon icon={faSearch} className="text-gray-600" />
-                <p className="text-gray-800">
+                <FontAwesomeIcon
+                  icon={faSearch}
+                  className="dark:text-white text-gray-600"
+                />
+                <p className="dark:text-zinc-400 text-gray-800">
                   Pending Actions: Review documents pending your action.
                 </p>
               </li>
               <li className="flex items-center space-x-3">
-                <FontAwesomeIcon icon={faSearch} className="text-gray-600" />
-                <p className="text-gray-800">
+                <FontAwesomeIcon
+                  icon={faSearch}
+                  className="dark:text-white text-gray-600"
+                />
+                <p className="dark:text-zinc-400 text-gray-800">
                   Upcoming Deadlines: Check deadlines for document submissions.
                 </p>
               </li>
@@ -290,11 +309,11 @@ const HomePage = () => {
           </div>
 
           {/* Preferred Lawyer Section */}
-          <div className="bg-white p-6 rounded-lg shadow-md border border-gray-200">
-            <h2 className="text-xl font-bold text-gray-900 mb-4">
+          <div className="dark:bg-black bg-white p-6 rounded-lg shadow-md border dark:border-zinc-400">
+            <h2 className="text-xl font-bold dark:text-white text-gray-900 mb-4">
               Preferred Lawyer
             </h2>
-            <p className="text-gray-600 mb-4">
+            <p className="dark:text-zinc-400 text-gray-600 mb-4">
               Lock a preferred lawyer for all documents. You must confirm your
               selection before finalizing any document.
             </p>

@@ -25,34 +25,61 @@ const Login = () => {
   const recaptchaRef = React.createRef();
 
   const onSubmit = async (data) => {
-    const captchaValue = recaptchaRef.current.getValue();
-    if (!captchaValue) {
-      notify("Please verify the reCAPTCHA!", "error");
-    } else {
-      setLoading(true);
-      const response = await loginUser(
-        {
-          username: data.email,
-          password: data.password,
-        },
-        setLoading
-      );
-      console.log("response", response);
-      if (response.status == 400) {
-        notify(response.error, "error");
-      }
-      if (response?.data?.mfa_required && response?.data.mfa_required == true) {
-        localStorage.setItem("email", response.data.email);
-        navigate("/verify-mfa");
-      }
-      if (response?.data?.access) {
-        localStorage.setItem("token", response.data.access);
-        notify("login succesfull", "success");
+    // const captchaValue = recaptchaRef.current.getValue();
+    // if (!captchaValue) {
+    //   notify("Please verify the reCAPTCHA!", "error");
+    // } else {
+    //   setLoading(true);
+    //   const response = await loginUser(
+    //     {
+    //       username: data.email,
+    //       password: data.password,
+    //     },
+    //     setLoading
+    //   );
+    //   console.log("response", response);
+    //   if (response.status == 400) {
+    //     notify(response.error, "error");
+    //   }
+    //   if (response?.data?.mfa_required && response?.data.mfa_required == true) {
+    //     localStorage.setItem("email", response.data.email);
+    //     navigate("/verify-mfa");
+    //   }
+    //   if (response?.data?.access) {
+    //     localStorage.setItem("token", response.data.access);
+    //     notify("login succesfull", "success");
 
-        setTimeout(() => {
-          navigate("/profile");
-        }, 4000);
-      }
+    //     setTimeout(() => {
+    //       navigate("/profile");
+    //     }, 4000);
+    //   }
+    // }
+
+    const captchaValue = recaptchaRef.current.getValue();
+
+    setLoading(true);
+    const response = await loginUser(
+      {
+        username: data.email,
+        password: data.password,
+      },
+      setLoading
+    );
+    console.log("response", response);
+    if (response.status == 400) {
+      notify(response.error, "error");
+    }
+    if (response?.data?.mfa_required && response?.data.mfa_required == true) {
+      localStorage.setItem("email", response.data.email);
+      navigate("/verify-mfa");
+    }
+    if (response?.data?.access) {
+      localStorage.setItem("token", response.data.access);
+      notify("login succesfull", "success");
+
+      setTimeout(() => {
+        navigate("/profile");
+      }, 4000);
     }
   };
   const serverUrl = `${process.env.REACT_APP_SERVER_URL}`;
@@ -115,12 +142,7 @@ const Login = () => {
             <input
               {...register("email", {
                 required: "Email address is required",
-                pattern: {
-                  value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                  message: "Invalid email address",
-                },
               })}
-              type="email"
               id="email"
               placeholder="Enter Email or Username"
               className="mt-1 block w-full px-3 py-2 border border-gray-300 bg-gray-50 text-gray-900 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-500"

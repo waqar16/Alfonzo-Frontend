@@ -12,7 +12,7 @@ const TemplatesRightSection = ({ templates }) => {
   }, [previewTemplate]);
   const getUpdatedTemplateContent = () => {
     if (!previewTemplate) return ""; // Add this guard to avoid errors
-    let content = previewTemplate.template.templateContent;
+    let content = previewTemplate.template.content;
 
     // If you want to replace placeholders, you can do it here
     // previewTemplate.template.questions.forEach((question, index) => {
@@ -22,7 +22,6 @@ const TemplatesRightSection = ({ templates }) => {
 
     return content;
   };
-  console.log("templates", templates);
   return (
     <div className="col-span-8 md:col-span-6 grid grid-cols-1 md:grid-cols-2 w-full gap-6 mt-8 md:mt-0 ">
       {templates.map((template, index) => (
@@ -51,7 +50,7 @@ const TemplatesRightSection = ({ templates }) => {
           <div className="hidden md:absolute inset-0 bg-black opacity-0 md:hover:opacity-50 transition-opacity duration-300 z-10"></div>
 
           <h3 className="p-1 bg-slate-300 border-black rounded-full text-black px-2 mb-4 z-20">
-            {template.type}
+            {template.category}
           </h3>
 
           {/* Image */}

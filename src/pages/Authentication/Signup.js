@@ -32,10 +32,10 @@ const Signup = () => {
 
   const onSubmit = async (data) => {
     console.log("data", data);
-    const captchaValue = recaptchaRef.current.getValue();
-    if (!captchaValue) {
-      alert("Please verify the reCAPTCHA!");
-    } else {
+    // const captchaValue = recaptchaRef.current.getValue();
+    // if (!captchaValue) {
+    //   alert("Please verify the reCAPTCHA!");
+    // } else {
       setLoading(true);
       const signup = await registerUser(
         {
@@ -53,7 +53,7 @@ const Signup = () => {
         // alert("Form submission successful!");
         navigate("/activation-email-sent");
       }
-    }
+    // }
   };
   const serverUrl = `${process.env.REACT_APP_SERVER_URL}`;
 
