@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { fetchUserDocuments } from "../../services/document-services";
 
 // Sample data array
 const documents = [
@@ -46,7 +47,13 @@ const UserDocument = () => {
       setLoading(false);
     }, 1000); // Simulate loading delay
   }, []);
-
+  useEffect(() => {
+    const abc = async () => {
+      const documents = await fetchUserDocuments(setLoading);
+      console.log(documents, "documents");
+    };
+    abc();
+  }, []);
   // Filter and sort documents based on search term and verification status
   const filteredDocuments = documents
     .filter((doc) => {
@@ -80,8 +87,10 @@ const UserDocument = () => {
   }
 
   return (
-    <div className="flex flex-col items-center w-full my-32 px-8">
-      <h1 className="text-2xl font-bold mb-4">User Documents</h1>
+    <div className="dark:bg-black flex flex-col items-center w-full py-32 px-8">
+      <h1 className="dark:text-white text-2xl font-bold mb-4">
+        User Documents
+      </h1>
 
       {/* Search and Filter */}
       <div className="mb-4 w-full flex flex-col sm:flex-row justify-between items-center">
@@ -122,10 +131,10 @@ const UserDocument = () => {
           filteredDocuments.map((doc) => (
             <div
               key={doc.id}
-              className="border p-4 rounded shadow hover:shadow-md transition-shadow"
+              className="dark:border-none dark:bg-slate-900 border p-4 rounded shadow hover:shadow-md transition-shadow"
             >
               <div className="flex justify-between">
-                <h2 className="font-semibold">{doc.title}</h2>
+                <h2 className="dark:text-white font-semibold">{doc.title}</h2>
                 {/* Verification Badge */}
                 <span
                   className={`px-2 py-1 text-sm rounded ${

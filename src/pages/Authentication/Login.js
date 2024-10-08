@@ -123,18 +123,20 @@ const Login = () => {
     scope: "openid profile email",
   });
   return (
-    <div className="min-h-screen flex items-start justify-center py-4 pt-24 lg:py-24 px-4 sm:px-6 lg:px-8 bg-gray-100">
-      <div className={`w-full max-w-lg bg-white p-8 rounded-lg shadow-lg  `}>
-        <h2 className="text-3xl font-semibold text-gray-900 mb-6">
+    <div className="dark:bg-black min-h-screen flex items-start justify-center py-4 pt-24 lg:py-24 px-4 sm:px-6 lg:px-8 bg-gray-100">
+      <div
+        className={`w-full max-w-lg  dark:bg-slate-900 bg-white p-8 rounded-lg shadow-lg  `}
+      >
+        <h2 className="dark:text-white text-3xl font-semibold text-gray-900 mb-6">
           Welcome Back!
         </h2>
-        <p className="text-gray-700 mb-6">
+        <p className="dark:text-zinc-400 text-gray-700 mb-6">
           Log in to continue where you left off.
         </p>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <label
             htmlFor="email"
-            className="block text-sm font-medium text-gray-700"
+            className="dark:text-zinc-400 block text-sm font-medium text-gray-700"
           >
             Email or Username
           </label>
@@ -154,7 +156,7 @@ const Login = () => {
 
           <label
             htmlFor="password"
-            className="block text-sm font-medium text-gray-700"
+            className="dark:text-zinc-400 block text-sm font-medium text-gray-700"
           >
             Password
           </label>
@@ -204,7 +206,10 @@ const Login = () => {
           </div>
 
           <div className="text-sm text-right">
-            <a href="#" className="text-gray-500 hover:text-gray-600">
+            <a
+              href="#"
+              className="dark:text-zinc-400 text-gray-500 hover:text-gray-600"
+            >
               Forgot your password?
             </a>
           </div>
@@ -235,9 +240,12 @@ const Login = () => {
         </div>
 
         <div className="mt-6 text-center">
-          <p className="text-gray-500">
+          <p className="dark:text-zinc-400 text-gray-500">
             Don't have an account?{" "}
-            <Link to={"/signup"} className="text-gray-900 underline">
+            <Link
+              to={"/signup"}
+              className="dark:text-white text-gray-900 underline"
+            >
               Sign Up
             </Link>
           </p>

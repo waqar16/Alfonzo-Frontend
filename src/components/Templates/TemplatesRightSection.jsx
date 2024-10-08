@@ -1,7 +1,11 @@
 import React from "react";
 import { FaTimes } from "react-icons/fa";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+import { setTemplate } from "../../redux/reducers/template-reducer";
+import { useDispatch } from "react-redux";
 const TemplatesRightSection = ({ templates }) => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [previewTemplate, setPreviewTemplate] = React.useState(null);
   React.useEffect(() => {
     if (previewTemplate) {
@@ -31,14 +35,15 @@ const TemplatesRightSection = ({ templates }) => {
         >
           {previewTemplate && previewTemplate.index === index && (
             <div className="fixed inset-0 z-50 bg-black bg-opacity-70 flex items-center justify-center">
-              <div className="bg-white w-11/12 md:w-8/12 p-6 rounded-lg relative">
+              <div className="bg-white w-11/12 md:w-8/12 p-6 rounded-lg relative max-h-[80vh] overflow-hidden">
                 <div className="w-full flex justify-end">
                   <FaTimes
-                    className="cursor-pointer text-xl"
+                    className="cursor-pointer text-xl mb-4"
                     onClick={() => setPreviewTemplate(null)}
                   />
                 </div>
                 <div
+                  className=" overflow-y-auto max-h-[80vh]"
                   dangerouslySetInnerHTML={{
                     __html: getUpdatedTemplateContent(),
                   }}
@@ -62,14 +67,17 @@ const TemplatesRightSection = ({ templates }) => {
           </div>
 
           {/* Title and Ending Text */}
-          <h1 className="text-lg font-bold mt-4 z-20">{template.title}</h1>
-          <p className="z-20">{template.endingText}</p>
-          <NavLink
+          <h1 className="text-lg font-bold mt-4 z-20">{template.name}</h1>
+
+          <button
             className="md:hidden bg-black text-white px-4 py-2 rounded-md mt-4 min-w-40 flex flex-col items-center"
-            to={"/templates/edit-template"}
+            onClick={() => {
+              dispatch(setTemplate(template));
+              navigate("/templates/edit-template");
+            }}
           >
             Edit
-          </NavLink>
+          </button>
           <button
             onClick={() => {
               setPreviewTemplate({ template: template, index: index });
@@ -84,12 +92,15 @@ const TemplatesRightSection = ({ templates }) => {
             </h1>
             <p className="z-20 text-center">{template.endingText}</p>
 
-            <NavLink
+            <button
               className="bg-black text-white px-4 py-2 rounded-md mt-4 min-w-40 flex flex-col items-center"
-              to={"/templates/edit-template"}
+              onClick={() => {
+                dispatch(setTemplate(template));
+                navigate("/templates/edit-template");
+              }}
             >
               Edit
-            </NavLink>
+            </button>
             <button
               onClick={() =>
                 setPreviewTemplate({ template: template, index: index })

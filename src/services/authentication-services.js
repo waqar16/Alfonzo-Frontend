@@ -94,6 +94,33 @@ export const updateMfa = async (data) => {
         };
   }
 };
+
+export const authGuard = async (setLoading) => {
+  try {
+    const response = await axios.get(
+      `${serverUrl}/auth/auth-guard/
+
+`,
+      getAuthHeaders()
+    );
+    setLoading(false);
+
+    return { data: response.data, status: response.status };
+  } catch (error) {
+    setLoading(false);
+
+    return error.response
+      ? {
+          error: error.response.data,
+          status: error.response.status,
+        }
+      : {
+          error: error.message,
+          status: 500,
+        };
+  }
+};
+
 export const handleGoogleFailure = (error) => {
   console.error("Google login failure:", error);
   alert("Failed to login with Google.");

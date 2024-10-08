@@ -11,6 +11,8 @@ import {
 import { useGoogleLogin } from "@react-oauth/google";
 import { Toaster } from "react-hot-toast";
 import axios from "axios";
+import Loader from "../../components/Loader/Loader";
+import { notify } from "../../utilities/toast";
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -36,23 +38,28 @@ const Signup = () => {
     // if (!captchaValue) {
     //   alert("Please verify the reCAPTCHA!");
     // } else {
-      setLoading(true);
-      const signup = await registerUser(
-        {
-          first_name: data.firstname,
-          last_name: data.lastname,
-          username: data.username,
-          password: data.password,
-          password2: data.password2,
-          email: data.email,
-        },
-        setLoading
+    setLoading(true);
+    const signup = await registerUser(
+      {
+        first_name: data.firstname,
+        last_name: data.lastname,
+        username: data.username,
+        password: data.password,
+        password2: data.password2,
+        email: data.email,
+      },
+      setLoading
+    );
+    console.log(signup);
+    if (signup.status == 201) {
+      // alert("Form submission successful!");
+      navigate("/activation-email-sent");
+    } else {
+      notify(
+        signup.error?.email || signup.error?.username || signup.error?.password,
+        "error"
       );
-      console.log(signup);
-      if (signup.status == 201) {
-        // alert("Form submission successful!");
-        navigate("/activation-email-sent");
-      }
+    }
     // }
   };
   const serverUrl = `${process.env.REACT_APP_SERVER_URL}`;
@@ -97,7 +104,7 @@ const Signup = () => {
     scope: "openid profile email",
   });
   return (
-    <div className="min-h-screen flex items-start justify-center py-4 pt-24 lg:py-24 px-4 sm:px-6 lg:px-8 bg-gray-100">
+    <div className="dark:bg-black min-h-screen flex items-start justify-center py-4 pt-24 lg:py-24 px-4 sm:px-6 lg:px-8 bg-gray-100">
       <div className="w-full max-w-md sm:max-w-lg bg-white p-8 rounded-lg shadow-lg">
         {!showForm ? (
           <div className="text-center">
@@ -369,7 +376,7 @@ const Signup = () => {
                   type="submit"
                   className="w-full px-4 py-2 bg-gray-800 text-white font-semibold rounded-lg shadow-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-600"
                 >
-                  Sign Up
+                  {loading ? <Loader /> : "Sign Up"}
                 </button>
               </div>
 

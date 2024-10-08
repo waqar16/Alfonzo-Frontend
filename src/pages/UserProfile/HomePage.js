@@ -44,7 +44,7 @@ const HomePage = () => {
   return (
     <section className="dark:bg-slate-700 min-h-screen flex items-start justify-center py-4 pt-16 lg:py-24 px-4 sm:px-6 lg:px-8 bg-gray-100">
       <div className="max-w-7xl mx-auto grid gap-6">
-        <div className="w-full flex flex-row items-center shadow-md justify-end p-12  rounded-lg dark:bg-black bg-white">
+        {/* <div className="w-full flex flex-row items-center shadow-md justify-end p-12  rounded-lg dark:bg-black bg-white">
           <div className="flex items-center space-x-2">
             <span
               className={`text-sm dark:text-white ${
@@ -73,7 +73,7 @@ const HomePage = () => {
               Lawyer
             </span>
           </div>
-        </div>
+        </div> */}
 
         {/* Profile Section */}
         <div className="dark:bg-black bg-white p-6 rounded-lg shadow-md border dark:border-zinc-400 flex items-center space-x-4 mb-6">
@@ -110,7 +110,7 @@ const HomePage = () => {
           )}
         </div>
 
-        {selected == "user" ? (
+        {user && !loading && user.role != "LAWYER" ? (
           <div className=" grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
             <Link
               to="/templates"
@@ -163,93 +163,96 @@ const HomePage = () => {
             </Link>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
-            <Link
-              to="/templates"
-              className="dark:bg-black bg-white p-6 rounded-lg shadow-md border dark:border-zinc-400 flex items-center space-x-4 hover:bg-gray-50 transition-all duration-200"
-            >
-              <FontAwesomeIcon
-                icon={faFile}
-                className="text-3xl dark:text-white text-gray-800"
-              />
-              <div>
-                <h3 className="text-lg font-semibold dark:text-white text-gray-900">
-                  Templates
-                </h3>
-                <p className="dark:text-zinc-400 text-gray-600">
-                  Create a new document from Templates.
-                </p>
-              </div>
-            </Link>
-            <Link
-              to="/verify-document"
-              className="dark:bg-black bg-white p-6 rounded-lg shadow-md border dark:border-zinc-400 flex items-center space-x-4 hover:bg-gray-50 transition-all duration-200"
-            >
-              <FontAwesomeIcon
-                icon={faFileAlt}
-                className="text-3xl dark:text-white text-gray-800"
-              />
-              <div>
-                <h3 className="dark:text-white text-lg font-semibold text-gray-900">
-                  Verify Document
-                </h3>
-                <p className=" dark:text-zinc-400 text-gray-600">
-                  Verify the authenticity of a document.
-                </p>
-              </div>
-            </Link>
-            <Link
-              to="/your-documents"
-              className="dark:bg-black bg-white p-6 rounded-lg shadow-md border dark:border-zinc-400 flex items-center space-x-4 hover:bg-gray-50 transition-all duration-200"
-            >
-              <FontAwesomeIcon
-                icon={faCog}
-                className="text-3xl dark:text-white text-gray-800"
-              />
-              <div>
-                <h3 className="dark:text-white text-lg font-semibold text-gray-900">
-                  Your Documents
-                </h3>
-                <p className="dark:text-zinc-400 text-gray-600">
-                  View your Created documents.
-                </p>
-              </div>
-            </Link>
-            <Link
-              to="/user-queries"
-              className="dark:bg-black bg-white p-6 rounded-lg shadow-md border dark:border-zinc-400 flex items-center space-x-4 hover:bg-gray-50 transition-all duration-200"
-            >
-              <FontAwesomeIcon
-                icon={faFile}
-                className="text-3xl dark:text-white text-gray-800"
-              />
-              <div>
-                <h3 className="dark:text-white text-lg font-semibold text-gray-900">
-                  User Queries
-                </h3>
-                <p className="dark:text-zinc-400 text-gray-600">
-                  See user queries specific to yourself.
-                </p>
-              </div>
-            </Link>
-            <Link
-              to="/user-requests"
-              className="dark:bg-black bg-white p-6 rounded-lg shadow-md border dark:border-zinc-400 flex items-center space-x-4 hover:bg-gray-50 transition-all duration-200"
-            >
-              <FontAwesomeIcon
-                icon={faFile}
-                className="text-3xl dark:text-white text-gray-800"
-              />
-              <div>
-                <h3 className="dark:text-white text-lg font-semibold text-gray-900">
-                  Requests
-                </h3>
-                <p className="dark:text-zinc-400 text-gray-600">
-                  See how many user have requested your services.
-                </p>
-              </div>
-            </Link>
-          </div>
+          user &&
+          !loading && (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
+              <Link
+                to="/templates"
+                className="dark:bg-black bg-white p-6 rounded-lg shadow-md border dark:border-zinc-400 flex items-center space-x-4 hover:bg-gray-50 transition-all duration-200"
+              >
+                <FontAwesomeIcon
+                  icon={faFile}
+                  className="text-3xl dark:text-white text-gray-800"
+                />
+                <div>
+                  <h3 className="text-lg font-semibold dark:text-white text-gray-900">
+                    Templates
+                  </h3>
+                  <p className="dark:text-zinc-400 text-gray-600">
+                    Create a new document from Templates.
+                  </p>
+                </div>
+              </Link>
+              <Link
+                to="/verify-document"
+                className="dark:bg-black bg-white p-6 rounded-lg shadow-md border dark:border-zinc-400 flex items-center space-x-4 hover:bg-gray-50 transition-all duration-200"
+              >
+                <FontAwesomeIcon
+                  icon={faFileAlt}
+                  className="text-3xl dark:text-white text-gray-800"
+                />
+                <div>
+                  <h3 className="dark:text-white text-lg font-semibold text-gray-900">
+                    Verify Document
+                  </h3>
+                  <p className=" dark:text-zinc-400 text-gray-600">
+                    Verify the authenticity of a document.
+                  </p>
+                </div>
+              </Link>
+              <Link
+                to="/your-documents"
+                className="dark:bg-black bg-white p-6 rounded-lg shadow-md border dark:border-zinc-400 flex items-center space-x-4 hover:bg-gray-50 transition-all duration-200"
+              >
+                <FontAwesomeIcon
+                  icon={faCog}
+                  className="text-3xl dark:text-white text-gray-800"
+                />
+                <div>
+                  <h3 className="dark:text-white text-lg font-semibold text-gray-900">
+                    Your Documents
+                  </h3>
+                  <p className="dark:text-zinc-400 text-gray-600">
+                    View your Created documents.
+                  </p>
+                </div>
+              </Link>
+              <Link
+                to="/user-queries"
+                className="dark:bg-black bg-white p-6 rounded-lg shadow-md border dark:border-zinc-400 flex items-center space-x-4 hover:bg-gray-50 transition-all duration-200"
+              >
+                <FontAwesomeIcon
+                  icon={faFile}
+                  className="text-3xl dark:text-white text-gray-800"
+                />
+                <div>
+                  <h3 className="dark:text-white text-lg font-semibold text-gray-900">
+                    User Queries
+                  </h3>
+                  <p className="dark:text-zinc-400 text-gray-600">
+                    See user queries specific to yourself.
+                  </p>
+                </div>
+              </Link>
+              <Link
+                to="/user-requests"
+                className="dark:bg-black bg-white p-6 rounded-lg shadow-md border dark:border-zinc-400 flex items-center space-x-4 hover:bg-gray-50 transition-all duration-200"
+              >
+                <FontAwesomeIcon
+                  icon={faFile}
+                  className="text-3xl dark:text-white text-gray-800"
+                />
+                <div>
+                  <h3 className="dark:text-white text-lg font-semibold text-gray-900">
+                    Requests
+                  </h3>
+                  <p className="dark:text-zinc-400 text-gray-600">
+                    See how many user have requested your services.
+                  </p>
+                </div>
+              </Link>
+            </div>
+          )
         )}
 
         {/* Side Sections */}
