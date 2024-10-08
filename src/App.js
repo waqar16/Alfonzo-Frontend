@@ -91,21 +91,42 @@ function Content() {
             path="/activation-email-sent"
             element={<ActivationEmailSent />}
           />
-          <Route element={<PrivateRoutes />}>
+          <Route element={<PrivateRoutes element={<HomePage />} />}>
             <Route path="/profile" element={<HomePage />} />
           </Route>
-          <Route path="/templates" element={<Templates />} />
-          <Route path="/templates/edit-template" element={<EditTemplate />} />
-          <Route path="/user-queries" element={<UserQueries />} />
+          <Route element={<PrivateRoutes element={<Templates />} />}>
+            <Route path="/templates" element={<Templates />} />
+          </Route>
+
+          <Route element={<PrivateRoutes element={<EditTemplate />} />}>
+            <Route path="/templates/edit-template" element={<EditTemplate />} />
+          </Route>
+          <Route element={<PrivateRoutes element={<UserQueries />} />}>
+            <Route path="/user-queries" element={<UserQueries />} />
+          </Route>
+          <Route element={<PrivateRoutes element={<UserQueries />} />}>
+            <Route path="/user-queries" element={<UserQueries />} />
+          </Route>
           <Route path="/user-requests" element={<UserRequests />} />
-          <Route
-            path="/templates/finalize-template"
-            element={<FinalizeTemplate />}
-          />
-          <Route path="/templates/lawyer" element={<SelectLawyer />} />
-          <Route path="/verify-document" element={<VerifyDocumentPage />} />
-          <Route path="/create-document" element={<CreateDocumentPage />} />
-          <Route path="/your-documents" element={<UserDocument />} />
+          <Route element={<PrivateRoutes element={<FinalizeTemplate />} />}>
+            <Route
+              path="/templates/finalize-template"
+              element={<FinalizeTemplate />}
+            />
+          </Route>
+          <Route element={<PrivateRoutes element={<SelectLawyer />} />}>
+            <Route path="/templates/lawyer" element={<SelectLawyer />} />
+          </Route>
+          <Route element={<PrivateRoutes element={<VerifyDocumentPage />} />}>
+            <Route path="/verify-document" element={<VerifyDocumentPage />} />
+          </Route>
+          <Route element={<PrivateRoutes element={<CreateDocumentPage />} />}>
+            <Route path="/create-document" element={<CreateDocumentPage />} />
+          </Route>
+
+          <Route element={<PrivateRoutes element={<UserDocument />} />}>
+            <Route path="/your-documents" element={<UserDocument />} />
+          </Route>
           <Route
             path="/settings/manage-profile"
             element={<ProfileManagementPage />}

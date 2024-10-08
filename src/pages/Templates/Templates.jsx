@@ -10,6 +10,7 @@ const Templates = () => {
   const [templates, setTemplates] = React.useState(faqWithLegalAgreementsArray);
   const [apiTemplates, setApiTemplates] = React.useState([] || null);
   const [searchTemplates, setSearchTemplates] = React.useState(apiTemplates);
+  const [viewingtemplates, setViewingTemplates] = React.useState();
 
   const [loading, setLoading] = React.useState(false);
   useEffect(() => {
@@ -17,20 +18,23 @@ const Templates = () => {
       const templates = await fetchTemplates(setLoading);
       console.log("templates", templates);
       setApiTemplates(templates.data.results);
+      setViewingTemplates(templates.data.results);
     };
     templatess();
   }, []);
   const searchTemplate = (text) => {
     const filteredTemplates = apiTemplates.filter((template) => {
-      const titleMatch = template.title
+      const titleMatch = template.name
         .toLowerCase()
         .includes(text.toLowerCase());
 
-      const faqMatch = apiTemplates.questions.some((faqItem) =>
+      const faqMatch = apiTemplates.question.some((faqItem) =>
         faqItem.question.toLowerCase().includes(text.toLowerCase())
       );
 
-      const type = apiTemplates.type.toLowerCase().includes(text.toLowerCase());
+      const type = apiTemplates.category
+        .toLowerCase()
+        .includes(text.toLowerCase());
 
       // If any field matches, return true for this template
       return titleMatch || faqMatch || type;
@@ -46,16 +50,16 @@ const Templates = () => {
     acc[category].push(template);
     return acc;
   }, {});
-  const [viewingtemplates, setViewingTemplates] = React.useState(apiTemplates);
-  console.log(apiTemplates);
   return (
-    <div className="w-full flex flex-col items-center  mt-32 px-8 relative my-12">
+    <div className="dark:bg-black bg-white w-full flex flex-col items-center  pt-32 px-8 relative py-12">
       <div className="w-full flex flex-col md:flex-row items-center md:justify-between">
         <div className=" flex flex-col items-start">
-          <h1 className="w-full items-center md:text-start text-center text-slate-900 text-title-xl2 font-bold">
+          <h1 className="w-full dark:text-white items-center md:text-start text-center text-slate-900 text-title-xl2 font-bold">
             Templates
           </h1>
-          <p className="w-full md:mt-0 mt-4">Select a ready-to-use template</p>
+          <p className="w-full md:mt-0 mt-4 dark:text-zinc-400">
+            Select a ready-to-use template
+          </p>
         </div>
         <div
           onClick={() => setSearchCLicked(true)}
@@ -155,6 +159,11 @@ const Templates = () => {
           {viewingtemplates && viewingtemplates.length > 0 && (
             <TemplatesRightSection templates={viewingtemplates} />
           )}
+        </div>
+      )}
+      {apiTemplates && apiTemplates.length < 1 && (
+        <div className="w-full flex flex-col items-center">
+          <h1 className="text-center ">No Templates to show</h1>
         </div>
       )}
     </div>

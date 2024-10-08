@@ -67,6 +67,11 @@ const AdminTemplatePage = () => {
     );
     if (newTemplate.status == 201) {
       notify("Template Added Successfully", "success");
+      setTemplateName("");
+      setTemplateContent(""); // Main content
+      setQuestions([]); // All questions
+      setNewQuestion(""); // Temp new question
+      setTemplateType(""); // Temp new question
     }
     console.log("New Template", newTemplate);
   };

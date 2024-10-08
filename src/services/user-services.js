@@ -62,7 +62,6 @@ export const changeUsername = async (userData, setLoading) => {
   }
 };
 
-
 export const updateMfa = async (mfa, setLoading) => {
   try {
     const response = await axios.post(
@@ -70,6 +69,27 @@ export const updateMfa = async (mfa, setLoading) => {
     `,
       mfa,
       getAuthHeaders()
+    );
+
+    setLoading(false);
+
+    return { data: response.data, status: response.status };
+  } catch (error) {
+    setLoading(false);
+
+    return error.response
+      ? { error: error.response.data.error, status: error.response.status }
+      : error.message;
+  }
+};
+
+export const fetchAllUsers = async (mfa, setLoading) => {
+  try {
+    const response = await axios.get(
+      `${config.SERVER_URL}/api/users
+    `
+      // mfa,
+      // getAuthHeaders()
     );
 
     setLoading(false);
