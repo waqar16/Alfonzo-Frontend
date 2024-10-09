@@ -123,7 +123,7 @@ const Header = () => {
 
           {/* Mobile Menu */}
           <div
-            className={`absolute top-full left-0 w-full bg-white lg:hidden transition-all duration-300 ease-in-out overflow-auto ${
+            className={`absolute top-full left-0 w-full dark:bg-slate-700 bg-white lg:hidden transition-all duration-300 ease-in-out overflow-auto ${
               isMenuOpen ? "max-h-screen opacity-100" : "max-h-0 opacity-0"
             }`}
           >
@@ -167,12 +167,12 @@ const Header = () => {
                 {t("lawyers")}
               </Link>
               {localStorage.getItem("token") ? (
-                <div className="flex bg-white border border-gray-300 rounded-lg w-full">
+                <div className="dark:border-none flex dark:bg-slate-900 bg-white border border-gray-300 rounded-lg w-full">
                   <ul className="py-2">
                     <li>
                       <NavLink
                         to={"/settings"}
-                        className="flex items-center w-full px-4 py-2 text-gray-600 hover:bg-gray-100"
+                        className="dark:hover:bg-slate-900 dark:text-white lex items-center w-full px-4 py-2 text-gray-600 hover:bg-gray-100"
                       >
                         <FontAwesomeIcon icon={faCog} className="mr-2" />
                         {t("settings")}
@@ -180,7 +180,7 @@ const Header = () => {
                     </li>
                     <li>
                       <button
-                        className="flex items-center w-full px-4 py-2 text-gray-600 hover:bg-gray-100"
+                        className="dark:hover:bg-slate-900 dark:text-white flex items-center w-full px-4 py-2 text-gray-600 hover:bg-gray-100"
                         onClick={handleLogoutConfirm}
                       >
                         <FontAwesomeIcon icon={faSignInAlt} className="mr-2" />

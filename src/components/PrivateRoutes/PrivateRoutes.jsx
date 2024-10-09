@@ -4,7 +4,7 @@ import Login from "../../pages/Authentication/Login";
 import { authGuard } from "../../services/authentication-services";
 import { useEffect, useState } from "react";
 import Loader from "../Loader/Loader";
-const PrivateRoutes = ({ element }) => {
+const PrivateRoutes = ({ userRole, multiple }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);
   // const { isAuthenticated } = useAuth();
@@ -12,7 +12,20 @@ const PrivateRoutes = ({ element }) => {
     const userAuth = async () => {
       const response = await authGuard(setLoading);
       if (response.status == 200) {
-        setIsAuthenticated(true);
+        if (multiple) {
+          if (
+            response.data.role.toLowerCase() == "user" ||
+            response.data.role.toLowerCase() == "lawyer"
+          ) {
+            setIsAuthenticated(true);
+          }
+        } else {
+          if (response.data.role.toLowerCase() == userRole) {
+            setIsAuthenticated(true);
+          } else {
+            setIsAuthenticated(false);
+          }
+        }
       } else {
         setIsAuthenticated(false);
       }
@@ -25,7 +38,7 @@ const PrivateRoutes = ({ element }) => {
       <p className="text-center">Redirecting </p>
     </div>
   ) : isAuthenticated ? (
-    element
+    <Outlet />
   ) : (
     <Navigate to={"/login"} />
   );

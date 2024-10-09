@@ -47,6 +47,7 @@ import PrivateRoutes from "./components/PrivateRoutes/PrivateRoutes";
 import { useSelector } from "react-redux";
 import Services from "./components/Services/Services";
 import Lawyers from "./pages/Lawyers/Lawyers";
+import AskALawyer from "./pages/Ask-a-Lawyer/AskALawyer";
 
 function App() {
   useEffect(() => {
@@ -91,41 +92,45 @@ function Content() {
             path="/activation-email-sent"
             element={<ActivationEmailSent />}
           />
-          <Route element={<PrivateRoutes element={<HomePage />} />}>
+          <Route element={<PrivateRoutes userRole={"user"} multiple={true} />}>
             <Route path="/profile" element={<HomePage />} />
           </Route>
-          <Route element={<PrivateRoutes element={<Templates />} />}>
+          <Route element={<PrivateRoutes userRole={"user"} multiple={true} />}>
             <Route path="/templates" element={<Templates />} />
           </Route>
 
-          <Route element={<PrivateRoutes element={<EditTemplate />} />}>
+          <Route element={<PrivateRoutes userRole={"user"} multiple={true} />}>
             <Route path="/templates/edit-template" element={<EditTemplate />} />
           </Route>
-          <Route element={<PrivateRoutes element={<UserQueries />} />}>
+          <Route element={<PrivateRoutes userRole={"lawyer"} />}>
             <Route path="/user-queries" element={<UserQueries />} />
           </Route>
-          <Route element={<PrivateRoutes element={<UserQueries />} />}>
-            <Route path="/user-queries" element={<UserQueries />} />
+
+          <Route element={<PrivateRoutes userRole={"lawyer"} />}>
+            <Route path="/user-requests" element={<UserRequests />} />
           </Route>
-          <Route path="/user-requests" element={<UserRequests />} />
-          <Route element={<PrivateRoutes element={<FinalizeTemplate />} />}>
+          <Route element={<PrivateRoutes userRole={"user"} multiple={true} />}>
             <Route
               path="/templates/finalize-template"
               element={<FinalizeTemplate />}
             />
           </Route>
-          <Route element={<PrivateRoutes element={<SelectLawyer />} />}>
+          <Route element={<PrivateRoutes userRole={"user"} multiple={true} />}>
             <Route path="/templates/lawyer" element={<SelectLawyer />} />
           </Route>
-          <Route element={<PrivateRoutes element={<VerifyDocumentPage />} />}>
+          <Route element={<PrivateRoutes userRole={"user"} multiple={true} />}>
             <Route path="/verify-document" element={<VerifyDocumentPage />} />
           </Route>
-          <Route element={<PrivateRoutes element={<CreateDocumentPage />} />}>
+          <Route element={<PrivateRoutes userRole={"user"} multiple={true} />}>
             <Route path="/create-document" element={<CreateDocumentPage />} />
           </Route>
 
-          <Route element={<PrivateRoutes element={<UserDocument />} />}>
+          <Route element={<PrivateRoutes userRole={"user"} multiple={true} />}>
             <Route path="/your-documents" element={<UserDocument />} />
+          </Route>
+
+          <Route element={<PrivateRoutes userRole={"user"} />}>
+            <Route path="/ask-a-lawyer" element={<AskALawyer />} />
           </Route>
           <Route
             path="/settings/manage-profile"
@@ -141,33 +146,40 @@ function Content() {
           />
           <Route path="/settings/mfa" element={<MFASettings />} />
           <Route path="/news" element={<NewsUpdatesPage />} />
-          <Route
-            path="/admin"
-            element={
-              <DefaultLayout>
-                <PageTitle title="eCommerce Dashboard | TailAdmin - Tailwind CSS Admin Dashboard Template" />
-                <ECommerce />
-              </DefaultLayout>
-            }
-          />
-          <Route
-            path="/manage-users"
-            element={
-              <DefaultLayout>
-                <PageTitle title="Tables | TailAdmin - Tailwind CSS Admin Dashboard Template" />
-                <Tables />
-              </DefaultLayout>
-            }
-          />
-          <Route
-            path="/admin/profile"
-            element={
-              <DefaultLayout>
-                <PageTitle title="Tables | TailAdmin - Tailwind CSS Admin Dashboard Template" />
-                <Profile />
-              </DefaultLayout>
-            }
-          />
+          <Route element={<PrivateRoutes userRole={"admin"} />}>
+            <Route
+              path="/admin"
+              element={
+                <DefaultLayout>
+                  <PageTitle title="eCommerce Dashboard | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+                  <ECommerce />
+                </DefaultLayout>
+              }
+            />
+          </Route>
+          <Route element={<PrivateRoutes userRole={"admin"} />}>
+            <Route
+              path="/manage-users"
+              element={
+                <DefaultLayout>
+                  <PageTitle title="Tables | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+                  <Tables />
+                </DefaultLayout>
+              }
+            />
+          </Route>
+          <Route element={<PrivateRoutes userRole={"admin"} />}>
+            <Route
+              path="/admin/profile"
+              element={
+                <DefaultLayout>
+                  <PageTitle title="Tables | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+                  <Profile />
+                </DefaultLayout>
+              }
+            />
+          </Route>
+
           <Route
             path="/admin/add-template"
             element={

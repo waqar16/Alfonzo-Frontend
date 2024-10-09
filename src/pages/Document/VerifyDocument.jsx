@@ -12,8 +12,12 @@ import Loader from "../../components/Loader/Loader";
 import toast, { Toaster } from "react-hot-toast";
 import { FaCheckCircle } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import {
+  updateDocument,
+  uploadDocument,
+} from "../../services/document-services";
 
-const VerifyDocumentPage = () => {
+const VerifyDocumentPage = ({ id }) => {
   const navigate = useNavigate();
 
   const [loading, setLoading] = React.useState(false);
@@ -35,19 +39,15 @@ const VerifyDocumentPage = () => {
       const fileReader = new FileReader();
       fileReader.onloadend = () => {
         console.log(fileReader.result);
-        setFilePreviewUrl(fileReader.result); // Set preview URL
+        setFilePreviewUrl(fileReader.result);
       };
-      fileReader.readAsDataURL(file); // Read file as data URL
-
-      // Simulate document verification
+      fileReader.readAsDataURL(file);
     }
   };
   const notify = () =>
     toast("Your document has been uploaded for verification", {
       duration: 4000,
       position: "top-center",
-
-      // Styling
       style: {},
       className: "",
 
@@ -68,13 +68,15 @@ const VerifyDocumentPage = () => {
     });
 
   return (
-    <section className=" dark:bg-black bg-white flex items-start justify-center py-4 pt-16 lg:pt-24 px-4 sm:px-6 lg:px-8 bg-gray-100">
+    <section className="w-full dark:bg-black bg-white flex items-start justify-center py-4 pt-16 lg:pt-24 px-4 sm:px-6 lg:px-8 bg-gray-100">
       <div className="max-w-7xl w-full mx-auto">
         <div className=" dark:bg-slate-900 p-6 rounded-lg shadow-md border dark:border-none border-gray-200  ">
-          <h1 className="text-2xl font-bold dark:text-white text-gray-900 mb-4">
+          <h1 className="text-2xl font-bold dark:text-white text-gray-900 mb-1">
             Verify Document
           </h1>
-
+          <p className=" mb-4">
+            Upload your latetst created douments here to verify them.
+          </p>
           {/* Document Upload or Selection */}
           <div className="mb-6">
             <div className="flex items-center space-x-4">
@@ -116,15 +118,27 @@ const VerifyDocumentPage = () => {
 
           {filePreviewUrl && (
             <button
-              onClick={() => {
+              onClick={async () => {
                 setLoading(true);
-                setTimeout(() => {
-                  notify();
-                  setLoading(false);
-                }, 3000);
-                setTimeout(() => {
-                  navigate("/");
-                }, 4000);
+                // setTimeout(() => {
+                //   notify();
+                //   setLoading(false);
+                // }, 3000);
+                // setTimeout(() => {
+                //   navigate("/");
+                // }, 4000);
+                const response = await uploadDocument(document, setLoading);
+                if (response.status == 200) {
+                  let response2 = await updateDocument(
+                    { pdf_url: response.data.file_url, id },
+                    setLoading
+                  );
+                  if(response2.status == 200){
+                    navigate('/your-documents')
+                  }
+                  console.log(response2);
+                }
+                console.log(response);
               }}
               className="bg-blue-600 text-white sm:w-80 px-4 py-2 rounded-lg shadow-md hover:bg-blue-500 transition-all duration-200 flex items-center"
             >

@@ -1,56 +1,71 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { fetchUserQueries } from "../../services/query-services";
+import Loader from "../../components/Loader/Loader";
 
 // Sample queries array
-const queries = [
-  {
-    id: 1,
-    name: "John Doe",
-    email: "john.doe@example.com",
-    message:
-      "I need help with document verification. I tried uploading my document several times, but it doesn't seem to be processing correctly. Could you guide me through the steps, or let me know if there's an alternative way to get the document verified? Also, I'd like to understand the time frame for verification, and whether or not I will be notified via email once the process is completed.",
-  },
-  {
-    id: 2,
-    name: "Jane Smith",
-    email: "jane.smith@example.com",
-    message: "Can you explain the membership benefits in more detail?  ",
-  },
-  {
-    id: 3,
-    name: "Robert Brown",
-    email: "robert.brown@example.com",
-    message:
-      "I'm facing issues with logging in to my account. Every time I enter my credentials, the system seems to refresh and returns me to the login page without any error message. I have tried resetting my password, clearing my browser cache, and even switching devices, but nothing seems to work. Can someone assist me with resolving this issue as soon as possible?",
-  },
-  {
-    id: 4,
-    name: "Emily Davis",
-    email: "emily.davis@example.com",
-    message:
-      "Is there a way to change my account details? I recently changed my email address and would like to update it in the system. I also want to update my phone number and check whether my previous details were used in any recent transactions or document signings. Please let me know the steps to make these changes and ensure that my account is secure.",
-  },
-  {
-    id: 5,
-    name: "Michael Johnson",
-    email: "michael.johnson@example.com",
-    message:
-      "How do I lock a lawyer for my documents? I'm looking for a way to choose a preferred lawyer for signing all my documents, but I'm unsure how to do this in the platform. Will the lawyer be notified each time I create a new document, and do I need to contact them separately? Also, is there an option to switch lawyers later if needed?",
-  },
-];
+// const queries = [
+//   {
+//     id: 1,
+//     name: "John Doe",
+//     email: "john.doe@example.com",
+//     message:
+//       "I need help with document verification. I tried uploading my document several times, but it doesn't seem to be processing correctly. Could you guide me through the steps, or let me know if there's an alternative way to get the document verified? Also, I'd like to understand the time frame for verification, and whether or not I will be notified via email once the process is completed.",
+//   },
+//   {
+//     id: 2,
+//     name: "Jane Smith",
+//     email: "jane.smith@example.com",
+//     message: "Can you explain the membership benefits in more detail?  ",
+//   },
+//   {
+//     id: 3,
+//     name: "Robert Brown",
+//     email: "robert.brown@example.com",
+//     message:
+//       "I'm facing issues with logging in to my account. Every time I enter my credentials, the system seems to refresh and returns me to the login page without any error message. I have tried resetting my password, clearing my browser cache, and even switching devices, but nothing seems to work. Can someone assist me with resolving this issue as soon as possible?",
+//   },
+//   {
+//     id: 4,
+//     name: "Emily Davis",
+//     email: "emily.davis@example.com",
+//     message:
+//       "Is there a way to change my account details? I recently changed my email address and would like to update it in the system. I also want to update my phone number and check whether my previous details were used in any recent transactions or document signings. Please let me know the steps to make these changes and ensure that my account is secure.",
+//   },
+//   {
+//     id: 5,
+//     name: "Michael Johnson",
+//     email: "michael.johnson@example.com",
+//     message:
+//       "How do I lock a lawyer for my documents? I'm looking for a way to choose a preferred lawyer for signing all my documents, but I'm unsure how to do this in the platform. Will the lawyer be notified each time I create a new document, and do I need to contact them separately? Also, is there an option to switch lawyers later if needed?",
+//   },
+// ];
 
 const UserQueries = () => {
+  const [queries, setQueries] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedQuery, setSelectedQuery] = useState(null);
   const [reply, setReply] = useState("");
-
+  const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    const abc = async () => {
+      const queries = await fetchUserQueries(setLoading);
+      if (queries.status == 200) {
+        setQueries(queries.data.results);
+      }
+      console.log(queries);
+    };
+    abc();
+  }, []);
   // Filter queries based on the search term
-  const filteredQueries = queries.filter((query) =>
-    Object.values(query)
-      .join(" ")
-      .toLowerCase()
-      .includes(searchTerm.toLowerCase())
-  );
-
+  let filteredQueries;
+  if (queries) {
+    filteredQueries = queries.filter((query) =>
+      Object.values(query)
+        .join(" ")
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase())
+    );
+  }
   // Function to handle sending the reply (replace with actual functionality)
   const sendReply = () => {
     alert(`Reply sent: ${reply}`);
@@ -59,8 +74,10 @@ const UserQueries = () => {
   };
 
   return (
-    <div className="container mx-auto px-4 py-12 relative mt-12 sm:mt-20">
-      <h1 className="text-3xl font-bold text-center mb-8">User Queries</h1>
+    <div className="container mx-auto px-4 py-12 relative pt-12 sm:pt-20">
+      <h1 className="dark:text-white text-3xl font-bold text-center mb-8">
+        User Queries
+      </h1>
 
       {/* Search Input */}
       <div className="flex justify-center mb-8">
@@ -72,34 +89,40 @@ const UserQueries = () => {
           className="w-full max-w-md px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
         />
       </div>
-
+      {loading && <Loader color={"red"} />}
       {/* Messages List */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filteredQueries.length > 0 ? (
-          filteredQueries.map((query) => (
-            <div
-              key={query.id}
-              className="border p-6 rounded-lg shadow-md bg-white hover:shadow-lg transition-shadow cursor-pointer"
-              onClick={() => setSelectedQuery(query)} // Open modal with query details
-            >
-              <h2 className="text-md font-semibold ">{query.name}</h2>
-              <p className="text-gray-600 mb-2 text-xs">{query.email}</p>
-              <p className="text-gray-800 text-sm text-graydark line-clamp-3">
-                {query.message}
-              </p>
-            </div>
-          ))
-        ) : (
-          <p className="col-span-full text-center text-gray-500">
-            No queries found.
-          </p>
-        )}
-      </div>
-
+      {queries && queries.length > 0 && (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {filteredQueries.length > 0 ? (
+            filteredQueries.map((query) => (
+              <div
+                key={query.id}
+                className="dark:bg-slate-900 dark:border-none border p-6 rounded-lg shadow-md bg-white hover:shadow-lg transition-shadow cursor-pointer"
+                onClick={() => setSelectedQuery(query)} // Open modal with query details
+              >
+                <h2 className="dark:text-zinc-200 text-md font-semibold ">
+                  {query.user.username}
+                </h2>
+                <p className="dark:text-zinc-200 text-gray-600 mb-2 text-xs">
+                  {query.user.email}
+                </p>
+                <p className="dark:text-zinc-400 text-gray-800 text-sm text-graydark line-clamp-3">
+                  {query.message}
+                </p>
+              </div>
+            ))
+          ) : (
+            <p className="col-span-full text-center text-gray-500">
+              No queries found.
+            </p>
+          )}
+        </div>
+      )}
+      {queries && queries.length < 0 && <h1>No queries Yet</h1>}
       {/* Modal for Viewing Message */}
       {selectedQuery && (
         <div className="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center">
-          <div className="bg-white rounded-lg p-8 max-w-lg w-full relative max-h-[80vh] overflow-y-auto">
+          <div className="dark:bg-slate-900 bg-white rounded-lg p-8 max-w-lg w-full relative max-h-[80vh] overflow-y-auto">
             {/* Close button */}
             <button
               className="absolute top-4 right-4 text-gray-500 hover:text-gray-800"
@@ -109,9 +132,15 @@ const UserQueries = () => {
             </button>
 
             {/* Query Details */}
-            <h2 className="text-xl font-bold mb-2">{selectedQuery.name}</h2>
-            <p className="text-gray-600 mb-4">{selectedQuery.email}</p>
-            <p className="text-gray-800 mb-6">{selectedQuery.message}</p>
+            <h2 className="dark:text-white text-xl font-bold mb-2">
+              {selectedQuery.user.username}
+            </h2>
+            <p className="dark:text-zinc-300  text-gray-600 mb-4">
+              {selectedQuery.user.email}
+            </p>
+            <p className="dark:text-zinc-400 text-gray-800 mb-6">
+              {selectedQuery.message}
+            </p>
 
             {/* Reply Input */}
             <div className="flex flex-row items-end">

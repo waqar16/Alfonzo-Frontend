@@ -65,7 +65,7 @@ const Login = () => {
       },
       setLoading
     );
-    console.log("response", response);
+    console.log("response", response.data);
     if (response.status == 400) {
       notify(response.error, "error");
     }
@@ -78,7 +78,11 @@ const Login = () => {
       notify("login succesfull", "success");
 
       setTimeout(() => {
-        navigate("/profile");
+        if (response.data.role == "ADMIN") {
+          navigate("/admin");
+        } else {
+          navigate("/profile");
+        }
       }, 4000);
     }
   };

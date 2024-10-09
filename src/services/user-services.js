@@ -83,8 +83,9 @@ export const updateMfa = async (mfa, setLoading) => {
   }
 };
 
-export const fetchAllUsers = async (mfa, setLoading) => {
+export const fetchAllUsers = async (setLoading) => {
   try {
+    setLoading(true);
     const response = await axios.get(
       `${config.SERVER_URL}/api/users
     `

@@ -1,12 +1,33 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import CardDataStats from "../../components/CardDataStats";
 import ChartOne from "../../components/Charts/ChartOne";
 import ChartThree from "../../components/Charts/ChartThree";
 import ChartTwo from "../../components/Charts/ChartTwo";
 import ChatCard from "../../components/Chat/ChatCard";
 import TableOne from "../../components/Tables/TableOne";
+import { fetchAllUsers } from "../../services/user-services";
 
 const ECommerce = () => {
+  const [userCount, setUserCount] = useState(null);
+  const [lawyerCount, setLawyerCount] = useState(null);
+  const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    const func = async () => {
+      const allUsers = await fetchAllUsers(setLoading);
+      let users = allUsers.data.results.filter((user) => {
+        return user.role == "USER" && user.username != "admin";
+      });
+      setUserCount(users.length);
+      let lawyers = allUsers.data.results.filter((user) => {
+        return user.role == "LAWYER" && user.username != "admin";
+      });
+      setUserCount(users.length);
+      setLawyerCount(lawyers.length);
+      console.log("users.length: ", users.length);
+      console.log("lasywer.length: ", lawyers.length);
+    };
+    func();
+  }, []);
   return (
     <>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-4 2xl:gap-7.5">
@@ -71,7 +92,12 @@ const ECommerce = () => {
             />
           </svg>
         </CardDataStats>
-        <CardDataStats title="Total Users" total="3.456" rate="0.95%" levelDown>
+        <CardDataStats
+          title="Total Users"
+          total={userCount + lawyerCount}
+          rate="0.95%"
+          levelUp
+        >
           <svg
             className="fill-primary dark:fill-white"
             width="22"
@@ -99,12 +125,16 @@ const ECommerce = () => {
       <div className="mt-4 grid grid-cols-12 gap-4 md:mt-6 md:gap-6 2xl:mt-7.5 2xl:gap-7.5">
         <ChartOne />
         <ChartTwo />
-        <ChartThree />
+        <ChartThree
+          loading={loading}
+          userCount={userCount}
+          lawyerCount={lawyerCount}
+        />
 
         {/* <div className="col-span-12 xl:col-span-8">
           <TableOne />
         </div> */}
-        <ChatCard />
+        {/* <ChatCard /> */}
       </div>
     </>
   );

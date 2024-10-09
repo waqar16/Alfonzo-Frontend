@@ -1,14 +1,15 @@
 import { ApexOptions } from "apexcharts";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ReactApexChart from "react-apexcharts";
+import { fetchAllUsers } from "../../services/user-services";
 
 const options = {
   chart: {
     fontFamily: "Satoshi, sans-serif",
     type: "donut",
   },
-  colors: ["#3C50E0", "#6577F3", "#8FD0EF"],
-  labels: ["Subscribed", "Non Subscribed", "Admin"],
+  colors: ["#3C50E0", "#6577F3"],
+  labels: ["Users", "Lawyers"],
   legend: {
     show: false,
     position: "bottom",
@@ -45,20 +46,7 @@ const options = {
   ],
 };
 
-const ChartThree = () => {
-  const [state, setState] = useState({
-    series: [65, 34, 12],
-  });
-  const total = state.series.reduce(
-    (accumulator, currentValue) => accumulator + currentValue,
-    0
-  );
-  const handleReset = () => {
-    setState((prevState) => ({
-      ...prevState,
-      series: [65, 34, 12],
-    }));
-  };
+const ChartThree = ({ userCount, lawyerCount, loading }) => {
   // handleReset();
 
   return (
@@ -107,60 +95,53 @@ const ChartThree = () => {
         </div> */}
       </div>
 
-      <div className="mb-2">
-        <div id="chartThree" className="mx-auto flex justify-center">
-          <ReactApexChart
-            options={options}
-            series={state.series}
-            type="donut"
-          />
-        </div>
-      </div>
-
-      <div className="-mx-8 flex flex-wrap items-center justify-start gap-y-3">
-        <div className="sm:w-1/2 w-full px-8">
-          <div className="flex w-full items-center">
-            <span className="mr-2 block h-3 w-full max-w-3 rounded-full bg-primary"></span>
-            <p className="flex w-full justify-between text-sm font-medium text-black dark:text-white">
-              <span> Subscribed </span>
-              <span>
-                {" "}
-                {`${parseFloat((state.series[0] / Number(total)) * 100).toFixed(
-                  2
-                )} %`}
-              </span>
-            </p>
+      {!loading && userCount && (
+        <div className="mb-2">
+          <div id="chartThree" className="mx-auto flex justify-center">
+            <ReactApexChart
+              options={options}
+              series={[userCount, lawyerCount]}
+              type="donut"
+            />
           </div>
         </div>
-        <div className="sm:w-1/2 w-full px-8">
-          <div className="flex w-full items-center">
-            <span className="mr-2 block h-3 w-full max-w-3 rounded-full bg-[#6577F3]"></span>
-            <p className="flex w-full justify-between text-sm font-medium text-black dark:text-white">
-              <span>Non Subscribed </span>
+      )}
 
-              <span>
-                {`${parseFloat((state.series[1] / Number(total)) * 100).toFixed(
-                  2
-                )} %`}
-              </span>
-            </p>
+      {!loading && userCount && (
+        <div className="-mx-8 flex flex-wrap items-center justify-start gap-y-3">
+          <div className="sm:w-1/2 w-full px-8">
+            <div className="flex w-full items-center">
+              <span className="mr-2 block h-3 w-full max-w-3 rounded-full bg-primary"></span>
+              <p className="flex w-full justify-between text-sm font-medium text-black dark:text-white">
+                <span>Users </span>
+                {!loading && userCount && (
+                  <span>
+                    {" "}
+                    {`${parseFloat(
+                      (userCount / (userCount + lawyerCount)) * 100
+                    ).toFixed(2)} %`}
+                  </span>
+                )}
+              </p>
+            </div>
+          </div>
+
+          <div className="sm:w-1/2 w-full px-8">
+            <div className="flex w-full items-center">
+              <span className="mr-2 block h-3 w-full max-w-3 rounded-full bg-[#6577F3]"></span>
+              <p className="flex w-full justify-between text-sm font-medium text-black dark:text-white">
+                <span>Lawyers</span>
+
+                <span>
+                  {`${parseFloat(
+                    (lawyerCount / (userCount + lawyerCount)) * 100
+                  ).toFixed(2)} %`}
+                </span>
+              </p>
+            </div>
           </div>
         </div>
-        <div className="sm:w-1/2 w-full px-8">
-          <div className="flex w-full items-center">
-            <span className="mr-2 block h-3 w-full max-w-3 rounded-full bg-[#8FD0EF]"></span>
-            <p className="flex w-full justify-between text-sm font-medium text-black dark:text-white">
-              <span> Admin </span>
-
-              <span>
-                {`${parseFloat((state.series[2] / Number(total)) * 100).toFixed(
-                  2
-                )} %`}
-              </span>
-            </p>
-          </div>
-        </div>
-      </div>
+      )}
     </div>
   );
 };
