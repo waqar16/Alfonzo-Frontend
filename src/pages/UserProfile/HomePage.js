@@ -10,6 +10,7 @@ import {
   faFile,
   faFileAlt,
   faUserEdit,
+  faCommentDots,
 } from "@fortawesome/free-solid-svg-icons";
 import { fetchUserBasicDetails } from "../../services/user-services";
 
@@ -159,6 +160,23 @@ const HomePage = () => {
                   Your Documents
                 </h3>
                 <p className="text-zinc-400">View your Created documents.</p>
+              </div>
+            </Link>
+            <Link
+              to="/ask-a-lawyer"
+              className="dark:bg-black bg-white p-6 rounded-lg shadow-md border dark:border-zinc-400 flex items-center space-x-4 hover:bg-gray-50 transition-all duration-200"
+            >
+              <FontAwesomeIcon
+                icon={faCommentDots}
+                className="text-3xl dark:text-white text-gray-800"
+              />
+              <div>
+                <h3 className="dark:text-white text-lg font-semibold text-gray-900">
+                  Ask a lawyer
+                </h3>
+                <p className="text-zinc-400">
+                  Ask Your selected lawyer a question
+                </p>
               </div>
             </Link>
           </div>

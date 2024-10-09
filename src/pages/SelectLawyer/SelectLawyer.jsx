@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { setLawyer } from "../../redux/reducers/lawyer-reducer";
 import { useDispatch } from "react-redux";
 import { fetchAllLawyers } from "../../services/lawyer-services";
+import Loader from "../../components/Loader/Loader";
 
 // const lawyers = [
 //   {
@@ -186,7 +187,7 @@ const SelectLawyer = () => {
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
       />
-      {lawyers && lawyers.length > 0 ? (
+      {lawyers && !loading && lawyers.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mt-8 w-10/12">
           {filteredLawyers.map((lawyer) => (
             <div
@@ -226,8 +227,13 @@ const SelectLawyer = () => {
           ))}
         </div>
       ) : (
-        <h1 className="text-center dark:text-white ">No Lawyer found</h1>
+        lawyers &&
+        !loading &&
+        lawyers.length < 1 && (
+          <h1 className="text-center dark:text-white ">No Lawyer found</h1>
+        )
       )}
+      {loading && <Loader color={"red"} />}
     </div>
   );
 };

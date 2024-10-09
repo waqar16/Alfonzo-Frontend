@@ -2,44 +2,52 @@ import React, { useState, useEffect } from "react";
 import { fetchUserDocuments } from "../../services/document-services";
 
 // Sample data array
-const documents = [
-  {
-    id: 1,
-    title: "Document 1",
-    link: "https://drive.google.com/file/d/1CuWLS-Gg_v7SN0njGinwDFAygf-I3FVk/preview?usp=sharing",
-    verified: true,
-    pending: false,
-  },
-  {
-    id: 2,
-    title: "Document 2",
-    link: "https://drive.google.com/file/d/1CuWLS-Gg_v7SN0njGinwDFAygf-I3FVk/preview?usp=sharing",
-    verified: false,
-    pending: true,
-  },
-  {
-    id: 3,
-    title: "Document 3",
-    link: "https://drive.google.com/file/d/1CuWLS-Gg_v7SN0njGinwDFAygf-I3FVk/preview?usp=sharing",
+// const documents = [
+//   {
+//     id: 1,
+//     title: "Document 1",
+//     link: "https://drive.google.com/file/d/1CuWLS-Gg_v7SN0njGinwDFAygf-I3FVk/preview?usp=sharing",
+//     verified: true,
+//     pending: false,
+//   },
+//   {
+//     id: 2,
+//     title: "Document 2",
+//     link: "https://drive.google.com/file/d/1CuWLS-Gg_v7SN0njGinwDFAygf-I3FVk/preview?usp=sharing",
+//     verified: false,
+//     pending: true,
+//   },
+//   {
+//     id: 3,
+//     title: "Document 3",
+//     link: "https://drive.google.com/file/d/1CuWLS-Gg_v7SN0njGinwDFAygf-I3FVk/preview?usp=sharing",
 
-    verified: true,
-    pending: false,
-  },
-  {
-    id: 4,
-    title: "Document 4",
-    link: "https://drive.google.com/file/d/1CuWLS-Gg_v7SN0njGinwDFAygf-I3FVk/preview?usp=sharing",
+//     verified: true,
+//     pending: false,
+//   },
+//   {
+//     id: 4,
+//     title: "Document 4",
+//     link: "https://drive.google.com/file/d/1CuWLS-Gg_v7SN0njGinwDFAygf-I3FVk/preview?usp=sharing",
 
-    verified: false,
-    pending: false,
-  },
-];
-
+//     verified: false,
+//     pending: false,
+//   },
+// ];
+function convertToPreviewLink(driveLink) {
+  // Check if the link contains '/view'
+  if (driveLink.includes("/view")) {
+    // Replace '/view' with '/preview?usp=sharing'
+    return driveLink.replace("/view", "/preview?usp=sharing");
+  }
+  return driveLink; // Return the original link if it doesn't contain '/view'
+}
 const UserDocument = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [verificationStatus, setVerificationStatus] = useState("verified");
   const [loading, setLoading] = useState(true);
   const [sortType, setSortType] = useState("title"); // For sorting
+  const [documents, setDocuments] = useState([]); // For sorting
 
   // Simulate fetching data from an API
   useEffect(() => {
@@ -49,37 +57,24 @@ const UserDocument = () => {
   }, []);
   useEffect(() => {
     const abc = async () => {
-      const documents = await fetchUserDocuments(setLoading);
-      console.log(documents, "documents");
+      const response = await fetchUserDocuments(setLoading);
+      setDocuments(response.data.results);
+      console.log(response, "documents");
     };
     abc();
   }, []);
   // Filter and sort documents based on search term and verification status
-  const filteredDocuments = documents
-    .filter((doc) => {
+  let filteredDocuments;
+
+  if (documents) {
+    filteredDocuments = documents.filter((doc) => {
       const matchesSearch = doc.title
         .toLowerCase()
         .includes(searchTerm.toLowerCase());
 
-      const matchesVerification = (() => {
-        if (verificationStatus === "verified")
-          return doc.verified && !doc.pending;
-        if (verificationStatus === "unverified")
-          return !doc.verified && !doc.pending;
-        if (verificationStatus === "pending") return doc.pending;
-        return true;
-      })();
-
-      return matchesSearch && matchesVerification;
-    })
-    .sort((a, b) => {
-      if (sortType === "title") {
-        return a.title.localeCompare(b.title);
-      } else if (sortType === "status") {
-        return a.verified === b.verified ? 0 : a.verified ? -1 : 1;
-      }
-      return 0;
+      return matchesSearch;
     });
+  }
 
   // Render loading state if data is still loading
   if (loading) {
@@ -126,53 +121,55 @@ const UserDocument = () => {
       </div>
 
       {/* Document List */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
-        {filteredDocuments.length > 0 ? (
-          filteredDocuments.map((doc) => (
-            <div
-              key={doc.id}
-              className="dark:border-none dark:bg-slate-900 border p-4 rounded shadow hover:shadow-md transition-shadow"
-            >
-              <div className="flex justify-between">
-                <h2 className="dark:text-white font-semibold">{doc.title}</h2>
-                {/* Verification Badge */}
-                <span
-                  className={`px-2 py-1 text-sm rounded ${
-                    doc.verified
-                      ? "bg-green-200 text-green-700"
-                      : doc.pending
-                      ? "bg-yellow-200 text-yellow-700"
-                      : "bg-red-200 text-red-700"
-                  }`}
-                >
-                  {doc.verified
-                    ? "Verified"
-                    : doc.pending
-                    ? "Pending Verification"
-                    : "Unverified"}
-                </span>
-              </div>
-              <iframe
-                src={doc.link}
-                title={doc.title}
-                className="my-2 w-full h-[300px] sm:h-[400px] lg:h-[500px] transition-all"
-                style={{ overflow: "hidden" }}
-              />
-
-              <a
-                href={doc.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-500"
+      {documents && (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
+          {filteredDocuments.length > 0 ? (
+            filteredDocuments.map((doc) => (
+              <div
+                key={doc.id}
+                className="dark:border-none dark:bg-slate-900 border p-4 rounded shadow hover:shadow-md transition-shadow"
               >
-                Download PDF
-              </a>
-            </div>
-          ))
-        ) : (
-          <p>No documents found.</p>
-        )}
-      </div>
+                <div className="flex justify-between">
+                  <h2 className="dark:text-white font-semibold">{doc.title}</h2>
+                  {/* Verification Badge */}
+                  <span
+                    className={`px-2 py-1 text-sm rounded ${
+                      doc.verified
+                        ? "bg-green-200 text-green-700"
+                        : doc.pending
+                        ? "bg-yellow-200 text-yellow-700"
+                        : "bg-red-200 text-red-700"
+                    }`}
+                  >
+                    {doc.verified
+                      ? "Verified"
+                      : doc.pending
+                      ? "Pending Verification"
+                      : "Unverified"}
+                  </span>
+                </div>
+                <iframe
+                  src={convertToPreviewLink(doc.pdf_url)}
+                  title={doc.title}
+                  className="my-2 w-full h-[300px] sm:h-[400px] lg:h-[500px] transition-all"
+                  style={{ overflow: "hidden" }}
+                />
+
+                <a
+                  href={doc.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-500"
+                >
+                  Download PDF
+                </a>
+              </div>
+            ))
+          ) : (
+            <p>No documents found.</p>
+          )}
+        </div>
+      )}
     </div>
   );
 };
