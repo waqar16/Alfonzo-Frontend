@@ -51,11 +51,11 @@ const UserDocument = () => {
   const [documents, setDocuments] = useState([]); // For sorting
 
   // Simulate fetching data from an API
-  useEffect(() => {
-    setTimeout(() => {
-      setLoading(false);
-    }, 1000); // Simulate loading delay
-  }, []);
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     setLoading(false);
+  //   }, 1000); // Simulate loading delay
+  // }, []);
   useEffect(() => {
     const abc = async () => {
       const response = await fetchUserDocuments(setLoading);
@@ -81,10 +81,9 @@ const UserDocument = () => {
     });
   }
 
-  // Render loading state if data is still loading
-  if (loading) {
-    return <p className="text-center my-10">Loading documents...</p>;
-  }
+  // if (loading) {
+  //   return <
+  // }
 
   return (
     <div className="dark:bg-black flex flex-col items-center w-full py-32 px-8">
@@ -124,9 +123,9 @@ const UserDocument = () => {
           <option value="status">Sort by Status</option>
         </select>
       </div>
-
+      {loading && <p className="text-center py-10">Loading documents...</p>}
       {/* Document List */}
-      {documents && (
+      {documents && !loading && (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
           {filteredDocuments.length > 0 ? (
             filteredDocuments.map((doc) => (
@@ -139,18 +138,14 @@ const UserDocument = () => {
                   {/* Verification Badge */}
                   <span
                     className={`px-2 py-1 text-sm rounded ${
-                      doc.verified
-                        ? "bg-green-200 text-green-700"
-                        : doc.pending
+                      doc.verification_status == "Not Specified"
                         ? "bg-yellow-200 text-yellow-700"
+                        : doc.verification_status == "Verified"
+                        ? "bg-green-200 text-green-700"
                         : "bg-red-200 text-red-700"
                     }`}
                   >
-                    {doc.verified
-                      ? "Verified"
-                      : doc.pending
-                      ? "Pending Verification"
-                      : "Unverified"}
+                    {doc.verification_status}
                   </span>
                 </div>
                 <iframe
