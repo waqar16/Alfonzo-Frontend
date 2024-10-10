@@ -43,39 +43,8 @@ const HomePage = () => {
     fetchdetails();
   }, []);
   return (
-    <section className="dark:bg-slate-700 min-h-screen flex items-start justify-center py-4 pt-16 lg:py-24 px-4 sm:px-6 lg:px-8 bg-gray-100">
-      <div className="max-w-7xl mx-auto grid gap-6">
-        {/* <div className="w-full flex flex-row items-center shadow-md justify-end p-12  rounded-lg dark:bg-black bg-white">
-          <div className="flex items-center space-x-2">
-            <span
-              className={`text-sm dark:text-white ${
-                selected === "user" ? "font-semibold" : ""
-              }`}
-            >
-              User
-            </span>
-            <div
-              className={`relative  inline-flex h-5 w-11 cursor-pointer rounded-full transition-colors duration-300 ease-in-out ${
-                selected === "user" ? "bg-blue-500" : "bg-gray-400"
-              }`}
-              onClick={handleToggle}
-            >
-              <span
-                className={`absolute inline-block h-5 w-5 transform bg-white rounded-full shadow transition-transform duration-300 ease-in-out ${
-                  selected === "user" ? "translate-x-0" : "translate-x-6"
-                }`}
-              />
-            </div>
-            <span
-              className={`text-sm dark:text-white ${
-                selected === "lawyer" ? "font-semibold" : ""
-              }`}
-            >
-              Lawyer
-            </span>
-          </div>
-        </div> */}
-
+    <section className="dark:bg-slate-700 min-h-screen flex items-start justify-center pb-4 pt-24 lg:py-24 px-4 sm:px-6 lg:px-8 bg-gray-100">
+      <div className="  max-w-7xl mx-auto grid gap-6">
         {/* Profile Section */}
         <div className="dark:bg-black bg-white p-6 rounded-lg shadow-md border dark:border-zinc-400 flex items-center space-x-4 mb-6">
           {user ? (

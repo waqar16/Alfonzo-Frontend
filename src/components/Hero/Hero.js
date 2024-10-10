@@ -12,7 +12,7 @@ const Hero = () => {
   }, []);
 
   return (
-    <section className="pt-8 lg:pt-32 bg-[url('https://pagedone.io/asset/uploads/1691055810.png')] bg-center bg-cover h-screen flex items-center justify-center">
+    <section className="pt-12 lg:pt-32 bg-[url('https://pagedone.io/asset/uploads/1691055810.png')] bg-center bg-cover h-screen flex items-center justify-center">
       <div
         data-aos="fade-up"
         className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative text-center"
