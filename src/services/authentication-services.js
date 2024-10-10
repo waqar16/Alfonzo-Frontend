@@ -22,6 +22,30 @@ export const registerUser = async (userData, setLoading) => {
         };
   }
 };
+export const resendVerificationLink = async (userData, setLoading) => {
+  try {
+    setLoading(true);
+    const response = await axios.post(
+      `${serverUrl}/auth/resend-activation-email/`,
+      userData
+    );
+    setLoading(false);
+
+    return { data: response.data, status: response.status }; // Return the successful response
+  } catch (error) {
+    setLoading(false);
+
+    return error.response
+      ? {
+          error: error.response.data,
+          status: error.response.status,
+        }
+      : {
+          error: error.message,
+          status: 500,
+        };
+  }
+};
 
 export const loginUser = async (userData, setLoading) => {
   try {
@@ -119,9 +143,4 @@ export const authGuard = async (setLoading) => {
           status: 500,
         };
   }
-};
-
-export const handleGoogleFailure = (error) => {
-  console.error("Google login failure:", error);
-  alert("Failed to login with Google.");
 };

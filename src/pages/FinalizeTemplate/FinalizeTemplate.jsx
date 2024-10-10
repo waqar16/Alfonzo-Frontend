@@ -318,68 +318,92 @@ const FinalizeTemplate = () => {
       // Now you can save it to the database or send it via email
     };
   };
-
+  console.log(documentData);
   return (
     <div className="flex flex-col items-start py-24 pt-32 w-full px-4 sm:px-8 md:px-24">
-      <h1 className="w-full text-center"> Document Details</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 w-full mt-4 md:gap-x-16">
-        <div className="flex flex-col items-start  w-full col-span-1   bg-white py-8 px-4 pr-12">
-          <h1 className="text-2xl font-bold text-black mb-4 text-center w-full">
-            {documentData.template.name}
-          </h1>
-
-          <div
-            className="w-full"
-            dangerouslySetInnerHTML={{
-              __html: documentData.content,
-            }}
-          />
-        </div>
-        <div className="flex flex-col items-start w-full col-span-1 py-8  px-4 ">
-          <h1 className="text-2xl font-bold dark:text-white text-black">
-            Hired Lawyer
-          </h1>
-
-          <div className="flex flex-row items-center w-full justify-start mt-4">
-            <img
-              className="w-14 h-14 object-cover rounded-full"
-              src={
-                lawyerData.profile_pic ? lawyerData.profile_pic : "/lawyer.svg"
-              }
-              alt="Lawyer"
-            />
-            <div className="flex flex-col items-start ml-2">
-              <h2 className="font-bold dark:text-zinc-400 text-lg text-black">
-                {`${lawyerData.first_name} ${lawyerData.last_name}`}
-              </h2>
-            </div>
-          </div>
-        </div>
-      </div>
-      {!documentDownloaded && (
-        <div className="flex flex-col items-center w-full">
-          <button
-            type="button"
-            onClick={() => {
-              setLoading(true);
-              generatePDF();
-              setPdfGenerated(true);
-            }}
-            className="min-w-[200px] mt-4 px-4 py-2 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700"
+      {!documentData?.template ? (
+        <div className="flex flex-col items-center w-full  ">
+          <h2>No Template Selected.</h2>
+          <NavLink
+            to={"/templates"}
+            className={`mt-4 px-4 py-2  bg-gray-600 text-white font-semibold rounded-md
+`}
           >
-            {loading ? <Loader /> : "Generate PDF"}
-          </button>
+            Select Template
+          </NavLink>
         </div>
+      ) : (
+        <>
+          <h1 className="w-full text-center"> Document Details</h1>
+
+          {!documentDownloaded && (
+            <div
+              className={`grid grid-cols-1 md:grid-cols-2 w-full mt-4 md:gap-x-16 ${
+                documentDownloaded ? "hidden" : ""
+              }`}
+            >
+              <div className="flex flex-col items-start  w-full col-span-1   bg-white py-8 px-4 pr-12">
+                <h1 className="text-2xl font-bold text-black mb-4 text-center w-full">
+                  {documentData.template.name}
+                </h1>
+
+                <div
+                  className="w-full"
+                  dangerouslySetInnerHTML={{
+                    __html: documentData.content,
+                  }}
+                />
+              </div>
+              <div className="flex flex-col items-start w-full col-span-1 py-8  px-4 ">
+                <h1 className="text-2xl font-bold dark:text-white text-black">
+                  Hired Lawyer
+                </h1>
+
+                <div className="flex flex-row items-center w-full justify-start mt-4">
+                  <img
+                    className="w-14 h-14 object-cover rounded-full"
+                    src={
+                      lawyerData.profile_pic
+                        ? lawyerData.profile_pic
+                        : "/lawyer.svg"
+                    }
+                    alt="Lawyer"
+                  />
+                  <div className="flex flex-col items-start ml-2">
+                    <h2 className="font-bold dark:text-zinc-400 text-lg text-black">
+                      {`${lawyerData.first_name} ${lawyerData.last_name}`}
+                    </h2>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+          {!documentDownloaded && (
+            <div className="flex flex-col items-center w-full">
+              <button
+                type="button"
+                onClick={() => {
+                  setLoading(true);
+                  generatePDF();
+                  setPdfGenerated(true);
+                }}
+                className="min-w-[200px] mt-4 px-4 py-2 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700"
+              >
+                {loading ? <Loader /> : "Generate PDF"}
+              </button>
+            </div>
+          )}
+          {documentDownloaded && (
+            <div className="flex flex-col items-center w-full">
+              <VerifyDocumentPage id={documentId} />
+            </div>
+          )}
+          {/* {pdfGenerated && (
+      <SuccessModal isOpen={isModalOpen} onClose={handleCloseModal} />
+    )} */}
+          <Toaster />
+        </>
       )}
-      {documentDownloaded && (
-        <div className="flex flex-col items-center w-full">
-          <VerifyDocumentPage id={documentId} />
-        </div>
-      )}
-      {/* {pdfGenerated && (
-        <SuccessModal isOpen={isModalOpen} onClose={handleCloseModal} />
-      )} */}
-      <Toaster />
     </div>
   );
 };

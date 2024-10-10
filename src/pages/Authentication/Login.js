@@ -56,7 +56,9 @@ const Login = () => {
     // }
 
     const captchaValue = recaptchaRef.current.getValue();
-
+    // if (!captchaValue) {
+    //   notify("Please verify the reCAPTCHA!", "error");
+    // } else {
     setLoading(true);
     const response = await loginUser(
       {
@@ -66,8 +68,18 @@ const Login = () => {
       setLoading
     );
     console.log("response", response.data);
+    // alert(response.error.error || response.data);
     if (response.status == 400) {
-      notify(response.error, "error");
+      console.log(response);
+      if (
+        response.error ==
+        `Your account is inactive. We've sent you a new activation email.`
+      ) {
+        notify(response.error, "error");
+        navigate("/activation-email-sent");
+      } else {
+        notify(response.error, "error");
+      }
     }
     if (response?.data?.mfa_required && response?.data.mfa_required == true) {
       localStorage.setItem("email", response.data.email);
@@ -85,6 +97,7 @@ const Login = () => {
         }
       }, 4000);
     }
+    // }
   };
   const serverUrl = `${process.env.REACT_APP_SERVER_URL}`;
 
@@ -123,7 +136,10 @@ const Login = () => {
         throw error;
       }
     },
-    onError: handleGoogleFailure,
+    onError: (error) => {
+      console.error("Google login failure:", error);
+      notify(error);
+    },
     scope: "openid profile email",
   });
   return (
