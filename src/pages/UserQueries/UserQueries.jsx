@@ -118,7 +118,9 @@ const UserQueries = () => {
           )}
         </div>
       )}
-      {queries && queries.length < 0 && <h1>No queries Yet</h1>}
+      {queries && queries.length < 1 && (
+        <h1 className="dark:text-white  w-full text-center">No queries Yet</h1>
+      )}
       {/* Modal for Viewing Message */}
       {selectedQuery && (
         <div className="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center">

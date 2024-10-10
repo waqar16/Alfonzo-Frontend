@@ -301,7 +301,7 @@ const FinalizeTemplate = () => {
       const createDocumentt = await createDocument(
         {
           template: template.id,
-          lawyer: lawyerData.id,
+          selected_lawyer: lawyerData.id,
           base64_content: pdfDataUrl,
           title: "template",
         },
