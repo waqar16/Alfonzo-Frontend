@@ -121,24 +121,19 @@ const Login = () => {
           );
 
           navigate("/profile");
+          return { data: response.data, status: response.status };
+        } else {
+          // console.log(response, "reesponse");
+          throw response?.error;
         }
-        return { data: response.data, status: response.status };
       } catch (error) {
-        console.error(
-          "Login error:",
-          error.response
-            ? error.response.data
-            : {
-                error: error.message,
-                status: 500,
-              }
-        );
-        throw error;
+        console.log("Google login failure:", error.response.data);
+        notify(error.response.data.error, "error");
+        // throw error;
       }
     },
     onError: (error) => {
-      console.error("Google login failure:", error);
-      notify(error);
+      console.log(error);
     },
     scope: "openid profile email",
   });

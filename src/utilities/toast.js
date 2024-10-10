@@ -6,7 +6,11 @@ export const notify = (response, type) =>
     position: "top-center",
 
     // Styling
-    style: {},
+    style: {
+      fontSize: "18px", // Increase font size
+      padding: "16px", // Increase padding
+      maxWidth: "60%", // Increase minimum width
+    },
     className: "",
 
     // Custom Icon
