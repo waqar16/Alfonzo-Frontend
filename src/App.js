@@ -48,6 +48,7 @@ import { useSelector } from "react-redux";
 import Services from "./components/Services/Services";
 import Lawyers from "./pages/Lawyers/Lawyers";
 import AskALawyer from "./pages/Ask-a-Lawyer/AskALawyer";
+import LinkedinLogin from "./pages/LinkedinLogin/LinkedinLogin";
 
 function App() {
   useEffect(() => {
@@ -118,6 +119,8 @@ function Content() {
           <Route element={<PrivateRoutes userRole={"user"} multiple={true} />}>
             <Route path="/templates/lawyer" element={<SelectLawyer />} />
           </Route>
+          <Route path="/linkedin-login" element={<LinkedinLogin />} />
+         
           <Route element={<PrivateRoutes userRole={"user"} multiple={true} />}>
             <Route path="/verify-document" element={<VerifyDocumentPage />} />
           </Route>

@@ -94,29 +94,18 @@ const Signup = () => {
 
           navigate("/profile");
           return { data: response.data, status: response.status };
-        }
-        else{
-          console.log(response,"reesponse")
-          throw response?.error
+        } else {
+          console.log(response, "reesponse");
+          throw response?.error;
         }
       } catch (error) {
-        console.log(
-          "Login error:",
-          error.response
-            ? error.response.data
-            : {
-                error: error.message,
-                status: 500,
-              }
-        );
-        console.log("Google login failure:", error.response.data);
-        notify(error.response.data);
+        // console.log("Google login failure:", error.response.data);
+        notify(error.response.data.error);
         // throw error;
       }
     },
     onError: (error) => {
-      console.error("Google login failure:", error);
-      notify(error);
+      console.log(error)
     },
     scope: "openid profile email",
   });
