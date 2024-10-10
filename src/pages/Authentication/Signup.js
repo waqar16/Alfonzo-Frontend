@@ -47,6 +47,8 @@ const Signup = () => {
         password: data.password,
         password2: data.password2,
         email: data.email,
+        phone: data.phone,
+        role: data.userType.toUpperCase(),
       },
       setLoading
     );
