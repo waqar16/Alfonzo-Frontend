@@ -75,7 +75,7 @@ const VerifyDocumentPage = ({ id }) => {
             Verify Document
           </h1>
           <p className=" mb-4">
-            Upload your latetst created douments here to verify them.
+            Upload your downloaded template pdf here.
           </p>
           {/* Document Upload or Selection */}
           <div className="mb-6">

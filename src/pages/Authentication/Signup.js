@@ -55,10 +55,16 @@ const Signup = () => {
     console.log(signup);
     if (signup.status == 201) {
       // alert("Form submission successful!");
+      localStorage.setItem("email", data.email);
+
       navigate("/activation-email-sent");
     } else {
+      console.log("signup.error", signup.error);
       notify(
-        signup.error?.email || signup.error?.username || signup.error?.password,
+        signup.error.email ||
+          signup.error.username ||
+          signup.error.password ||
+          signup.error.phone,
         "error"
       );
     }
@@ -87,10 +93,14 @@ const Signup = () => {
           );
 
           navigate("/profile");
+          return { data: response.data, status: response.status };
         }
-        return { data: response.data, status: response.status };
+        else{
+          console.log(response,"reesponse")
+          throw response?.error
+        }
       } catch (error) {
-        console.error(
+        console.log(
           "Login error:",
           error.response
             ? error.response.data
@@ -99,10 +109,15 @@ const Signup = () => {
                 status: 500,
               }
         );
-        throw error;
+        console.log("Google login failure:", error.response.data);
+        notify(error.response.data);
+        // throw error;
       }
     },
-    onError: handleGoogleFailure,
+    onError: (error) => {
+      console.error("Google login failure:", error);
+      notify(error);
+    },
     scope: "openid profile email",
   });
   return (

@@ -35,6 +35,7 @@ import { fetchUserDocuments } from "../../services/document-services";
 //   },
 // ];
 function convertToPreviewLink(driveLink) {
+  console.log(driveLink);
   // Check if the link contains '/view'
   if (driveLink.includes("/view")) {
     // Replace '/view' with '/preview?usp=sharing'
@@ -58,8 +59,12 @@ const UserDocument = () => {
   useEffect(() => {
     const abc = async () => {
       const response = await fetchUserDocuments(setLoading);
-      setDocuments(response.data.results);
-      console.log(response, "documents");
+      setDocuments(
+        response.data.results.filter((document) => {
+          return document.pdf_url != null;
+        })
+      );
+      console.log(response.data.results, "documents");
     };
     abc();
   }, []);
