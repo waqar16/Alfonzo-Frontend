@@ -5,7 +5,7 @@ const TemplateQuestions = ({ template, setFormData, formData }) => {
   const handleChange = (e, index) => {
     setFormData({
       ...formData,
-      [`answer${index + 1}`]: e.target.value, // Update the corresponding answer
+      [`answer${index + 1}`]: e.target.value.toUpperCase(), // Update the corresponding answer
     });
   };
 
