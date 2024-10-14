@@ -49,6 +49,7 @@ import Services from "./components/Services/Services";
 import Lawyers from "./pages/Lawyers/Lawyers";
 import AskALawyer from "./pages/Ask-a-Lawyer/AskALawyer";
 import LinkedinLogin from "./pages/LinkedinLogin/LinkedinLogin";
+import Notifications from "./pages/Notifications/Notification";
 
 function App() {
   useEffect(() => {
@@ -120,7 +121,7 @@ function Content() {
             <Route path="/templates/lawyer" element={<SelectLawyer />} />
           </Route>
           <Route path="/linkedin-login" element={<LinkedinLogin />} />
-         
+
           <Route element={<PrivateRoutes userRole={"user"} multiple={true} />}>
             <Route path="/verify-document" element={<VerifyDocumentPage />} />
           </Route>
@@ -134,6 +135,11 @@ function Content() {
 
           <Route element={<PrivateRoutes userRole={"user"} />}>
             <Route path="/ask-a-lawyer" element={<AskALawyer />} />
+          </Route>
+          <Route
+            element={<PrivateRoutes userRole={"user"} multiple={"true"} />}
+          >
+            <Route path="/notifications" element={<Notifications />} />
           </Route>
           <Route
             path="/settings/manage-profile"
@@ -195,7 +201,9 @@ function Content() {
           <Route path="/faqs" element={<Faqs />} />
           <Route path="/about-us" element={<AboutUs />} />
           <Route path="/services" element={<Services />} />
-          <Route path="/lawyers" element={<Lawyers />} />
+          <Route element={<PrivateRoutes userRole={"user"} multiple={true} />}>
+            <Route path="/lawyers" element={<Lawyers />} />
+          </Route>
         </Routes>
       </div>
       {!isAdminRoute && <Footer />}

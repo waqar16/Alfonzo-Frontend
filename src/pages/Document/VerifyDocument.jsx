@@ -68,17 +68,15 @@ const VerifyDocumentPage = ({ id }) => {
     });
 
   return (
-    <section className="w-full dark:bg-black bg-white flex items-start justify-center py-4 pt-16 lg:pt-24 px-4 sm:px-6 lg:px-8 bg-gray-100">
+    <section className="w-full dark:bg-black bg-white flex items-start justify-center py-4   px-4 sm:px-6 lg:px-8 bg-gray-100">
       <div className="max-w-7xl w-full mx-auto">
         <div className=" dark:bg-slate-900 p-6 rounded-lg shadow-md border dark:border-none border-gray-200  ">
           <h1 className="text-2xl font-bold dark:text-white text-gray-900 mb-1">
             Verify Document
           </h1>
-          <p className=" mb-4">
-            Upload your downloaded template pdf here.
-          </p>
+          <p className=" mb-4">Upload your downloaded template pdf here.</p>
           {/* Document Upload or Selection */}
-          <div className="mb-6">
+          <div className="mb-2">
             <div className="flex items-center space-x-4">
               <button
                 onClick={handleDocumentSelect}
@@ -133,8 +131,8 @@ const VerifyDocumentPage = ({ id }) => {
                     { pdf_url: response.data.file_url, id },
                     setLoading
                   );
-                  if(response2.status == 200){
-                    navigate('/your-documents')
+                  if (response2.status == 200) {
+                    navigate("/your-documents");
                   }
                   console.log(response2);
                 }

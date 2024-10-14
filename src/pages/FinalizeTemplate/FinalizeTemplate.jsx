@@ -359,22 +359,15 @@ const FinalizeTemplate = () => {
     pdf.setFont("Satoshi");
 
     let currentY = marginY;
-    // const qrCodeBase64 = "data:image/png;base64,..."; // Your QR code base64 string
-    //   const logoBase64 = "data:image/png;base64,...";   // Your logo base64 string
-    //   const signatureBase64 = "data:image/png;base64,..."; // Your signature base64 string
 
-    // Add QR Code, Logo, and Signature image to header (adjust X coordinates for layout)
     const imageHeight = 10; // Adjust height to your needs
     pdf.addImage(qrCode, "PNG", marginX, currentY, 20, 20); // QR Code
     pdf.addImage(logoBlack, "PNG", marginX + 60, currentY, 60, 20); // Logo
     pdf.addImage(signature, "PNG", marginX + 150, currentY, 20, 20); // QR Code
-    // pdf.addImage(signature, "PNG", marginX + 120, currentY, 30, imageHeight); // Signature
 
-    // Move down after adding images
     currentY += imageHeight + 10;
     currentY += 20; // Move down after header
 
-    // Add header to the PDF
     pdf.setFontSize(12);
 
     // Add title
@@ -626,7 +619,9 @@ const FinalizeTemplate = () => {
         </div>
       ) : (
         <>
-          <h1 className="w-full text-center"> Document Details</h1>
+          <h1 className="w-full text-center">
+            {documentDownloaded ? "Upload Document" : "Document Details"}
+          </h1>
 
           {!documentDownloaded && (
             <div

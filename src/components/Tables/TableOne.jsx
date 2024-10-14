@@ -112,9 +112,7 @@ const TableOne = () => {
               key={key}
             >
               <div className="flex items-center gap-3 p-2.5 xl:p-5 overflow-x-hidden max-w-[120px] ">
-                <p className="hidden text-black dark:text-white sm:block">
-                  {user.email}
-                </p>
+                <p className="  text-black dark:text-white ">{user.email}</p>
               </div>
 
               <div className="flex items-center justify-center p-2.5 xl:p-5">
@@ -124,7 +122,7 @@ const TableOne = () => {
               </div>
 
               <div className="flex items-center justify-center p-2.5 xl:p-5">
-                <p className="text-meta-3">
+                <p className="text-meta-3 text-center">
                   {user.first_name
                     ? `${user.first_name} ${user.last_name}`
                     : "not specified"}

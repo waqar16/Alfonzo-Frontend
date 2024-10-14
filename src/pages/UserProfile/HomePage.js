@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Loader from "../../components/Loader/Loader";
 import {
@@ -151,7 +151,8 @@ const HomePage = () => {
           </div>
         ) : (
           user &&
-          !loading && (
+          !loading &&
+          user.role != "USER" && (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
               <Link
                 to="/templates"
@@ -244,62 +245,10 @@ const HomePage = () => {
 
         {/* Side Sections */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
-          {/* Notifications Section */}
-          <div className="dark:bg-black bg-white p-6 rounded-lg shadow-md border dark:border-zinc-400">
-            <h2 className="dark:text-white file:text-xl font-bold text-gray-900 mb-4">
-              Notifications
-            </h2>
-            <ul className="space-y-4">
-              <li className="flex items-center space-x-3">
-                <FontAwesomeIcon
-                  icon={faBell}
-                  className="dark:text-white text-gray-600"
-                />
-                <p className="dark:text-zinc-400 text-gray-800">
-                  Document status updated to approved.
-                </p>
-              </li>
-              <li className="flex items-center space-x-3">
-                <FontAwesomeIcon
-                  icon={faBell}
-                  className="dark:text-white text-gray-600"
-                />
-                <p className="dark:text-zinc-400 text-gray-800">
-                  Payment confirmation received.
-                </p>
-              </li>
-            </ul>
-          </div>
-
-          {/* Summary Section */}
-          <div className="dark:bg-black bg-white p-6 rounded-lg shadow-md border dark:border-zinc-400">
-            <h2 className="text-xl font-bold dark:text-white text-gray-900 mb-4">
-              Summary
-            </h2>
-            <ul className="space-y-4">
-              <li className="flex items-center space-x-3">
-                <FontAwesomeIcon
-                  icon={faSearch}
-                  className="dark:text-white text-gray-600"
-                />
-                <p className="dark:text-zinc-400 text-gray-800">
-                  Pending Actions: Review documents pending your action.
-                </p>
-              </li>
-              <li className="flex items-center space-x-3">
-                <FontAwesomeIcon
-                  icon={faSearch}
-                  className="dark:text-white text-gray-600"
-                />
-                <p className="dark:text-zinc-400 text-gray-800">
-                  Upcoming Deadlines: Check deadlines for document submissions.
-                </p>
-              </li>
-            </ul>
-          </div>
-
-          {/* Preferred Lawyer Section */}
-          <div className="dark:bg-black bg-white p-6 rounded-lg shadow-md border dark:border-zinc-400">
+          <NavLink
+            to={"/lawyers"}
+            className="dark:bg-black bg-white p-6 rounded-lg shadow-md border dark:border-zinc-400"
+          >
             <h2 className="text-xl font-bold dark:text-white text-gray-900 mb-4">
               Preferred Lawyer
             </h2>
@@ -311,7 +260,7 @@ const HomePage = () => {
               <FontAwesomeIcon icon={faLock} className="mr-2" />
               Set Preferred Lawyer
             </button>
-          </div>
+          </NavLink>
         </div>
       </div>
     </section>

@@ -149,11 +149,11 @@ const UserRequests = () => {
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [currentAction, setCurrentAction] = useState("");
 
-  useEffect(() => {
-    setTimeout(() => {
-      setLoading(false);
-    }, 1000);
-  }, []);
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     setLoading(false);
+  //   }, 1000);
+  // }, []);
 
   // Function to handle opening the document preview modal
   const handleOpenModal = (document) => {
@@ -235,7 +235,14 @@ const UserRequests = () => {
   useEffect(() => {
     const abc = async () => {
       const response = await fetchLawyerRelatedDocuments(setLoading);
-      setDocuments(response.data.user_documents);
+      setDocuments(
+        response.data.user_documents.filter((doc) => {
+          return doc.pdf_url != null;
+        })
+      );
+      setTimeout(() => {
+        setLoading(false);
+      }, 3000);
       console.log(response);
     };
     abc();
@@ -255,7 +262,7 @@ const UserRequests = () => {
     <div className="flex flex-col items-center w-full py-32 px-8">
       <h1 className="text-2xl font-bold mb-4">Document Requests</h1>
       {loading && <p className="w-full text-center">Loading documents..</p>}
-      {documents && documents.length > 0 && (
+      {!loading && documents && documents.length > 0 && (
         <div className="mb-4 w-full flex flex-col sm:flex-row justify-between items-center">
           <input
             type="text"
@@ -281,7 +288,7 @@ const UserRequests = () => {
       )}
 
       {/* Document List */}
-      {!loading && documents && documents.length > 0 && (
+      {documents && !loading && (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
           {filteredDocuments.length > 0 ? (
             filteredDocuments.map((doc) => (

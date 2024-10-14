@@ -34,41 +34,41 @@ const Signup = () => {
 
   const onSubmit = async (data) => {
     console.log("data", data);
-    // const captchaValue = recaptchaRef.current.getValue();
-    // if (!captchaValue) {
-    //   alert("Please verify the reCAPTCHA!");
-    // } else {
-    setLoading(true);
-    const signup = await registerUser(
-      {
-        first_name: data.firstname,
-        last_name: data.lastname,
-        username: data.username,
-        password: data.password,
-        password2: data.password2,
-        email: data.email,
-        phone: data.phone,
-        role: data.userType.toUpperCase(),
-      },
-      setLoading
-    );
-    console.log(signup);
-    if (signup.status == 201) {
-      // alert("Form submission successful!");
-      localStorage.setItem("email", data.email);
-
-      navigate("/activation-email-sent");
+    const captchaValue = recaptchaRef.current.getValue();
+    if (!captchaValue) {
+      alert("Please verify the reCAPTCHA!");
     } else {
-      console.log("signup.error", signup.error);
-      notify(
-        signup.error.email ||
-          signup.error.username ||
-          signup.error.password ||
-          signup.error.phone,
-        "error"
+      setLoading(true);
+      const signup = await registerUser(
+        {
+          first_name: data.firstname,
+          last_name: data.lastname,
+          username: data.username,
+          password: data.password,
+          password2: data.password2,
+          email: data.email,
+          phone: data.phone,
+          role: data.userType.toUpperCase(),
+        },
+        setLoading
       );
+      console.log(signup);
+      if (signup.status == 201) {
+        // alert("Form submission successful!");
+        localStorage.setItem("email", data.email);
+
+        navigate("/activation-email-sent");
+      } else {
+        console.log("signup.error", signup.error);
+        notify(
+          signup.error.email ||
+            signup.error.username ||
+            signup.error.password ||
+            signup.error.phone,
+          "error"
+        );
+      }
     }
-    // }
   };
   const serverUrl = `${process.env.REACT_APP_SERVER_URL}`;
 
@@ -105,7 +105,7 @@ const Signup = () => {
       }
     },
     onError: (error) => {
-      console.log(error)
+      console.log(error);
     },
     scope: "openid profile email",
   });
