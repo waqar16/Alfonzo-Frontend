@@ -1,21 +1,34 @@
 import React, { useEffect, useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { formatDistanceToNow } from "date-fns";
+
+import Loader from "../Loader/Loader";
 import {
+  faBell,
   faCog,
+  faCross,
   faMoon,
   faSignInAlt,
   faSun,
   faUserCircle,
+  faXmark,
 } from "@fortawesome/free-solid-svg-icons";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { setTheme } from "../../redux/reducers/theme-reducer";
-
+import style from "./Navbar.module.css";
+import {
+  fetchNotifications,
+  updateNotificationStatus,
+} from "../../services/notification-service";
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [notificationLoader, setNotificationLoader] = useState(false);
+  const [moreNotificationLoader, setMoreNotificationLoader] = useState(false);
   const [isUserMenuOpen, setUserMenuOpen] = useState(false);
   const [isLogoutModalOpen, setLogoutModalOpen] = useState(false);
+  const [viewNotifications, setViewNotifications] = useState(false);
   const navigate = useNavigate();
   const language = useSelector((state) => state.language);
   const theme = useSelector((state) => state.theme);
@@ -58,6 +71,34 @@ const Header = () => {
       dispatch(setTheme("light"));
     }
   };
+  const [notifications, setNotifications] = useState([
+    {
+      user: "John Doe",
+      message: "Your document has been approved.",
+      is_read: false,
+      created_at: "2024-10-10 14:35:00",
+    },
+    {
+      user: "Jane Smith",
+      message: "You received a new message from your lawyer.",
+      is_read: true,
+      created_at: "2024-10-09 12:15:00",
+    },
+    {
+      user: "Admin",
+      message: "Your account settings have been updated.",
+      is_read: true,
+      created_at: "2024-10-08 09:45:00",
+    },
+    {
+      user: "Alex Johnson",
+      message: "A new document is awaiting your signature.",
+      is_read: false,
+      created_at: "2024-10-07 08:30:00",
+    },
+    // Add more notifications as needed
+  ]);
+  const [nextNotificationPage, setNextNotificationPage] = useState(null);
   return (
     <header className="fixed top-0 inset-x-0 z-40 w-full   bg-background/40 backdrop-blur-lg transition-transform duration-300">
       <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
@@ -74,7 +115,7 @@ const Header = () => {
           <div className="flex lg:hidden">
             <div>
               <button
-                className="mr-2 flex items-center justify-center p-2 rounded-full border border-gray-300 dark:border-gray-600 focus:outline-none"
+                className="mr-1 flex items-center justify-center p-2 rounded-full border border-gray-300 dark:border-gray-600 focus:outline-none"
                 onClick={toggleTheme}
               >
                 <FontAwesomeIcon
@@ -83,6 +124,167 @@ const Header = () => {
                 />
               </button>
             </div>
+            {localStorage.getItem("token") && (
+              <div className="relative flex items-center justify-center ">
+                <button
+                  onClick={async () => {
+                    setViewNotifications(true);
+                    setNotificationLoader(true);
+                    const response = await fetchNotifications(
+                      null,
+                      setNotificationLoader
+                    );
+                    setNotifications(response.data.results);
+                    setNextNotificationPage(response.data.next);
+                    console.log(response);
+                  }}
+                  className=" ml-2 py-1 px-2 rounded-full border border-gray-300 dark:border-gray-600 focus:outline-none"
+                >
+                  <FontAwesomeIcon
+                    icon={faBell}
+                    className="text-lg dark:text-white text-gray-800"
+                  />
+                </button>
+                {viewNotifications && (
+                  <div className=" top-0 right-0 absolute  dark:bg-slate-900 bg-white rounded-lg shadow-md  ">
+                    <div className="flex flex-row items-center justify-between pt-4 px-4 pb-2">
+                      <p>Notifications</p>
+                      <button
+                        onClick={() => setViewNotifications(false)} // Closing notification on click
+                        className="focus:outline-none"
+                      >
+                        <FontAwesomeIcon
+                          icon={faXmark}
+                          className="text-lg text-black"
+                        />
+                      </button>
+                    </div>
+                    <div
+                      className={` pb-1 max-h-[300px] overflow-y-auto min-w-[300px]  ${style["custom-scrollbar"]} rounded-b-lg`}
+                    >
+                      {notificationLoader ? (
+                        <div className="flex flex-col items-center w-full py-2">
+                          <Loader />
+                        </div>
+                      ) : notifications.length === 0 ? (
+                        <p className="w-full text-center">
+                          No notifications available.
+                        </p>
+                      ) : (
+                        <>
+                          {notifications
+                            .slice() // create a shallow copy to avoid mutating the original array
+                            .reverse()
+                            .map((notification, index) => (
+                              <div
+                                key={index}
+                                onClick={async () => {
+                                  const response =
+                                    await updateNotificationStatus(
+                                      notification.id
+                                    );
+                                  console.log(response.status);
+                                  if (response.status == 200) {
+                                    setNotifications((prevNotifications) =>
+                                      prevNotifications.map(
+                                        (n) =>
+                                          n.id == notification.id
+                                            ? { ...n, is_read: true } // Merge the updated data for the matching notification
+                                            : n // Keep the other notifications unchanged
+                                      )
+                                    );
+                                  }
+                                }}
+                                className={` cursor-pointer py-4 w-auto p-2  ${
+                                  notification.is_read
+                                    ? "bg-white"
+                                    : "bg-gray-100"
+                                }`}
+                              >
+                                <div className="flex justify-between items-center">
+                                  <div className="flex flex-row items-start ">
+                                    <div
+                                      className="w-8 h-8 rounded-full overflow-hidden flex flex-col items-center
+                                 justify-center   "
+                                    >
+                                      <img
+                                        src={localStorage.getItem("profilepic")}
+                                        className="w-10 h-10 "
+                                      />
+                                    </div>
+                                    <div className="flex flex-col items-start ml-2 w-full">
+                                      <h2 className="text-sm font-bold first-letter:uppercase">
+                                        {notification.title}
+                                      </h2>
+                                      <p className="text-xs line-clamp-2 mt-1">
+                                        {notification.message}
+                                      </p>
+                                      <div className="w-full mt-[2px] flex flex-row items-center justify-between">
+                                        <p className="text-xs text-gray-400 ">
+                                          {formatDistanceToNow(
+                                            new Date(notification.created_at),
+                                            { addSuffix: true }
+                                          )}
+                                        </p>
+
+                                        <p className="text-xs text-end">
+                                          {notification.is_read ? "seen" : ""}
+                                        </p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  {/* {!notification.is_read && (
+                                <button
+                                  // onClick={() => markAsRead(index)}
+                                  className="text-blue-500 underline"
+                                >
+                                  Mark as read
+                                </button>
+                              )} */}
+                                </div>
+                              </div>
+                            ))}{" "}
+                          {nextNotificationPage && (
+                            <button
+                              className="w-full text-center"
+                              onClick={async () => {
+                                setMoreNotificationLoader(true);
+                                const newResponse = await fetchNotifications(
+                                  nextNotificationPage,
+                                  setMoreNotificationLoader
+                                );
+                                setNextNotificationPage(newResponse.data.next);
+                                setNotifications((prevNotifications) => [
+                                  ...prevNotifications,
+                                  ...newResponse.data.results,
+                                ]);
+                              }}
+                            >
+                              {moreNotificationLoader ? (
+                                <Loader />
+                              ) : (
+                                "Load more"
+                              )}
+                            </button>
+                          )}
+                        </>
+                      )}
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+            {/* <div>
+              <NavLink
+                className="ml flex items-center justify-center p-2 rounded-full border border-gray-300 dark:border-gray-600 focus:outline-none"
+                to={"/notifications"}
+              >
+                <FontAwesomeIcon
+                  icon={faBell}
+                  className="text-lg dark:text-white text-gray-800"
+                />
+              </NavLink>
+            </div> */}
             <button
               onClick={toggleMenu}
               className=" dark:text-white text-gray-900"
@@ -121,7 +323,6 @@ const Header = () => {
             </button>
           </div>
 
-          {/* Mobile Menu */}
           <div
             className={`absolute top-full left-0 w-full dark:bg-slate-700 bg-white lg:hidden transition-all duration-300 ease-in-out overflow-auto ${
               isMenuOpen ? "max-h-screen opacity-100" : "max-h-0 opacity-0"
@@ -282,9 +483,157 @@ const Header = () => {
                 >
                   <FontAwesomeIcon
                     icon={theme == "dark" ? faSun : faMoon}
-                    className="text-gray-800 dark:text-white"
+                    className="text-lg text-gray-800 dark:text-white"
                   />
                 </button>
+              </div>
+              <div className="relative flex items-center justify-center ">
+                <button
+                  onClick={async () => {
+                    setViewNotifications(true);
+                    setNotificationLoader(true);
+                    const response = await fetchNotifications(
+                      null,
+                      setNotificationLoader
+                    );
+                    setNotifications(response.data.results);
+                    setNextNotificationPage(response.data.next);
+                    console.log(response);
+                  }}
+                  className=" ml-2 py-1 px-2 rounded-full border border-gray-300 dark:border-gray-600 focus:outline-none"
+                >
+                  <FontAwesomeIcon
+                    icon={faBell}
+                    className="text-lg dark:text-white text-gray-800"
+                  />
+                </button>
+                {viewNotifications && (
+                  <div className=" top-0 right-0 absolute  dark:bg-slate-900 bg-white rounded-lg shadow-md  ">
+                    <div className="flex flex-row items-center justify-between pt-4 px-4 pb-2">
+                      <p>Notifications</p>
+                      <button
+                        onClick={() => setViewNotifications(false)} // Closing notification on click
+                        className="focus:outline-none"
+                      >
+                        <FontAwesomeIcon
+                          icon={faXmark}
+                          className="text-lg text-black"
+                        />
+                      </button>
+                    </div>
+                    <div
+                      className={` pb-1 max-h-[300px] overflow-y-auto min-w-[300px]  ${style["custom-scrollbar"]} rounded-b-lg`}
+                    >
+                      {notificationLoader ? (
+                        <div className="flex flex-col items-center w-full py-2">
+                          <Loader />
+                        </div>
+                      ) : notifications.length === 0 ? (
+                        <p className="w-full text-center">
+                          No notifications available.
+                        </p>
+                      ) : (
+                        <>
+                          {notifications
+                            .slice() // create a shallow copy to avoid mutating the original array
+                            .reverse()
+                            .map((notification, index) => (
+                              <div
+                                key={index}
+                                onClick={async () => {
+                                  const response =
+                                    await updateNotificationStatus(
+                                      notification.id
+                                    );
+                                  console.log(response.status);
+                                  if (response.status == 200) {
+                                    setNotifications((prevNotifications) =>
+                                      prevNotifications.map(
+                                        (n) =>
+                                          n.id == notification.id
+                                            ? { ...n, is_read: true } // Merge the updated data for the matching notification
+                                            : n // Keep the other notifications unchanged
+                                      )
+                                    );
+                                  }
+                                }}
+                                className={` cursor-pointer py-4 w-auto p-2  ${
+                                  notification.is_read
+                                    ? "bg-white"
+                                    : "bg-gray-100"
+                                }`}
+                              >
+                                <div className="flex justify-between items-center">
+                                  <div className="flex flex-row items-start ">
+                                    <div
+                                      className="w-8 h-8 rounded-full overflow-hidden flex flex-col items-center
+                                   justify-center   "
+                                    >
+                                      <img
+                                        src={localStorage.getItem("profilepic")}
+                                        className="w-10 h-10 "
+                                      />
+                                    </div>
+                                    <div className="flex flex-col items-start ml-2 w-full">
+                                      <h2 className="text-sm font-bold first-letter:uppercase">
+                                        {notification.title}
+                                      </h2>
+                                      <p className="text-xs line-clamp-2 mt-1">
+                                        {notification.message}
+                                      </p>
+                                      <div className="w-full mt-[2px] flex flex-row items-center justify-between">
+                                        <p className="text-xs text-gray-400 ">
+                                          {formatDistanceToNow(
+                                            new Date(notification.created_at),
+                                            { addSuffix: true }
+                                          )}
+                                        </p>
+
+                                        <p className="text-xs text-end">
+                                          {notification.is_read ? "seen" : ""}
+                                        </p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  {/* {!notification.is_read && (
+                                  <button
+                                    // onClick={() => markAsRead(index)}
+                                    className="text-blue-500 underline"
+                                  >
+                                    Mark as read
+                                  </button>
+                                )} */}
+                                </div>
+                              </div>
+                            ))}{" "}
+                          {nextNotificationPage && (
+                            <button
+                              className="w-full text-center"
+                              onClick={async () => {
+                                setMoreNotificationLoader(true);
+                                const newResponse = await fetchNotifications(
+                                  nextNotificationPage,
+                                  setMoreNotificationLoader
+                                );
+                                setNextNotificationPage(newResponse.data.next);
+                                setNotifications((prevNotifications) => [
+                                  ...prevNotifications,
+                                  ...newResponse.data.results,
+                                ]);
+                              }}
+                            >
+                              {moreNotificationLoader ? (
+                                <Loader />
+                              ) : (
+                                "Load more"
+                              )}
+                            </button>
+                          )}
+                        </>
+                      )}
+                    </div>
+                  </div>
+                )}
               </div>
               {/* Dropdown Menu */}
               {isUserMenuOpen && (

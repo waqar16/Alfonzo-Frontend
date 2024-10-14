@@ -56,48 +56,48 @@ const Login = () => {
     // }
 
     const captchaValue = recaptchaRef.current.getValue();
-    // if (!captchaValue) {
-    //   notify("Please verify the reCAPTCHA!", "error");
-    // } else {
-    setLoading(true);
-    const response = await loginUser(
-      {
-        username: data.email,
-        password: data.password,
-      },
-      setLoading
-    );
-    console.log("response", response.data);
-    // alert(response.error.error || response.data);
-    if (response.status == 400) {
-      console.log(response);
-      if (
-        response.error ==
-        `Your account is inactive. We've sent you a new activation email.`
-      ) {
-        notify(response.error, "error");
-        navigate("/activation-email-sent");
-      } else {
-        notify(response.error, "error");
+    if (!captchaValue) {
+      notify("Please verify the reCAPTCHA!", "error");
+    } else {
+      setLoading(true);
+      const response = await loginUser(
+        {
+          username: data.email,
+          password: data.password,
+        },
+        setLoading
+      );
+      console.log("response", response.data);
+      // alert(response.error.error || response.data);
+      if (response.status == 400) {
+        console.log(response);
+        if (
+          response.error ==
+          `Your account is inactive. We've sent you a new activation email.`
+        ) {
+          notify(response.error, "error");
+          navigate("/activation-email-sent");
+        } else {
+          notify(response.error, "error");
+        }
+      }
+      if (response?.data?.mfa_required && response?.data.mfa_required == true) {
+        localStorage.setItem("email", response.data.email);
+        navigate("/verify-mfa");
+      }
+      if (response?.data?.access) {
+        localStorage.setItem("token", response.data.access);
+        notify("login succesfull", "success");
+
+        setTimeout(() => {
+          if (response.data.role == "ADMIN") {
+            navigate("/admin");
+          } else {
+            navigate("/profile");
+          }
+        }, 4000);
       }
     }
-    if (response?.data?.mfa_required && response?.data.mfa_required == true) {
-      localStorage.setItem("email", response.data.email);
-      navigate("/verify-mfa");
-    }
-    if (response?.data?.access) {
-      localStorage.setItem("token", response.data.access);
-      notify("login succesfull", "success");
-
-      setTimeout(() => {
-        if (response.data.role == "ADMIN") {
-          navigate("/admin");
-        } else {
-          navigate("/profile");
-        }
-      }, 4000);
-    }
-    // }
   };
   const serverUrl = `${process.env.REACT_APP_SERVER_URL}`;
 

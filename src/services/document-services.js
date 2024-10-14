@@ -43,6 +43,7 @@ export const fetchUserDocuments = async (setLoading) => {
 
 export const fetchLawyerRelatedDocuments = async (setLoading) => {
   try {
+    setLoading(true);
     const response = await axios.get(
       `${config.SERVER_URL}/api/documents-for-lawyer`,
       getAuthHeaders()
