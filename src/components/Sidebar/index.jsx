@@ -2,8 +2,12 @@ import React, { useEffect, useRef, useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import SidebarLinkGroup from "./SidebarLinkGroup";
 import Logo from "./logo512.png";
+import { logoBlack } from "../../constants/global";
+import { useSelector } from "react-redux";
 
 const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
+  const theme = useSelector((state) => state.theme);
+
   const location = useLocation();
   const { pathname } = location;
 
@@ -49,18 +53,21 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
       document.querySelector("body")?.classList.remove("sidebar-expanded");
     }
   }, [sidebarExpanded]);
-
+  
   return (
     <aside
       ref={sidebar}
-      className={`absolute left-0 top-0 z-9999 flex h-screen w-72.5 flex-col overflow-y-hidden   duration-300 ease-linear dark:bg-boxdark lg:static lg:translate-x-0 ${
+      className={`absolute left-0 top-0 z-9999 flex h-screen w-72.5 flex-col overflow-y-hidden bg-white  duration-300 ease-linear dark:bg-boxdark lg:static lg:translate-x-0 ${
         sidebarOpen ? "translate-x-0" : "-translate-x-full"
       }`}
     >
-      {/* <!-- SIDEBAR HEADER --> */}
       <div className="flex items-center justify-between gap-2 px-6 py-5.5 lg:py-6.5">
-        <NavLink to="/admin/home">
-          <img src={Logo} alt="Logo" className="w-6 h-auto" />
+        <NavLink to="/admin/dashboard">
+          <img
+            src={theme == "dark" ? "/logo-white.png" : "/logo.png"}
+            alt="Logo"
+            className="w-40 h-auto"
+          />
         </NavLink>
 
         <button
@@ -92,7 +99,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
         <nav className="mt-5 py-4 px-4 lg:mt-9 lg:px-6">
           {/* <!-- Menu Group --> */}
           <div>
-            <h3 className="mb-4 ml-4 text-sm font-semibold text-bodydark2">
+            <h3 className="mb-4 ml-4 text-sm font-semibold  text-slate-950 dark:text-white">
               MENU
             </h3>
 
@@ -108,10 +115,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                     <React.Fragment>
                       <NavLink
                         to="#"
-                        className={`group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
-                          (pathname === "/" ||
-                            pathname.includes("dashboard")) &&
-                          "bg-graydark dark:bg-meta-4"
+                        className={`group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium dark:text-bodydark1 text-zinc-700 duration-300 ease-in-out hover:bg-slate-300 dark:hover:bg-graydark dark:dark:hover:bg-meta-4 ${
+                          pathname.includes("/admin/dashboard") &&
+                          "bg-slate-300 dark:bg-meta-4  "
                         }`}
                         onClick={(e) => {
                           e.preventDefault();
@@ -173,13 +179,13 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                         <ul className="mt-4 mb-5.5 flex flex-col gap-2.5 pl-6">
                           <li>
                             <NavLink
-                              to="/admin"
+                              to="/admin/dashboard"
                               className={({ isActive }) =>
-                                "group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white " +
+                                "text-zinc-700 group relative flex items-center gap-2.5 rounded-md px-4 font-medium dark:text-bodydark2 duration-300 ease-in-out dark:hover:text-white hover:text-slate-900" +
                                 (isActive && "!text-white")
                               }
                             >
-                              Al Fonzo
+                              Legal Ease
                             </NavLink>
                           </li>
                         </ul>
@@ -193,9 +199,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
               <li>
                 <NavLink
                   to="/admin/profile"
-                  className={`group relative flex items-center  gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
+                  className={`group relative flex items-center  gap-2.5 rounded-sm py-2 px-4 font-medium text-zinc-700 dark:text-bodydark1 duration-300 ease-in-out hover:bg-slate-300 dark:hover:bg-graydark dark:dark:hover:bg-meta-4 ${
                     pathname.includes("admin/profile") &&
-                    "bg-graydark dark:bg-meta-4"
+                    "bg-slate-300 dark:bg-meta-4  "
                   }`}
                 >
                   <svg
@@ -228,10 +234,10 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                     <React.Fragment>
                       <NavLink
                         to="#"
-                        className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
-                          (pathname === "/forms" ||
-                            pathname.includes("forms")) &&
-                          "bg-graydark dark:bg-meta-4"
+                        className={`text-zinc-700 group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium dark:text-bodydark1 duration-300 ease-in-out hover:bg-slate-300 dark:hover:bg-graydark dark:dark:hover:bg-meta-4 ${
+                          (pathname.includes("/admin/add-template") ||
+                            pathname.includes("/admin/add-category")) &&
+                          "bg-slate-300 dark:bg-meta-4  "
                         }`}
                         onClick={(e) => {
                           e.preventDefault();
@@ -299,11 +305,22 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                             <NavLink
                               to="/admin/add-template"
                               className={({ isActive }) =>
-                                "group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white " +
+                                "group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-slate-500 dark:text-bodydark2 duration-300 ease-in-out dark:hover:text-white hover:text-slate-900" +
                                 (isActive && "!text-white")
                               }
                             >
                               Add Template
+                            </NavLink>
+                          </li>
+                          <li>
+                            <NavLink
+                              to="/admin/add-category"
+                              className={({ isActive }) =>
+                                "group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-slate-500 dark:text-bodydark2 duration-300 ease-in-out dark:hover:text-white hover:text-slate-900" +
+                                (isActive && "!text-white ")
+                              }
+                            >
+                              Add Category
                             </NavLink>
                           </li>
                         </ul>
@@ -318,10 +335,10 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
               {/* <!-- Menu Item Tables --> */}
               <li>
                 <NavLink
-                  to="/manage-users"
-                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
+                  to="/admin/manage-users"
+                  className={`text-zinc-700 group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium dark:text-bodydark1 duration-300 ease-in-out hover:bg-slate-300 dark:hover:bg-graydark  ${
                     pathname.includes("manage-users") &&
-                    "bg-graydark dark:bg-meta-4"
+                    "bg-slate-300 dark:bg-meta-4  "
                   }`}
                 >
                   <svg

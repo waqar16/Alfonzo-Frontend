@@ -1,7 +1,10 @@
+import { useDispatch } from "react-redux";
 import useColorMode from "../../hooks/useColorMode";
+import { setTheme } from "../../redux/reducers/theme-reducer";
 
 const DarkModeSwitcher = () => {
   const [colorMode, setColorMode] = useColorMode();
+  const dispatch = useDispatch();
 
   return (
     <li>
@@ -15,6 +18,11 @@ const DarkModeSwitcher = () => {
           onChange={() => {
             if (typeof setColorMode === "function") {
               setColorMode(colorMode === "light" ? "dark" : "light");
+              if (colorMode == "dark") {
+                dispatch(setTheme("light"));
+              } else {
+                dispatch(setTheme("dark"));
+              }
             }
           }}
           className="dur absolute top-0 z-50 m-0 h-full w-full cursor-pointer opacity-0"

@@ -46,7 +46,7 @@ const EditTemplate = () => {
   console.log(template);
   return (
     <div className="flex flex-col items-start w-full pt-32 px-4 md:px-12 py-12">
-      {!template?.question ? (
+      {!template?.questions ? (
         <div className="flex flex-col items-center w-full  ">
           <h2>No Template Selected.</h2>
           <NavLink

@@ -6,8 +6,8 @@ export const createNewTemplate = async (templateData, setLoading) => {
   try {
     const response = await axios.post(
       `${config.SERVER_URL}/api/templates/`,
-      templateData
-      //   getAuthHeaders()
+      templateData,
+      getAuthHeaders()
     );
     setLoading(false);
 
@@ -20,12 +20,52 @@ export const createNewTemplate = async (templateData, setLoading) => {
       : error.message;
   }
 };
+export const createNewCategory = async (templateData, setLoading) => {
+  try {
+    setLoading(true);
+    const response = await axios.post(
+      `${config.SERVER_URL}/api/categories/
 
-export const fetchTemplates = async ( setLoading) => {
+`,
+      templateData,
+      getAuthHeaders()
+    );
+    setLoading(false);
+
+    return { data: response.data, status: response.status };
+  } catch (error) {
+    setLoading(false);
+
+    return error.response
+      ? { error: error.response.data, status: error.response.status }
+      : error.message;
+  }
+};
+export const fetchCategories = async (setLoading) => {
+  try {
+    setLoading(true);
+    const response = await axios.get(
+      `${config.SERVER_URL}/api/categories
+
+`,
+      getAuthHeaders()
+    );
+    setLoading(false);
+
+    return { data: response.data, status: response.status };
+  } catch (error) {
+    setLoading(false);
+
+    return error.response
+      ? { error: error.response.data, status: error.response.status }
+      : error.message;
+  }
+};
+export const fetchTemplates = async (setLoading) => {
   try {
     const response = await axios.get(
       `${config.SERVER_URL}/api/templates/`,
-      //   getAuthHeaders()
+      getAuthHeaders()
     );
     setLoading(false);
 

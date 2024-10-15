@@ -15,7 +15,7 @@ const TemplateQuestions = ({ template, setFormData, formData }) => {
         Fill the Form for Template: {template.title}
       </h1>
 
-      {template?.question?.map((questionObj, index) => (
+      {template?.questions?.map((questionObj, index) => (
         <div key={index} className="mb-4">
           <label className="block text-gray-700">{questionObj.question}</label>
           <input

@@ -111,7 +111,7 @@ const TableOne = () => {
               }`}
               key={key}
             >
-              <div className="flex items-center gap-3 p-2.5 xl:p-5 overflow-x-hidden max-w-[120px] ">
+              <div className="flex items-center gap-3 p-2.5 xl:p-5 overflow-x-hidden w-[120px] sm:w-auto">
                 <p className="  text-black dark:text-white ">{user.email}</p>
               </div>
 

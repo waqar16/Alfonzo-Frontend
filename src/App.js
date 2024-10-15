@@ -50,6 +50,7 @@ import Lawyers from "./pages/Lawyers/Lawyers";
 import AskALawyer from "./pages/Ask-a-Lawyer/AskALawyer";
 import LinkedinLogin from "./pages/LinkedinLogin/LinkedinLogin";
 import Notifications from "./pages/Notifications/Notification";
+import AddCategory from "./pages/Add-Category/AddCategory";
 
 function App() {
   useEffect(() => {
@@ -157,7 +158,7 @@ function Content() {
           <Route path="/news" element={<NewsUpdatesPage />} />
           <Route element={<PrivateRoutes userRole={"admin"} />}>
             <Route
-              path="/admin"
+              path="/admin/dashboard"
               element={
                 <DefaultLayout>
                   <PageTitle title="eCommerce Dashboard | TailAdmin - Tailwind CSS Admin Dashboard Template" />
@@ -168,7 +169,7 @@ function Content() {
           </Route>
           <Route element={<PrivateRoutes userRole={"admin"} />}>
             <Route
-              path="/manage-users"
+              path="/admin/manage-users"
               element={
                 <DefaultLayout>
                   <PageTitle title="Tables | TailAdmin - Tailwind CSS Admin Dashboard Template" />
@@ -188,16 +189,28 @@ function Content() {
               }
             />
           </Route>
-
-          <Route
-            path="/admin/add-template"
-            element={
-              <DefaultLayout>
-                <PageTitle title="Tables | TailAdmin - Tailwind CSS Admin Dashboard Template" />
-                <CreateTemplate />
-              </DefaultLayout>
-            }
-          />
+          <Route element={<PrivateRoutes userRole={"admin"} />}>
+            <Route
+              path="/admin/add-template"
+              element={
+                <DefaultLayout>
+                  <PageTitle title="Tables | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+                  <CreateTemplate />
+                </DefaultLayout>
+              }
+            />
+          </Route>
+          <Route element={<PrivateRoutes userRole={"admin"} />}>
+            <Route
+              path="/admin/add-category"
+              element={
+                <DefaultLayout>
+                  <PageTitle title="Tables | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+                  <AddCategory />
+                </DefaultLayout>
+              }
+            />
+          </Route>
           <Route path="/faqs" element={<Faqs />} />
           <Route path="/about-us" element={<AboutUs />} />
           <Route path="/services" element={<Services />} />
