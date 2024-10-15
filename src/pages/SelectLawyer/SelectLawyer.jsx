@@ -4,6 +4,7 @@ import { setLawyer } from "../../redux/reducers/lawyer-reducer";
 import { useDispatch } from "react-redux";
 import { fetchAllLawyers } from "../../services/lawyer-services";
 import Loader from "../../components/Loader/Loader";
+import Templates from "../Templates/Templates";
 
 // const lawyers = [
 //   {
@@ -168,11 +169,14 @@ const SelectLawyer = () => {
     };
     sdas();
   }, []);
-  const filteredLawyers = lawyers.filter(
-    (lawyer) =>
-      lawyer.first_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      lawyer.last_name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  let filteredLawyers;
+  if (lawyers) {
+    filteredLawyers = lawyers.filter(
+      (lawyer) =>
+        lawyer.first_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        lawyer.last_name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  }
 
   return (
     <div className="flex flex-col dark:bg-black items-center py-24 pt-32 px-4 md:px-16">
@@ -233,7 +237,9 @@ const SelectLawyer = () => {
           <h1 className="text-center dark:text-white ">No Lawyer found</h1>
         )
       )}
-      {loading && <Loader color={"red"} />}
+      {loading && (
+        <p className="text-zinc-400 w-full text-center">Loading...</p>
+      )}
     </div>
   );
 };

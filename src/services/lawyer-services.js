@@ -3,6 +3,7 @@ import { getAuthHeaders } from "./header";
 import { config } from "../config/config";
 export const fetchAllLawyers = async (setLoading) => {
   try {
+    setLoading(true);
     const response = await axios.get(
       `${config.SERVER_URL}/api/lawyer-profiles
       `,

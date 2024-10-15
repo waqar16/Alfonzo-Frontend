@@ -63,6 +63,7 @@ export const fetchCategories = async (setLoading) => {
 };
 export const fetchTemplates = async (setLoading) => {
   try {
+    setLoading(true);
     const response = await axios.get(
       `${config.SERVER_URL}/api/templates/`,
       getAuthHeaders()
