@@ -91,7 +91,7 @@ const Login = () => {
 
         setTimeout(() => {
           if (response.data.role == "ADMIN") {
-            navigate("/admin");
+            navigate("/admin/dashboard");
           } else {
             navigate("/profile");
           }

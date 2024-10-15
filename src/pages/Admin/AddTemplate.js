@@ -1,18 +1,44 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import ReactQuill from "react-quill";
 import "./CustomStyles.css"; // Import your custom styles
-import { createNewTemplate } from "../../services/template-services";
+import {
+  createNewTemplate,
+  fetchCategories,
+} from "../../services/template-services";
 import { notify } from "../../utilities/toast";
 import { Toaster } from "react-hot-toast";
 
 const AdminTemplatePage = () => {
+  const [categories, setCategories] = useState(null);
+  const [subCategories, setSubCategories] = useState(null);
   const [templateName, setTemplateName] = useState("");
   const [templateContent, setTemplateContent] = useState(""); // Main content
   const [questions, setQuestions] = useState([]); // All questions
   const [newQuestion, setNewQuestion] = useState(""); // Temp new question
   const [templateType, setTemplateType] = useState(""); // Temp new question
+  const [templateSubType, setTemplateSubType] = useState(""); // Temp new question
   const [loading, setLoading] = useState(false); // Temp new question
+  const [errors, setErrors] = useState({
+    templateName: "",
+    templateContent: "",
+    templateType: "",
+    templateSubType: "",
+    questions: "",
+  });
+  const validateFields = () => {
+    const newErrors = {};
+    if (!templateName) newErrors.templateName = "Template name is required.";
+    if (!templateContent)
+      newErrors.templateContent = "Template content is required.";
+    if (!templateType) newErrors.templateType = "Template type is required.";
+    if (templateType && !templateSubType)
+      newErrors.templateSubType = "Template subtype is required.";
+    if (questions.length === 0)
+      newErrors.questions = "At least one question is required.";
 
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
   const quillRef = useRef(null); // Ref to access Quill editor
 
   // Handle adding questions
@@ -49,19 +75,25 @@ const AdminTemplatePage = () => {
       question,
       placeholderId,
     }));
+    // if (!templateName) {
+    //   notify("Add Template Name", "error");
+    // } else if (!templateContent) {
+    //   notify("Add some content to template", "error");
+    // } else if (!templateType) {
+    //   notify("Add Type to template", "error");
+    // } else if (!templateSubType) {
+    //   notify("Add Sub Type to template", "error");
+    // } else if (!questions) {
+    //   notify("Add Questions to template", "error");
+    // } else {
+    if (!validateFields()) return; // Stop if validation fails
 
-    console.log({
-      templateName,
-      templateContent: cleanTemplateContent,
-      questions: rowData,
-      templateType,
-    });
     const newTemplate = await createNewTemplate(
       {
         name: templateName,
         content: templateContent,
-        question: questions,
-        category: templateType,
+        questions: questions,
+        category: subCategories.id,
       },
       setLoading
     );
@@ -74,29 +106,58 @@ const AdminTemplatePage = () => {
       setTemplateType(""); // Temp new question
     }
     console.log("New Template", newTemplate);
+    // }
   };
+  const [fetchLoading, setFetchLoading] = useState(false); // Loading state
 
+  useEffect(() => {
+    const abc = async () => {
+      const response = await fetchCategories(setFetchLoading);
+      setCategories(response.data);
+    };
+    abc();
+  }, []);
   return (
-    <div className="container mx-auto p-6 bg-gray-100 shadow-lg rounded-lg">
+    <div className="container mx-auto p-6 dark:bg-black bg-gray-100 shadow-lg rounded-lg">
       <h1 className="text-2xl font-semibold mb-4">
         Admin: Create New Template
       </h1>
 
       {/* Template Name */}
       <div className="mb-4">
-        <label className="block text-gray-700">Template Name</label>
+        <label className="block dark:text-white text-slate-900">
+          Template Name
+        </label>
         <input
           type="text"
           value={templateName}
-          onChange={(e) => setTemplateName(e.target.value)}
-          className="w-full mt-1 p-2 border rounded-md shadow-sm"
+          onChange={(e) => {
+            if (e.target.value != "") {
+              setErrors({
+                ...errors,
+                templateName: "",
+              });
+            } else {
+              setErrors({
+                ...errors,
+                templateName: "Required",
+              });
+            }
+            setTemplateName(e.target.value);
+          }}
+          className="w-full mt-1 p-2  rounded-md shadow-sm text-black-2 focus:outline-none focus:ring-0"
           placeholder="Enter template name"
         />
+        {errors.templateName && (
+          <p className="text-red-500 text-xs">{errors.templateName}</p>
+        )}
       </div>
 
       {/* Template Content with Quill */}
       <div className="mb-6 overflow-hidden">
-        <label className="block text-gray-700">Template Content</label>
+        <label className="block dark:text-white text-gray-700">
+          Template Content
+        </label>
         <ReactQuill
           ref={quillRef}
           value={templateContent}
@@ -104,34 +165,121 @@ const AdminTemplatePage = () => {
           style={{
             height: "300px",
           }}
-          className="h-[200px] bg-white "
+          className="h-[200px] bg-white text-black-2 focus:outline-none focus:ring-0"
           modules={quillModules}
         />
-        <p className="text-sm text-gray-500 mt-16">
+        <p className="text-sm dark:text-zinc-400 text-gray-500 mt-16">
           Use placeholders like <code>{"{__1__}"}</code> to link user input from
           questions.
         </p>
+        {errors.templateContent && (
+          <p className="text-red-500 text-xs">{errors.templateContent}</p>
+        )}
       </div>
 
       {/* Add Question */}
-      <select
-        value={templateType}
-        onChange={(e) => setTemplateType(e.target.value)}
-        className="my-2 rounded-md border border-gray-400 w-full p-2   bg-white text-gray-700 shadow-sm rounded-r-md"
-      >
-        <option value="">Select Type</option>
-        <option value="law">Law</option>
-        <option value="mutuallity">Mutuallity</option>
-        <option value="power">Power</option>
-      </select>
       <div className="mb-4">
-        <label className="block text-gray-700">Add Question</label>
+        <label className="block dark:text-white text-gray-700">
+          Template Type
+        </label>
+        <select
+          value={templateType}
+          onChange={(e) => {
+            if (e.target.value != "") {
+              setErrors({
+                ...errors,
+                templateType: "",
+              });
+            } else {
+              setErrors({
+                ...errors,
+                templateType: "Required",
+              });
+            }
+            setSubCategories(
+              categories.find((cat) => {
+                return cat.name == e.target.value;
+              })
+            );
+            console.log(
+              categories.find((cat) => {
+                return cat.name == e.target.value;
+              })
+            );
+            setTemplateType(e.target.value);
+          }}
+          className="focus:outline-none focus:ring-0 text-black-2 my-2 rounded-md  -gray-400 w-full p-2   bg-white text-gray-700 shadow-sm rounded-r-md"
+        >
+          <option value="">Select Type</option>
+          {categories &&
+            categories.map((cat) => (
+              <option value={cat.name} className="first-letter:uppercase">
+                {cat.name}
+              </option>
+            ))}
+        </select>
+        {errors.templateType && (
+          <p className="text-red-500 text-xs">{errors.templateType}</p>
+        )}
+      </div>
+      {templateType && subCategories && (
+        <div className="mb-4">
+          <label className="block dark:text-white text-gray-700">
+            Template Sub Type
+          </label>
+          <select
+            value={templateSubType}
+            onChange={(e) => {
+              if (e.target.value != "") {
+                setErrors({
+                  ...errors,
+                  templateSubType: "",
+                });
+              } else {
+                setErrors({
+                  ...errors,
+                  templateSubType: "Required",
+                });
+              }
+
+              setTemplateSubType(e.target.value);
+            }}
+            className="focus:outline-none focus:ring-0 text-black-2 my-2 rounded-md  -gray-400 w-full p-2   bg-white text-gray-700 shadow-sm rounded-r-md"
+          >
+            <option value="">Select Sub Type</option>
+            {subCategories.sub_categories.result.map((cat) => (
+              <option value={cat}>{cat}</option>
+            ))}
+          </select>
+          {errors.templateSubType && (
+            <p className="text-red-500 text-xs">{errors.templateSubType}</p>
+          )}
+        </div>
+      )}
+
+      <div className="mb-4">
+        <label className="block dark:text-white text-gray-700">
+          Add Question
+        </label>
         <div className="flex mt-2">
           <input
             type="text"
             value={newQuestion}
-            onChange={(e) => setNewQuestion(e.target.value)}
-            className="flex-grow  p-2 border rounded-l-md shadow-sm"
+            onChange={(e) => {
+              if (e.target.value != "") {
+                setErrors({
+                  ...errors,
+                  questions: "",
+                });
+              } else {
+                setErrors({
+                  ...errors,
+                  questions: "Required",
+                });
+              }
+              setNewQuestion(e.target.value);
+            }}
+            className="text-black-2 flex-grow  p-2  rounded-l-md shadow-sm focus:outline-none focus:ring-0"
             placeholder="Enter a question"
           />
           <button
@@ -141,6 +289,11 @@ const AdminTemplatePage = () => {
           >
             Add Question
           </button>
+        </div>
+        <div className="mb-4">
+          {errors.questions && (
+            <p className="text-red-500 text-xs">{errors.questions}</p>
+          )}
         </div>
       </div>
 
