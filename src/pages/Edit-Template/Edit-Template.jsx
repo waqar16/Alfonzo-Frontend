@@ -11,7 +11,7 @@ export const getUpdatedTemplateContent = (templateAnswers, previewTemplate) => {
   let content = previewTemplate.content;
 
   // Replace placeholders with either the answer or "_____"
-  previewTemplate?.question?.forEach((question, index) => {
+  previewTemplate?.questions?.forEach((question, index) => {
     const answer =
       templateAnswers[`answer${index + 1}`] ||
       `<span className="text-red-400">_____</span>`; // Default to "_____"
@@ -30,7 +30,7 @@ const EditTemplate = () => {
 
   // const template = faqWithLegalAgreementsArray[1];
   const [formData, setFormData] = useState(
-    template?.question?.reduce((acc, _, index) => {
+    template?.questions?.reduce((acc, _, index) => {
       acc[`answer${index + 1}`] = ""; // Initialize with empty string
       return acc;
     }, {})
