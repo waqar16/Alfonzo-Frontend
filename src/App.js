@@ -51,6 +51,7 @@ import AskALawyer from "./pages/Ask-a-Lawyer/AskALawyer";
 import LinkedinLogin from "./pages/LinkedinLogin/LinkedinLogin";
 import Notifications from "./pages/Notifications/Notification";
 import AddCategory from "./pages/Add-Category/AddCategory";
+import TemplatesAdmin from "./components/Tables/Templates-Admin";
 
 function App() {
   useEffect(() => {
@@ -158,10 +159,21 @@ function Content() {
           <Route path="/news" element={<NewsUpdatesPage />} />
           <Route element={<PrivateRoutes userRole={"admin"} />}>
             <Route
+              path="/admin/templates"
+              element={
+                <DefaultLayout>
+                  <PageTitle title="Legal Ease | Admin" />
+                  <TemplatesAdmin />
+                </DefaultLayout>
+              }
+            />
+          </Route>
+          <Route element={<PrivateRoutes userRole={"admin"} />}>
+            <Route
               path="/admin/dashboard"
               element={
                 <DefaultLayout>
-                  <PageTitle title="eCommerce Dashboard | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+                  <PageTitle title="Legal Ease | Admin" />
                   <ECommerce />
                 </DefaultLayout>
               }
@@ -172,7 +184,7 @@ function Content() {
               path="/admin/manage-users"
               element={
                 <DefaultLayout>
-                  <PageTitle title="Tables | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+                  <PageTitle title="Legal Ease | Admin" />
                   <Tables />
                 </DefaultLayout>
               }
@@ -183,7 +195,7 @@ function Content() {
               path="/admin/profile"
               element={
                 <DefaultLayout>
-                  <PageTitle title="Tables | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+                  <PageTitle title="Legal Ease | Admin" />
                   <Profile />
                 </DefaultLayout>
               }
@@ -194,7 +206,7 @@ function Content() {
               path="/admin/add-template"
               element={
                 <DefaultLayout>
-                  <PageTitle title="Tables | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+                  <PageTitle title="Legal Ease | Admin" />
                   <CreateTemplate />
                 </DefaultLayout>
               }
@@ -205,7 +217,7 @@ function Content() {
               path="/admin/add-category"
               element={
                 <DefaultLayout>
-                  <PageTitle title="Tables | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+                  <PageTitle title="Legal Ease | Admin" />
                   <AddCategory />
                 </DefaultLayout>
               }

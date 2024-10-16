@@ -45,12 +45,11 @@ const AddCategory = () => {
     const newCategory = await createNewCategory(
       {
         name: categoryName,
-        sub_categories: {
-          result: subCategories.map((sub) => {
-            return sub;
-          }),
-        },
+        sub_categories: subCategories.map((sub) => {
+          return { name: sub };
+        }),
       },
+
       setLoading
     );
     console.log("New Category", newCategory);

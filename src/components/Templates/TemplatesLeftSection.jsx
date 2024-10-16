@@ -4,6 +4,7 @@ const TemplatesLeftSection = ({
   templates,
   setViewingTemplates,
   allTemplates,
+  setSubtypes,
 }) => {
   const [selected, setSelected] = React.useState("all");
   const [isDropdownOpen, setDropdownOpen] = React.useState(false);
@@ -11,6 +12,13 @@ const TemplatesLeftSection = ({
   const handleSelectChange = (event) => {
     const value = event.target.value;
     setSelected(value);
+    // setSubtypes()
+    console.log("first", value);
+    // console.log(
+    //   templates.find((temp) => {
+    //     return temp.category.name == value;
+    //   })
+    // );
     setViewingTemplates(value === "all" ? allTemplates : templates[value]);
   };
 
@@ -41,6 +49,7 @@ const TemplatesLeftSection = ({
           onClick={() => {
             setSelected("all");
             setViewingTemplates(allTemplates);
+            setSubtypes(null);
           }}
         >
           <p>All</p>
@@ -61,6 +70,10 @@ const TemplatesLeftSection = ({
             onClick={() => {
               setSelected(category);
               setViewingTemplates(templates[category]);
+
+              setSubtypes(
+                templates[category][0].category.sub_categories.result
+              );
             }}
           >
             <p>{category}</p>

@@ -3,10 +3,9 @@ import { FaTimes } from "react-icons/fa";
 import { NavLink, useNavigate } from "react-router-dom";
 import { setTemplate } from "../../redux/reducers/template-reducer";
 import { useDispatch } from "react-redux";
-const TemplatesRightSection = ({ templates }) => {
+const TemplatesRightSection = ({ templates,previewTemplate,setPreviewTemplate }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [previewTemplate, setPreviewTemplate] = React.useState(null);
   React.useEffect(() => {
     if (previewTemplate) {
       document.body.style.overflow = "hidden";
@@ -55,7 +54,7 @@ const TemplatesRightSection = ({ templates }) => {
           <div className="hidden md:absolute inset-0 bg-black opacity-0 md:hover:opacity-50 transition-opacity duration-300 z-10"></div>
 
           <h3 className="p-1 bg-slate-300 border-black rounded-full text-black px-2 mb-4 z-20">
-            {template.category}
+            {template.category.name}
           </h3>
 
           {/* Image */}

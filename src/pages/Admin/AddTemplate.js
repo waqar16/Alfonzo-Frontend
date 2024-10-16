@@ -7,6 +7,10 @@ import {
 } from "../../services/template-services";
 import { notify } from "../../utilities/toast";
 import { Toaster } from "react-hot-toast";
+import Loader from "../../components/Loader/Loader";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+import { NavLink } from "react-router-dom";
 
 const AdminTemplatePage = () => {
   const [categories, setCategories] = useState(null);
@@ -25,6 +29,8 @@ const AdminTemplatePage = () => {
     templateSubType: "",
     questions: "",
   });
+  const [showPreview, setShowPreview] = useState(false); // Control preview visibility
+
   const validateFields = () => {
     const newErrors = {};
     if (!templateName) newErrors.templateName = "Template name is required.";
@@ -75,25 +81,33 @@ const AdminTemplatePage = () => {
       question,
       placeholderId,
     }));
-    // if (!templateName) {
-    //   notify("Add Template Name", "error");
-    // } else if (!templateContent) {
-    //   notify("Add some content to template", "error");
-    // } else if (!templateType) {
-    //   notify("Add Type to template", "error");
-    // } else if (!templateSubType) {
-    //   notify("Add Sub Type to template", "error");
-    // } else if (!questions) {
-    //   notify("Add Questions to template", "error");
-    // } else {
-    if (!validateFields()) return; // Stop if validation fails
 
+    if (!validateFields()) return; // Stop if validation fails
+    // "category": {
+    //             "id": 1,
+    //             "name": "Technology",
+    //             "sub_categories": [
+    //                 {
+    //                     "id": 1,
+    //                     "name": "AI"
+    //                 },
+    //                 {
+    //                     "id": 2,
+    //                     "name": "Cloud Computing"
+    //                 }
+    //             ]
+    //         },
+    //         "SubCategory": {
+    //             "id": 2,
+    //             "name": "Cloud Computing"
+    //         },
     const newTemplate = await createNewTemplate(
       {
         name: templateName,
         content: templateContent,
         questions: questions,
-        category: subCategories.id,
+        category: templateType.id,
+        sub_category: templateSubType.id,
       },
       setLoading
     );
@@ -178,57 +192,75 @@ const AdminTemplatePage = () => {
       </div>
 
       {/* Add Question */}
-      <div className="mb-4">
-        <label className="block dark:text-white text-gray-700">
-          Template Type
-        </label>
-        <select
-          value={templateType}
-          onChange={(e) => {
-            if (e.target.value != "") {
-              setErrors({
-                ...errors,
-                templateType: "",
-              });
-            } else {
-              setErrors({
-                ...errors,
-                templateType: "Required",
-              });
-            }
-            setSubCategories(
-              categories.find((cat) => {
-                return cat.name == e.target.value;
-              })
-            );
-            console.log(
-              categories.find((cat) => {
-                return cat.name == e.target.value;
-              })
-            );
-            setTemplateType(e.target.value);
-          }}
-          className="focus:outline-none focus:ring-0 text-black-2 my-2 rounded-md  -gray-400 w-full p-2   bg-white text-gray-700 shadow-sm rounded-r-md"
-        >
-          <option value="">Select Type</option>
-          {categories &&
-            categories.map((cat) => (
-              <option value={cat.name} className="first-letter:uppercase">
-                {cat.name}
-              </option>
-            ))}
-        </select>
-        {errors.templateType && (
-          <p className="text-red-500 text-xs">{errors.templateType}</p>
-        )}
-      </div>
+      {categories && (
+        <div className="mb-4">
+          <label className="block dark:text-white text-gray-700">
+            Template Type
+          </label>
+          {categories.length > 0 ? (
+            <select
+              value={templateType.name}
+              onChange={(e) => {
+                if (e.target.value != "") {
+                  setErrors({
+                    ...errors,
+                    templateType: "",
+                  });
+                } else {
+                  setErrors({
+                    ...errors,
+                    templateType: "Required",
+                  });
+                }
+                setSubCategories(
+                  categories.find((cat) => {
+                    return cat.name == e.target.value;
+                  })
+                );
+                console.log(
+                  categories.find((cat) => {
+                    return cat.name == e.target.value;
+                  })
+                );
+                setTemplateType(
+                  categories.find((cat) => {
+                    return cat.name == e.target.value;
+                  })
+                );
+              }}
+              className="focus:outline-none focus:ring-0 text-black-2 my-2 rounded-md  -gray-400 w-full p-2   bg-white text-gray-700 shadow-sm rounded-r-md"
+            >
+              <option value="">Select Type</option>
+              {categories &&
+                categories.map((cat) => (
+                  <option value={cat.name} className="first-letter:uppercase">
+                    {cat.name}
+                  </option>
+                ))}
+            </select>
+          ) : (
+            <p>
+              No Categories to show add some categories{" "}
+              <NavLink
+                to={"/admin/add-category"}
+                className={"dark:text-white underline text-blue-700"}
+              >
+                here
+              </NavLink>
+            </p>
+          )}
+          {errors.templateType && (
+            <p className="text-red-500 text-xs">{errors.templateType}</p>
+          )}
+        </div>
+      )}
       {templateType && subCategories && (
         <div className="mb-4">
           <label className="block dark:text-white text-gray-700">
             Template Sub Type
           </label>
           <select
-            value={templateSubType}
+            value={templateSubType.name}
             onChange={(e) => {
               if (e.target.value != "") {
                 setErrors({
@@ -242,13 +274,17 @@ const AdminTemplatePage = () => {
                 });
               }
 
-              setTemplateSubType(e.target.value);
+              setTemplateSubType(
+                templateType.sub_categories.find((s) => {
+                  return s.name == e.target.value;
+                })
+              );
             }}
             className="focus:outline-none focus:ring-0 text-black-2 my-2 rounded-md  -gray-400 w-full p-2   bg-white text-gray-700 shadow-sm rounded-r-md"
           >
             <option value="">Select Sub Type</option>
-            {subCategories.sub_categories.result.map((cat) => (
-              <option value={cat}>{cat}</option>
+            {subCategories.sub_categories.map((cat) => (
+              <option value={cat.name}>{cat.name}</option>
             ))}
           </select>
           {errors.templateSubType && (
@@ -302,7 +338,10 @@ const AdminTemplatePage = () => {
         <h3 className="text-lg font-semibold mb-2">Questions</h3>
         <ul className="list-disc list-inside">
           {questions.map((questionObj, index) => (
-            <li key={index} className="flex items-center text-gray-700 mb-2">
+            <li
+              key={index}
+              className="flex items-center dark:text-zinc-400 text-gray-700 mb-2"
+            >
               {questionObj.question}
               <button
                 type="button"
@@ -315,14 +354,33 @@ const AdminTemplatePage = () => {
           ))}
         </ul>
       </div>
+      <button
+        onClick={() => setShowPreview(!showPreview)}
+        className="mb-4 p-2 dark:bg-slate-900 bg-gray-200 rounded-md hover:bg-gray-300 flex items-center"
+      >
+        <FontAwesomeIcon icon={showPreview ? faEyeSlash : faEye} />
+        <span className="ml-2">
+          {showPreview ? "Hide Preview" : "Show Preview"}
+        </span>
+      </button>
 
+      {/* Live Preview */}
+      {showPreview && (
+        <div className="mb-6">
+          <h3 className="text-lg font-semibold mb-2">Live Preview</h3>
+          <div
+            className="preview bg-white p-4 border rounded-md shadow-sm"
+            dangerouslySetInnerHTML={{ __html: templateContent }}
+          />
+        </div>
+      )}
       {/* Save Template */}
       <button
         type="button"
         onClick={handleSaveTemplate}
-        className="px-4 py-2 bg-green-500 text-white font-semibold rounded-md hover:bg-green-600"
+        className="px-4 py-2 bg-green-500 text-white font-semibold rounded-md hover:bg-green-600 w-[200px]"
       >
-        Save Template
+        {loading ? <Loader /> : "Save Template"}
       </button>
       <Toaster />
     </div>

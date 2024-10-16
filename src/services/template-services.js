@@ -4,6 +4,8 @@ import { config } from "../config/config";
 
 export const createNewTemplate = async (templateData, setLoading) => {
   try {
+    setLoading(true);
+
     const response = await axios.post(
       `${config.SERVER_URL}/api/templates/`,
       templateData,
@@ -66,6 +68,28 @@ export const fetchTemplates = async (setLoading) => {
     setLoading(true);
     const response = await axios.get(
       `${config.SERVER_URL}/api/templates/`,
+      getAuthHeaders()
+    );
+    setLoading(false);
+
+    return { data: response.data, status: response.status };
+  } catch (error) {
+    setLoading(false);
+
+    return error.response
+      ? { error: error.response.data, status: error.response.status }
+      : error.message;
+  }
+};
+
+export const deleteTemplate = async (id, setLoading) => {
+  try {
+    setLoading(true);
+    const response = await axios.delete(
+      `${config.SERVER_URL}/api/templates/${id}/
+
+`,
+
       getAuthHeaders()
     );
     setLoading(false);
