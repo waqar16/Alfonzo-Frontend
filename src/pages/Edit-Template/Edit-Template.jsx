@@ -12,10 +12,12 @@ export const getUpdatedTemplateContent = (templateAnswers, previewTemplate) => {
 
   // Replace placeholders with either the answer or "_____"
   previewTemplate?.questions?.forEach((question, index) => {
-    const answer =
-      templateAnswers[`answer${index + 1}`] ||
-      `<span className="text-red-400">_____</span>`; // Default to "_____"
-    content = content.replace(question?.placeholderId, answer); // Replace the placeholder with the answer
+    const answer = templateAnswers[`answer${index + 1}`]
+      ? `<strong >${templateAnswers[`answer${index + 1}`]}</strong>` // Make the answer bold
+      : `<span className="text-red-400">_____</span>`; // Default to "_____"
+
+    // Replace the placeholder with the bolded answer
+    content = content.replace(question?.placeholderId, answer);
   });
 
   return content;

@@ -88,9 +88,9 @@ export const fetchAllUsers = async (setLoading) => {
     setLoading(true);
     const response = await axios.get(
       `${config.SERVER_URL}/api/users
-    `
+    `,
       // mfa,
-      // getAuthHeaders()
+      getAuthHeaders()
     );
 
     setLoading(false);

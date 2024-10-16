@@ -4,56 +4,97 @@ import TemplatesRightSection from "../../components/Templates/TemplatesRightSect
 import { FaTimes } from "react-icons/fa";
 import { faqWithLegalAgreementsArray } from "../../constants/global";
 import { fetchTemplates } from "../../services/template-services";
+import { useDispatch } from "react-redux";
+import { setTemplate } from "../../redux/reducers/template-reducer";
+import { useNavigate } from "react-router-dom";
 
 const Templates = () => {
+  const dispatch = useDispatch();
   const [searchClicked, setSearchCLicked] = React.useState(false);
   const [templates, setTemplates] = React.useState(faqWithLegalAgreementsArray);
   const [apiTemplates, setApiTemplates] = React.useState([] || null);
   const [searchTemplates, setSearchTemplates] = React.useState(apiTemplates);
   const [viewingtemplates, setViewingTemplates] = React.useState();
+  const [subtypes, setSubtypes] = React.useState(null);
+  const [selectedSubtype, setSelectedSubtype] = React.useState("");
+  const [selectedFilter, setSelectedFilter] = React.useState("cat"); // Track if filtering by category or subcategory
+  const [previewTemplate, setPreviewTemplate] = React.useState(null);
+  const navigate = useNavigate();
 
   const [loading, setLoading] = React.useState(false);
   useEffect(() => {
     const templatess = async () => {
       const templates = await fetchTemplates(setLoading);
       console.log("templates", templates);
-      setApiTemplates(templates.data.results);
-      setViewingTemplates(templates.data.results);
+      setApiTemplates(templates.data);
+      setViewingTemplates(templates.data);
     };
     templatess();
   }, []);
   const searchTemplate = (text) => {
     const filteredTemplates = apiTemplates.filter((template) => {
-      const titleMatch = template.name
+      const searchText = text.toLowerCase();
+      const titleMatch = template.name.toLowerCase().includes(searchText);
+      const categoryMatch = template.category.name
         .toLowerCase()
-        .includes(text.toLowerCase());
-
-      const faqMatch = apiTemplates.question.some((faqItem) =>
-        faqItem.question.toLowerCase().includes(text.toLowerCase())
+        .includes(searchText);
+      const subCategoryMatch = template.sub_category.name
+        .toLowerCase()
+        .includes(searchText);
+      const questionMatch = template.questions.some((faqItem) =>
+        faqItem.question.toLowerCase().includes(searchText)
       );
 
-      const type = apiTemplates.category
-        .toLowerCase()
-        .includes(text.toLowerCase());
-
-      // If any field matches, return true for this template
-      return titleMatch || faqMatch || type;
+      return titleMatch || categoryMatch || subCategoryMatch || questionMatch;
     });
 
     setSearchTemplates(filteredTemplates);
   };
-  const groupedTemplates = apiTemplates.reduce((acc, template) => {
-    const { category } = template;
-    if (!acc[category]) {
-      acc[category] = [];
+
+  const groupedTemplates = React.useMemo(() => {
+    if (selectedFilter === "cat") {
+      return apiTemplates.reduce((acc, template) => {
+        const { category } = template;
+        if (!acc[category.name]) {
+          acc[category.name] = [];
+        }
+        acc[category.name].push(template);
+        return acc;
+      }, {});
+    } else if (selectedFilter === "subCat") {
+      return apiTemplates.reduce((acc, template) => {
+        const { sub_category } = template;
+        if (!acc[sub_category.name]) {
+          acc[sub_category.name] = [];
+        }
+        acc[sub_category.name].push(template);
+        return acc;
+      }, {});
     }
-    acc[category].push(template);
-    return acc;
-  }, {});
+  }, [apiTemplates, selectedFilter]);
+
+  const handleFilterChange = (event) => {
+    const value = event.target.value;
+    setSelectedFilter(value);
+  };
+
+  // Handle category or subcategory filter change
+  // const handleFilterChange = (event) => {
+  //   const value = event.target.value;
+  //   setSelectedFilter(value);
+  //   if (value === "cat") {
+  //     setViewingTemplates(apiTemplates);
+  //   } else if (value === "subCat") {
+  //     const subCategoriesTemplates = apiTemplates.filter(
+  //       (template) => template.sub_categories.length > 0
+  //     );
+  //     setViewingTemplates(subCategoriesTemplates);
+  //   }
+  // };
   return (
     <div className="dark:bg-black bg-white w-full flex flex-col items-center  pt-32 px-8 relative py-12">
       <div className="w-full flex flex-col md:flex-row items-center md:justify-between">
-        <div className=" flex flex-col items-start">
+        <div className=" flex flex-col items-start md:w-4/12">
           <h1 className="w-full dark:text-white items-center md:text-start text-center text-slate-900 text-title-xl2 font-bold">
             Templates
           </h1>
@@ -62,26 +103,38 @@ const Templates = () => {
           </p>
         </div>
         <div
-          onClick={() => setSearchCLicked(true)}
-          className="mt-4 md:mt-0 w-[300px] flex flex-row items-center   border border-current p-2 rounded-md px-4 cursor-pointer"
+          className={`w-full flex flex-col-reverse md:flex-row items-center justify-between md:p-2`}
         >
-          <svg
-            width="20"
-            height="20"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
+          <select
+            value={selectedFilter}
+            onChange={handleFilterChange}
+            className="mt-2 md:mt-0  p-2 border border-gray-300 rounded-md w-full md:w-[300px]"
           >
-            <path
-              d="M21 21L15.5 15.5M17 10C17 12.1217 16.1571 14.1566 14.6569 15.6569C13.1566 17.1571 11.1217 18 9 18C6.87827 18 4.84344 17.1571 3.34315 15.6569C1.84285 14.1566 1 12.1217 1 10C1 7.87827 1.84285 5.84344 3.34315 4.34315C4.84344 2.84285 6.87827 2 9 2C11.1217 2 13.1566 2.84285 14.6569 4.34315C16.1571 5.84344 17 7.87827 17 10Z"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-          <p className="ml-2 mr-12">Looking For...</p>
-           
+            <option value="cat">Search By Categories</option>
+            <option value="subCat">Search By Sub Categories</option>
+          </select>
+
+          <div
+            onClick={() => setSearchCLicked(true)}
+            className="w-full md:w-[300px] flex flex-row items-center   border border-gray-300 p-2 rounded-md px-4 cursor-pointer"
+          >
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+            >
+              <path
+                d="M21 21L15.5 15.5M17 10C17 12.1217 16.1571 14.1566 14.6569 15.6569C13.1566 17.1571 11.1217 18 9 18C6.87827 18 4.84344 17.1571 3.34315 15.6569C1.84285 14.1566 1 12.1217 1 10C1 7.87827 1.84285 5.84344 3.34315 4.34315C4.84344 2.84285 6.87827 2 9 2C11.1217 2 13.1566 2.84285 14.6569 4.34315C16.1571 5.84344 17 7.87827 17 10Z"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+            <p className="ml-2 mr-12">Looking For...</p>
+          </div>
         </div>
       </div>
       {searchClicked && (
@@ -125,12 +178,37 @@ const Templates = () => {
             <div className="flex flex-col items-center w-full  max-h-[300px] overflow-y-scroll px-2">
               {searchTemplates.length > 0 ? (
                 <>
-                  {searchTemplates.map((template) => (
-                    <div className="mt-2 rounded-lg w-full p-2 fllex flex-col items-center border border-gray-200 cursor-pointer hover:border-white hover:text-white  hover:bg-gray-700 transition-all duration-300">
-                      <h2 className="text-md font-bold">{template.title}</h2>
-                      <p className="line-clamp-1 text-sm">
-                        {template.endingText}
+                  {searchTemplates.map((template, index) => (
+                    <div
+                      key={template.id}
+                      className="mt-2 rounded-lg w-full p-2 flex flex-col items-center border border-gray-200 cursor-pointer hover:border-white hover:text-white hover:bg-gray-700 transition-all duration-300"
+                    >
+                      <h2 className="text-md font-bold">{template.name}</h2>
+                      <p className=" line-clamp-5 text-sm">
+                        {template.content}
                       </p>
+                      <div className="flex flex-col md:flex-row items-center justify-center w-full">
+                        <button
+                          className="mb-2 md:mb-0 md:mr-2 bg-black text-white px-4 py-2 rounded-md  min-w-40 flex flex-col items-center"
+                          onClick={() => {
+                            dispatch(setTemplate(template));
+                            navigate("/templates/edit-template");
+                          }}
+                        >
+                          Edit
+                        </button>
+                        <button
+                          onClick={() => {
+                            setPreviewTemplate({
+                              template: template,
+                              index: index,
+                            });
+                          }}
+                          className=" md:ml-2 bg-white text-black border border-black px-4 py-2 rounded-md  min-w-40"
+                        >
+                          Preview
+                        </button>
+                      </div>
                     </div>
                   ))}
                 </>
@@ -145,17 +223,22 @@ const Templates = () => {
       {apiTemplates && apiTemplates.length > 0 && (
         <div className="w-full grid grid-cols-8 md:gap-x-8">
           <TemplatesLeftSection
+            setSubtypes={setSubtypes}
             allTemplates={apiTemplates}
             templates={groupedTemplates}
             setViewingTemplates={setViewingTemplates}
           />
           {viewingtemplates && viewingtemplates.length > 0 && (
-            <TemplatesRightSection templates={viewingtemplates} />
+            <TemplatesRightSection
+              templates={viewingtemplates}
+              previewTemplate={previewTemplate}
+              setPreviewTemplate={setPreviewTemplate}
+            />
           )}
         </div>
       )}
       {apiTemplates && apiTemplates.length < 1 && (
-        <div className="w-full flex flex-col items-center">
+        <div className="w-full flex flex-col items-center my-12">
           <h1 className="text-center ">No Templates to show</h1>
         </div>
       )}

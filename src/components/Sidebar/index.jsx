@@ -53,7 +53,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
       document.querySelector("body")?.classList.remove("sidebar-expanded");
     }
   }, [sidebarExpanded]);
-  
+
   return (
     <aside
       ref={sidebar}
@@ -301,6 +301,17 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                         }`}
                       >
                         <ul className="mt-4 mb-5.5 flex flex-col gap-2.5 pl-6">
+                          <li>
+                            <NavLink
+                              to="/admin/templates"
+                              className={({ isActive }) =>
+                                "group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-slate-500 dark:text-bodydark2 duration-300 ease-in-out dark:hover:text-white hover:text-slate-900" +
+                                (isActive && "!text-white ")
+                              }
+                            >
+                              Templates
+                            </NavLink>
+                          </li>
                           <li>
                             <NavLink
                               to="/admin/add-template"
