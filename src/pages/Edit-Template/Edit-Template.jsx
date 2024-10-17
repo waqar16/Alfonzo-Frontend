@@ -15,11 +15,12 @@ export const getUpdatedTemplateContent = (templateAnswers, previewTemplate) => {
     const answer = templateAnswers[`answer${index + 1}`]
       ? `<strong >${templateAnswers[`answer${index + 1}`]}</strong>` // Make the answer bold
       : `<span className="text-red-400">_____</span>`; // Default to "_____"
-
+      const placeholderRegex = new RegExp(question?.placeholderId, 'g');
+      content = content.replace(placeholderRegex, answer);
     // Replace the placeholder with the bolded answer
     content = content.replace(question?.placeholderId, answer);
   });
-
+  console.log(content, "content");
   return content;
 };
 
