@@ -89,261 +89,6 @@ const FinalizeTemplate = () => {
     });
   };
 
-  // const generatePDF = async () => {
-  //   const pdf = new jsPDF("p", "mm", "a4");
-  //   const pageWidth = pdf.internal.pageSize.getWidth();
-  //   const pageHeight = pdf.internal.pageSize.getHeight();
-  //   const marginX = 10;
-  //   const marginY = 30;
-  //   const contentWidth = pageWidth - 2 * marginX;
-
-  //   // Load the font file
-  //   pdf.addFileToVFS("Satoshi-Regular.ttf", satoshi);
-  //   pdf.addFont("Satoshi-Regular.ttf", "Satoshi", "regular");
-  //   pdf.setFont("Satoshi");
-
-  //   let currentY = marginY;
-
-  //   // Add header to the PDF
-  //   pdf.setFontSize(12);
-  //   pdf.text("LegalEase", marginX, currentY);
-  //   currentY += 10; // Move down after header
-
-  //   // Add title
-  //   pdf.setFontSize(22);
-  //   const title = documentData.template.name;
-  //   const titleLines = pdf.splitTextToSize(title, contentWidth);
-  //   titleLines.forEach((line) => {
-  //     if (currentY + 10 > pageHeight - marginY) {
-  //       pdf.addPage();
-  //       currentY = marginY;
-  //       pdf.text("LegalEase", marginX, currentY); // Re-add header on new page
-  //       currentY += 10;
-  //     }
-  //     pdf.text(line, marginX, currentY);
-  //     currentY += 10;
-  //   });
-
-  //   let content = documentData.content;
-  //   const tempDiv = document.createElement("div");
-  //   tempDiv.innerHTML = content;
-
-  //   Array.from(tempDiv.childNodes).forEach((child) => {
-  //     const lineHeight = 7;
-
-  //     // Check if adding the next line will overflow the page
-  //     const checkPageOverflow = () => {
-  //       if (currentY + lineHeight > pageHeight - marginY) {
-  //         pdf.addPage();
-  //         currentY = marginY;
-  //         pdf.text("LegalEase", marginX, currentY); // Re-add header on new page
-  //         currentY += 10; // Move down after header
-  //       }
-  //     };
-
-  //     if (child.nodeName === "H1") {
-  //       pdf.setFontSize(18);
-  //       pdf.setFont("Satoshi", "bold");
-  //       const lines = pdf.splitTextToSize(
-  //         child.textContent.trim(),
-  //         contentWidth
-  //       );
-  //       lines.forEach((line) => {
-  //         checkPageOverflow();
-  //         pdf.text(line, marginX, currentY);
-  //         currentY += 8;
-  //       });
-  //     } else if (child.nodeName === "H2") {
-  //       pdf.setFontSize(15);
-  //       pdf.setFont("Satoshi", "bold");
-  //       const lines = pdf.splitTextToSize(
-  //         child.textContent.trim(),
-  //         contentWidth
-  //       );
-  //       lines.forEach((line) => {
-  //         checkPageOverflow();
-  //         pdf.text(line, marginX, currentY);
-  //         currentY += 8;
-  //       });
-  //     } else if (child.nodeName === "P") {
-  //       pdf.setFontSize(14);
-  //       pdf.setFont("Satoshi", "normal");
-  //       const lines = pdf.splitTextToSize(
-  //         child.textContent.trim(),
-  //         contentWidth
-  //       );
-  //       lines.forEach((line) => {
-  //         checkPageOverflow();
-  //         pdf.text(line, marginX, currentY);
-  //         currentY += 7;
-  //       });
-  //     } else if (child.nodeName === "UL") {
-  //       child.childNodes.forEach((li) => {
-  //         if (li.nodeName === "LI") {
-  //           pdf.setFontSize(14);
-  //           pdf.setFont("Satoshi", "normal");
-  //           const lines = pdf.splitTextToSize(
-  //             `• ${li.textContent.trim()}`,
-  //             contentWidth
-  //           );
-  //           lines.forEach((line) => {
-  //             checkPageOverflow();
-  //             pdf.text(line, marginX, currentY);
-  //             currentY += 7;
-  //           });
-  //         }
-  //       });
-  //     } else if (child.nodeName === "OL") {
-  //       child.childNodes.forEach((li, index) => {
-  //         if (li.nodeName === "LI") {
-  //           pdf.setFontSize(14);
-  //           pdf.setFont("Satoshi", "normal");
-  //           const lines = pdf.splitTextToSize(
-  //             `${index + 1}. ${li.textContent.trim()}`,
-  //             contentWidth
-  //           );
-  //           lines.forEach((line) => {
-  //             checkPageOverflow();
-  //             pdf.text(line, marginX, currentY);
-  //             currentY += 7;
-  //           });
-  //         }
-  //       });
-  //     }
-  //   });
-
-  //   currentY += 30;
-  //   let header = "Legal Ease";
-  //   if (currentY + 20 > pageHeight - marginY) {
-  //     pdf.addPage();
-  //     currentY = marginY;
-  //     pdf.text(header, marginX, currentY); // Add header again on new page
-  //     currentY += 10;
-  //   }
-
-  //   // Add User Details
-  //   pdf.setFontSize(14);
-  //   pdf.setFont("Satoshi", "bold");
-  //   pdf.text("User Details", marginX, currentY);
-  //   currentY += 7;
-
-  //   pdf.setFontSize(12);
-  //   pdf.setFont("Satoshi", "normal");
-  //   const userName = `name: ${localStorage.getItem(
-  //     "firstname"
-  //   )} ${localStorage.getItem("lastname")}`;
-  //   const userLines = pdf.splitTextToSize(userName, contentWidth);
-  //   userLines.forEach((line) => {
-  //     pdf.text(line, marginX, currentY);
-  //     currentY += 6;
-  //   });
-
-  //   const userUsername = `username: @ ${localStorage.getItem("username")}`;
-  //   const usernameLines = pdf.splitTextToSize(userUsername, contentWidth);
-  //   usernameLines.forEach((line) => {
-  //     pdf.text(line, marginX, currentY);
-  //     currentY += 6;
-  //   });
-
-  //   const userEmail = `email: ${localStorage.getItem("email")}`;
-  //   const emailLines = pdf.splitTextToSize(userEmail, contentWidth);
-  //   emailLines.forEach((line) => {
-  //     pdf.text(line, marginX, currentY);
-  //     currentY += 6;
-  //   });
-
-  //   const userPhone = `phone: ${localStorage.getItem("phone")}`;
-  //   const phoneLines = pdf.splitTextToSize(userPhone, contentWidth);
-  //   phoneLines.forEach((line) => {
-  //     pdf.text(line, marginX, currentY);
-  //     currentY += 6;
-  //   });
-
-  //   currentY += 10;
-  //   if (currentY + 20 > pageHeight - marginY) {
-  //     pdf.addPage();
-  //     currentY = marginY;
-  //     pdf.text(header, marginX, currentY); // Add header again on new page
-  //     currentY += 10;
-  //   }
-
-  //   // Add Lawyer's Name
-  //   pdf.setFontSize(14);
-  //   pdf.setFont("Satoshi", "bold");
-  //   pdf.text("Lawyer Details", marginX, currentY);
-  //   currentY += 7;
-
-  //   pdf.setFontSize(12);
-  //   pdf.setFont("Satoshi", "normal");
-  //   const lawyerName = `name: ${lawyerData.first_name} ${lawyerData.last_name}`;
-  //   const lawyerLines = pdf.splitTextToSize(lawyerName, contentWidth);
-  //   lawyerLines.forEach((line) => {
-  //     pdf.text(line, marginX, currentY);
-  //     currentY += 6;
-  //   });
-
-  //   const lawyerUsername = `username: @${lawyerData.username}`;
-  //   const lawyerUsernameLines = pdf.splitTextToSize(
-  //     lawyerUsername,
-  //     contentWidth
-  //   );
-  //   lawyerUsernameLines.forEach((line) => {
-  //     pdf.text(line, marginX, currentY);
-  //     currentY += 6;
-  //   });
-
-  //   const lawyerEmail = `email: ${lawyerData.email}`;
-  //   const lawyerEmailLines = pdf.splitTextToSize(lawyerEmail, contentWidth);
-  //   lawyerEmailLines.forEach((line) => {
-  //     pdf.text(line, marginX, currentY);
-  //     currentY += 6;
-  //   });
-
-  //   const lawyerPhone = `phone: ${lawyerData.phone}`;
-  //   const lawyerPhoneLines = pdf.splitTextToSize(lawyerPhone, contentWidth);
-  //   lawyerPhoneLines.forEach((line) => {
-  //     pdf.text(line, marginX, currentY);
-  //     currentY += 6;
-  //   });
-
-  //   // Add footer to each page
-  //   const totalPages = pdf.internal.getNumberOfPages();
-  //   for (let i = 1; i <= totalPages; i++) {
-  //     pdf.setPage(i);
-  //     pdf.setFontSize(10);
-  //     pdf.text(`Page ${i} of ${totalPages}`, marginX, pageHeight - marginY);
-  //     addPlaceholder(pdf);
-  //   }
-  //   const pdfOutput = pdf.output("blob"); // Get the PDF as a Blob
-  //   const reader = new FileReader();
-  //   reader.readAsDataURL(pdfOutput); // Read the Blob as a data URL
-  //   reader.onloadend = async () => {
-  //     const pdfDataUrl = reader.result; // This is your PDF content as a base64 data URL
-  //     console.log(pdfDataUrl);
-  //     pdf.text(pdfDataUrl, 10, 10); // Adjust the coordinates as needed
-
-  //     const createDocumentt = await createDocument(
-  //       {
-  //         template: template.id,
-  //         selected_lawyer: lawyerData.id,
-  //         base64_content: pdfDataUrl,
-  //         title: "template",
-  //       },
-  //       setLoading
-  //     );
-  //     if (createDocumentt.status == 201) {
-  //       setDocumentId(createDocumentt.data.id);
-  //       console.log(createDocumentt.data, "createDocument.data.id");
-  //       notify("Template added successfully", "success");
-  //       pdf.save("template-preview.pdf");
-  //       setDocumentDownload(true);
-  //       // navigate("/your-documents");
-  //     }
-  //     // Now you can save it to the database or send it via email
-  //   };
-  // };
-  console.log(documentData);
-
   const generatePDF = async () => {
     const pdf = new jsPDF("p", "mm", "a4");
     const pageWidth = pdf.internal.pageSize.getWidth();
@@ -428,29 +173,160 @@ const FinalizeTemplate = () => {
         });
       } else if (child.nodeName === "P") {
         pdf.setFontSize(14);
-        pdf.setFont("Satoshi", "normal");
-        const lines = pdf.splitTextToSize(
-          child.textContent.trim(),
-          contentWidth
-        );
+        let textContent = "";
+        let textStyles = []; // Stores individual word styles
+
+        // Process child nodes (which can be text or elements like <strong> or <em>)
+        child.childNodes.forEach((node) => {
+          if (node.nodeType === Node.TEXT_NODE) {
+            // Regular text
+            textContent += node.textContent.trim() + " ";
+            textStyles.push({
+              text: node.textContent.trim(),
+              bold: false,
+              italic: false,
+            });
+          } else if (node.nodeName === "STRONG") {
+            // Strong/bold text
+            textContent += node.textContent.trim() + " ";
+            textStyles.push({
+              text: node.textContent.trim(),
+              bold: true,
+              italic: false,
+            });
+          } else if (node.nodeName === "EM") {
+            // Italic text
+            node.childNodes.forEach((emNode) => {
+              if (emNode.nodeType === Node.TEXT_NODE) {
+                textContent += emNode.textContent.trim() + " ";
+                textStyles.push({
+                  text: emNode.textContent.trim(),
+                  bold: false,
+                  italic: true,
+                });
+              } else if (emNode.nodeName === "STRONG") {
+                // Bold and Italic text (e.g., <em><strong>)
+                textContent += emNode.textContent.trim() + " ";
+                textStyles.push({
+                  text: emNode.textContent.trim(),
+                  bold: true,
+                  italic: true,
+                });
+              }
+            });
+          }
+        });
+
+        // Split the full text into lines
+        const lines = pdf.splitTextToSize(textContent.trim(), contentWidth);
+
+        // Process each line and apply styles
         lines.forEach((line) => {
           checkPageOverflow();
-          pdf.text(line, marginX, currentY);
-          currentY += 7;
+
+          let currentX = marginX; // Track X position
+          line.split(" ").forEach((word) => {
+            const style = textStyles.find((style) => style.text === word);
+
+            if (style) {
+              if (style.bold && style.italic) {
+                pdf.setFont("Satoshi", "bolditalic"); // Bold and italic (you can define this font if not available)
+              } else if (style.bold) {
+                pdf.setFont("Satoshi", "bold");
+              } else if (style.italic) {
+                pdf.setFont("Satoshi", "italic");
+              } else {
+                pdf.setFont("Satoshi", "normal");
+              }
+            } else {
+              pdf.setFont("Satoshi", "normal");
+            }
+
+            // Print word without breaking the line
+            pdf.text(word, currentX, currentY);
+            currentX += pdf.getTextWidth(word + " "); // Move X position after word
+          });
+
+          currentY += 7; // Move Y position for next line
         });
       } else if (child.nodeName === "UL") {
         child.childNodes.forEach((li) => {
           if (li.nodeName === "LI") {
             pdf.setFontSize(14);
-            pdf.setFont("Satoshi", "normal");
-            const lines = pdf.splitTextToSize(
-              `• ${li.textContent.trim()}`,
-              contentWidth
-            );
+            let textContent = "";
+            let textStyles = [];
+
+            // Process child nodes within the list item
+            li.childNodes.forEach((node) => {
+              if (node.nodeType === Node.TEXT_NODE) {
+                textContent += node.textContent.trim() + " ";
+                textStyles.push({
+                  text: node.textContent.trim(),
+                  bold: false,
+                  italic: false,
+                });
+              } else if (node.nodeName === "STRONG") {
+                textContent += node.textContent.trim() + " ";
+                textStyles.push({
+                  text: node.textContent.trim(),
+                  bold: true,
+                  italic: false,
+                });
+              } else if (node.nodeName === "EM") {
+                // Italic text
+                node.childNodes.forEach((emNode) => {
+                  if (emNode.nodeType === Node.TEXT_NODE) {
+                    textContent += emNode.textContent.trim() + " ";
+                    textStyles.push({
+                      text: emNode.textContent.trim(),
+                      bold: false,
+                      italic: true,
+                    });
+                  } else if (emNode.nodeName === "STRONG") {
+                    // Bold and Italic text (e.g., <em><strong>)
+                    textContent += emNode.textContent.trim() + " ";
+                    textStyles.push({
+                      text: emNode.textContent.trim(),
+                      bold: true,
+                      italic: true,
+                    });
+                  }
+                });
+              }
+            });
+
+            // Add the bullet symbol (•) manually before each list item
+            const bulletContent = `• ${textContent.trim()}`;
+
+            // Split the text content into lines
+            const lines = pdf.splitTextToSize(bulletContent, contentWidth);
+
+            // Process each line
             lines.forEach((line) => {
               checkPageOverflow();
-              pdf.text(line, marginX, currentY);
-              currentY += 7;
+
+              let currentX = marginX; // Track X position
+              line.split(" ").forEach((word) => {
+                const style = textStyles.find((style) => style.text === word);
+
+                if (style) {
+                  if (style.bold && style.italic) {
+                    pdf.setFont("Satoshi", "bolditalic");
+                  } else if (style.bold) {
+                    pdf.setFont("Satoshi", "bold");
+                  } else if (style.italic) {
+                    pdf.setFont("Satoshi", "italic");
+                  } else {
+                    pdf.setFont("Satoshi", "normal");
+                  }
+                }
+
+                // Print word
+                pdf.text(word, currentX, currentY);
+                currentX += pdf.getTextWidth(word + " ");
+              });
+
+              currentY += 7; // Move Y position after each line
             });
           }
         });
@@ -458,14 +334,48 @@ const FinalizeTemplate = () => {
         child.childNodes.forEach((li, index) => {
           if (li.nodeName === "LI") {
             pdf.setFontSize(14);
-            pdf.setFont("Satoshi", "normal");
+            let textContent = "";
+            let textStyles = [];
+
+            // Process child nodes within the ordered list item
+            li.childNodes.forEach((node) => {
+              if (node.nodeType === Node.TEXT_NODE) {
+                textContent += node.textContent.trim() + " ";
+                textStyles.push({ text: node.textContent.trim(), bold: false });
+              } else if (node.nodeName === "STRONG") {
+                textContent += node.textContent.trim() + " ";
+                textStyles.push({ text: node.textContent.trim(), bold: true });
+              }
+            });
+
+            // Add numbering (e.g., "1. ")
+            const numberedContent = `${index + 1}. ` + textContent;
+
+            // Split text content into lines for the current list item
             const lines = pdf.splitTextToSize(
-              `${index + 1}. ${li.textContent.trim()}`,
+              numberedContent.trim(),
               contentWidth
             );
+
+            // Process each line
             lines.forEach((line) => {
               checkPageOverflow();
-              pdf.text(line, marginX, currentY);
+
+              let currentX = marginX; // Track X position
+              line.split(" ").forEach((word) => {
+                const style = textStyles.find((style) => style.text === word);
+
+                if (style && style.bold) {
+                  pdf.setFont("Satoshi", "bold");
+                } else {
+                  pdf.setFont("Satoshi", "normal");
+                }
+
+                // Print word
+                pdf.text(word, currentX, currentY);
+                currentX += pdf.getTextWidth(word + " ");
+              });
+
               currentY += 7;
             });
           }
@@ -629,13 +539,14 @@ const FinalizeTemplate = () => {
                 documentDownloaded ? "hidden" : ""
               }`}
             >
-              <div className="flex flex-col items-start  w-full col-span-1   bg-white py-8 px-4">
+              <div className="flex flex-col items-start  w-full col-span-1   bg-white py-8 px-4  list-disc list-outside ">
                 <h1 className="text-2xl font-bold text-black mb-4 text-center w-full">
                   {documentData.template.name}
                 </h1>
 
                 <div
                   className="w-full "
+                  style={{ listStyleType: "disc", paddingLeft: "1.5rem" }} // Explicitly setting styles
                   dangerouslySetInnerHTML={{
                     __html: documentData.content,
                   }}
