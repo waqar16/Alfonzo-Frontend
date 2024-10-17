@@ -2,6 +2,9 @@ const defaultTheme = require("tailwindcss/defaultTheme");
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+  corePlugins: {
+    preflight: false, // disables Tailwind's CSS reset
+  },
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   darkMode: "class",
   theme: {

@@ -543,10 +543,18 @@ const FinalizeTemplate = () => {
                 <h1 className="text-2xl font-bold text-black mb-4 text-center w-full">
                   {documentData.template.name}
                 </h1>
-
+                <style>{`
+    ul {
+      list-style-type: disc !important;
+      padding-left: 1.5rem !important;
+    }
+    ol {
+      list-style-type: decimal !important;
+      padding-left: 1.5rem !important;
+    }
+  `}</style>
                 <div
                   className="w-full "
-                  style={{ listStyleType: "disc", paddingLeft: "1.5rem" }} // Explicitly setting styles
                   dangerouslySetInnerHTML={{
                     __html: documentData.content,
                   }}
