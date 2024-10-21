@@ -106,7 +106,11 @@ const VerifyDocumentPage = ({ id }) => {
                 const response = await uploadDocument(document, setLoading);
                 if (response.status == 200) {
                   let response2 = await updateDocument(
-                    { pdf_url: response.data.file_url, id },
+                    {
+                      pdf_url: response.data.file_url,
+                      id,
+                      verification_status: "Pending",
+                    },
                     setLoading
                   );
                   if (response2.status == 200) {

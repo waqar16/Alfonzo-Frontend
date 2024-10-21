@@ -484,6 +484,7 @@ const FinalizeTemplate = () => {
           selected_lawyer: lawyerData.id,
           base64_content: "pdfDataUrl",
           title: "template",
+          content,
         },
         setLoading
       );
