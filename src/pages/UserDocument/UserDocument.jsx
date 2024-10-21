@@ -44,6 +44,8 @@ const UserDocument = () => {
         doc.verification_status !== "Pending") ||
       (verificationStatus === "pending" &&
         doc.verification_status === "Pending") ||
+      (verificationStatus === "not-uploaded" &&
+        doc.verification_status === "Not Specified") ||
       (verificationStatus === "not-uploaded" && !doc.pdf_url);
 
     return matchesSearch && matchesStatus;
