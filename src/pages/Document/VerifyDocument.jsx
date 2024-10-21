@@ -44,29 +44,7 @@ const VerifyDocumentPage = ({ id }) => {
       fileReader.readAsDataURL(file);
     }
   };
-  const notify = () =>
-    toast("Your document has been uploaded for verification", {
-      duration: 4000,
-      position: "top-center",
-      style: {},
-      className: "",
-
-      // Custom Icon
-      icon: <FaCheckCircle size={20} color={"green"} />,
-
-      // Change colors of success/error/loading icon
-      iconTheme: {
-        primary: "#000",
-        secondary: "#fff",
-      },
-
-      // Aria
-      ariaProps: {
-        role: "status",
-        "aria-live": "polite",
-      },
-    });
-
+  console.log("id", id);
   return (
     <section className="w-full dark:bg-black bg-white flex items-start justify-center py-4   px-4 sm:px-6 lg:px-8 bg-gray-100">
       <div className="max-w-7xl w-full mx-auto">

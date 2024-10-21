@@ -180,37 +180,49 @@ const FinalizeTemplate = () => {
         child.childNodes.forEach((node) => {
           if (node.nodeType === Node.TEXT_NODE) {
             // Regular text
-            textContent += node.textContent.trim() + " ";
-            textStyles.push({
-              text: node.textContent.trim(),
-              bold: false,
-              italic: false,
+            const words = node.textContent.split(/(\s+)/); // Split by words and spaces
+            words.forEach((word) => {
+              textContent += word;
+              textStyles.push({
+                text: word,
+                bold: false,
+                italic: false,
+              });
             });
           } else if (node.nodeName === "STRONG") {
             // Strong/bold text
-            textContent += node.textContent.trim() + " ";
-            textStyles.push({
-              text: node.textContent.trim(),
-              bold: true,
-              italic: false,
+            const words = node.textContent.split(/(\s+)/); // Split by words and spaces
+            words.forEach((word) => {
+              textContent += word;
+              textStyles.push({
+                text: word,
+                bold: true,
+                italic: false,
+              });
             });
           } else if (node.nodeName === "EM") {
             // Italic text
             node.childNodes.forEach((emNode) => {
               if (emNode.nodeType === Node.TEXT_NODE) {
-                textContent += emNode.textContent.trim() + " ";
-                textStyles.push({
-                  text: emNode.textContent.trim(),
-                  bold: false,
-                  italic: true,
+                const words = emNode.textContent.split(/(\s+)/); // Split by words and spaces
+                words.forEach((word) => {
+                  textContent += word;
+                  textStyles.push({
+                    text: word,
+                    bold: false,
+                    italic: true,
+                  });
                 });
               } else if (emNode.nodeName === "STRONG") {
                 // Bold and Italic text (e.g., <em><strong>)
-                textContent += emNode.textContent.trim() + " ";
-                textStyles.push({
-                  text: emNode.textContent.trim(),
-                  bold: true,
-                  italic: true,
+                const words = emNode.textContent.split(/(\s+)/); // Split by words and spaces
+                words.forEach((word) => {
+                  textContent += word;
+                  textStyles.push({
+                    text: word,
+                    bold: true,
+                    italic: true,
+                  });
                 });
               }
             });
@@ -223,14 +235,18 @@ const FinalizeTemplate = () => {
         // Process each line and apply styles
         lines.forEach((line) => {
           checkPageOverflow();
-
           let currentX = marginX; // Track X position
-          line.split(" ").forEach((word) => {
-            const style = textStyles.find((style) => style.text === word);
+
+          // Handle word by word styling
+          line.split(/(\s+)/).forEach((word) => {
+            // Split by words and spaces
+            const style = textStyles.find(
+              (style) => style.text.trim() === word.trim()
+            ); // Match words and spaces
 
             if (style) {
               if (style.bold && style.italic) {
-                pdf.setFont("Satoshi", "bolditalic"); // Bold and italic (you can define this font if not available)
+                pdf.setFont("Satoshi", "bolditalic");
               } else if (style.bold) {
                 pdf.setFont("Satoshi", "bold");
               } else if (style.italic) {
@@ -244,13 +260,13 @@ const FinalizeTemplate = () => {
 
             // Print word without breaking the line
             pdf.text(word, currentX, currentY);
-            currentX += pdf.getTextWidth(word + " "); // Move X position after word
+            currentX += pdf.getTextWidth(word); // Keep the space after the word
           });
 
-          currentY += 7; // Move Y position for next line
+          currentY += 7; // Move Y position for the next line
         });
-      } else if (child.nodeName === "UL") {
-        child.childNodes.forEach((li) => {
+      } else if (child.nodeName === "UL" || child.nodeName === "OL") {
+        child.childNodes.forEach((li, index) => {
           if (li.nodeName === "LI") {
             pdf.setFontSize(14);
             let textContent = "";
@@ -259,55 +275,72 @@ const FinalizeTemplate = () => {
             // Process child nodes within the list item
             li.childNodes.forEach((node) => {
               if (node.nodeType === Node.TEXT_NODE) {
-                textContent += node.textContent.trim() + " ";
-                textStyles.push({
-                  text: node.textContent.trim(),
-                  bold: false,
-                  italic: false,
+                const words = node.textContent.split(/(\s+)/); // Split by words and spaces
+                words.forEach((word) => {
+                  textContent += word;
+                  textStyles.push({
+                    text: word,
+                    bold: false,
+                    italic: false,
+                  });
                 });
               } else if (node.nodeName === "STRONG") {
-                textContent += node.textContent.trim() + " ";
-                textStyles.push({
-                  text: node.textContent.trim(),
-                  bold: true,
-                  italic: false,
+                const words = node.textContent.split(/(\s+)/); // Split by words and spaces
+                words.forEach((word) => {
+                  textContent += word;
+                  textStyles.push({
+                    text: word,
+                    bold: true,
+                    italic: false,
+                  });
                 });
               } else if (node.nodeName === "EM") {
                 // Italic text
                 node.childNodes.forEach((emNode) => {
                   if (emNode.nodeType === Node.TEXT_NODE) {
-                    textContent += emNode.textContent.trim() + " ";
-                    textStyles.push({
-                      text: emNode.textContent.trim(),
-                      bold: false,
-                      italic: true,
+                    const words = emNode.textContent.split(/(\s+)/); // Split by words and spaces
+                    words.forEach((word) => {
+                      textContent += word;
+                      textStyles.push({
+                        text: word,
+                        bold: false,
+                        italic: true,
+                      });
                     });
                   } else if (emNode.nodeName === "STRONG") {
                     // Bold and Italic text (e.g., <em><strong>)
-                    textContent += emNode.textContent.trim() + " ";
-                    textStyles.push({
-                      text: emNode.textContent.trim(),
-                      bold: true,
-                      italic: true,
+                    const words = emNode.textContent.split(/(\s+)/); // Split by words and spaces
+                    words.forEach((word) => {
+                      textContent += word;
+                      textStyles.push({
+                        text: word,
+                        bold: true,
+                        italic: true,
+                      });
                     });
                   }
                 });
               }
             });
 
-            // Add the bullet symbol (•) manually before each list item
-            const bulletContent = `• ${textContent.trim()}`;
+            // Handle bullet points or numbering for lists
+            let listItemPrefix =
+              child.nodeName === "UL" ? `• ` : `${index + 1}. `;
+            const listItemContent = listItemPrefix + textContent.trim();
 
             // Split the text content into lines
-            const lines = pdf.splitTextToSize(bulletContent, contentWidth);
+            const lines = pdf.splitTextToSize(listItemContent, contentWidth);
 
-            // Process each line
+            // Process each line and apply styles
             lines.forEach((line) => {
               checkPageOverflow();
-
               let currentX = marginX; // Track X position
-              line.split(" ").forEach((word) => {
-                const style = textStyles.find((style) => style.text === word);
+
+              line.split(/(\s+)/).forEach((word) => {
+                // Split by words and spaces
+                const style = textStyles.find(
+                  (style) => style.text.trim() === word.trim()
+                ); // Match words and spaces
 
                 if (style) {
                   if (style.bold && style.italic) {
@@ -319,64 +352,16 @@ const FinalizeTemplate = () => {
                   } else {
                     pdf.setFont("Satoshi", "normal");
                   }
-                }
-
-                // Print word
-                pdf.text(word, currentX, currentY);
-                currentX += pdf.getTextWidth(word + " ");
-              });
-
-              currentY += 7; // Move Y position after each line
-            });
-          }
-        });
-      } else if (child.nodeName === "OL") {
-        child.childNodes.forEach((li, index) => {
-          if (li.nodeName === "LI") {
-            pdf.setFontSize(14);
-            let textContent = "";
-            let textStyles = [];
-
-            // Process child nodes within the ordered list item
-            li.childNodes.forEach((node) => {
-              if (node.nodeType === Node.TEXT_NODE) {
-                textContent += node.textContent.trim() + " ";
-                textStyles.push({ text: node.textContent.trim(), bold: false });
-              } else if (node.nodeName === "STRONG") {
-                textContent += node.textContent.trim() + " ";
-                textStyles.push({ text: node.textContent.trim(), bold: true });
-              }
-            });
-
-            // Add numbering (e.g., "1. ")
-            const numberedContent = `${index + 1}. ` + textContent;
-
-            // Split text content into lines for the current list item
-            const lines = pdf.splitTextToSize(
-              numberedContent.trim(),
-              contentWidth
-            );
-
-            // Process each line
-            lines.forEach((line) => {
-              checkPageOverflow();
-
-              let currentX = marginX; // Track X position
-              line.split(" ").forEach((word) => {
-                const style = textStyles.find((style) => style.text === word);
-
-                if (style && style.bold) {
-                  pdf.setFont("Satoshi", "bold");
                 } else {
                   pdf.setFont("Satoshi", "normal");
                 }
 
                 // Print word
                 pdf.text(word, currentX, currentY);
-                currentX += pdf.getTextWidth(word + " ");
+                currentX += pdf.getTextWidth(word);
               });
 
-              currentY += 7;
+              currentY += 7; // Move Y position after each line
             });
           }
         });
@@ -497,7 +482,7 @@ const FinalizeTemplate = () => {
         {
           template: template.id,
           selected_lawyer: lawyerData.id,
-          base64_content: pdfDataUrl,
+          base64_content: "pdfDataUrl",
           title: "template",
         },
         setLoading
@@ -543,18 +528,8 @@ const FinalizeTemplate = () => {
                 <h1 className="text-2xl font-bold text-black mb-4 text-center w-full">
                   {documentData.template.name}
                 </h1>
-                <style>{`
-    ul {
-      list-style-type: disc !important;
-      padding-left: 1.5rem !important;
-    }
-    ol {
-      list-style-type: decimal !important;
-      padding-left: 1.5rem !important;
-    }
-  `}</style>
                 <div
-                  className="w-full "
+                  className=" list-disc list-outside"
                   dangerouslySetInnerHTML={{
                     __html: documentData.content,
                   }}

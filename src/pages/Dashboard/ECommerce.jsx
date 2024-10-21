@@ -13,7 +13,7 @@ const ECommerce = () => {
   const [loading, setLoading] = useState(false);
   useEffect(() => {
     const func = async () => {
-      const allUsers = await fetchAllUsers(setLoading);
+      const allUsers = await fetchAllUsers(null, setLoading);
       let users = allUsers.data.results.filter((user) => {
         return user.role == "USER" && user.username != "admin";
       });

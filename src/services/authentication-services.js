@@ -35,15 +35,14 @@ export const resendVerificationLink = async (userData, setLoading) => {
   } catch (error) {
     setLoading(false);
 
-    return error.response
-      ? {
-          error: error.response.data,
-          status: error.response.status,
-        }
-      : {
-          error: error.message,
-          status: 500,
-        };
+    if (error?.response?.data) {
+      return {
+        error: error?.response?.data.detail,
+        status: error.response.status,
+      };
+    } else {
+      return { error: "Unexpected error occured", status: 500 };
+    }
   }
 };
 
@@ -56,24 +55,14 @@ export const loginUser = async (userData, setLoading) => {
   } catch (error) {
     setLoading(false); // Stop loading in case of error
 
-    if (error.response && error.response.data) {
-      try {
-        return {
-          error: error.response.data.detail[0],
-          status: error.response.status,
-        };
-      } catch (e) {
-        return { error: "Failed to parse error response." }; // Fallback message
-      }
+    if (error?.response?.data) {
+      return {
+        error: error?.response?.data.detail,
+        status: error.response.status,
+      };
+    } else {
+      return { error: "Unexpected error occured", status: 500 };
     }
-
-    // Return general error message if no response is available
-    return {
-      error: {
-        error: error.message,
-        status: 500,
-      },
-    };
   }
 };
 export const verifyMfa = async (userData) => {
@@ -144,3 +133,4 @@ export const authGuard = async (setLoading) => {
         };
   }
 };
+

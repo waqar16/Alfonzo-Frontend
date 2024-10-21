@@ -6,7 +6,7 @@ import "aos/dist/aos.css"; // Import AOS styles
 
 const BlogPost = ({ title, summary, link, image }) => (
   <div
-    className="relative p-6 bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden group transition-transform transform hover:scale-105"
+    className="relative p-6 dark:bg-slate-900 bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden group transition-transform transform hover:scale-105"
     data-aos="fade-up"
     data-aos-duration="1000"
   >
@@ -16,8 +16,12 @@ const BlogPost = ({ title, summary, link, image }) => (
       className="w-full h-48 object-cover rounded-md group-hover:opacity-75 transition-opacity duration-300"
     />
     <div className="mt-6">
-      <h3 className="text-xl font-semibold text-gray-900">{title}</h3>
-      <p className="mt-2 text-base text-gray-600">{summary}</p>
+      <h3 className="text-xl font-semibold dark:text-white text-gray-900">
+        {title}
+      </h3>
+      <p className="dark:text-zinc-400 mt-2 text-base text-gray-600">
+        {summary}
+      </p>
       <Link
         to={link}
         className="mt-4 inline-block text-indigo-600 hover:text-indigo-800 transition-colors duration-300"

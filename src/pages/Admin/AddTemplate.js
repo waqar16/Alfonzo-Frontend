@@ -60,7 +60,23 @@ const AdminTemplatePage = () => {
   const handleAddPlaceholder = (placeholderId) => {
     const editor = quillRef.current.getEditor();
     const range = editor.getSelection(true);
-    editor.insertText(range.index, placeholderId); // Insert placeholder at cursor position
+
+    // Get the text around the cursor
+
+    const textAfter = editor.getText(range.index, 1);
+    const textBefore = editor.getText(range.index - 1, 1);
+    // Add whitespace before if there's no space
+    if (textBefore && !/\s/.test(textBefore)) {
+      editor.insertText(range.index, " ");
+    }
+
+    // Insert the placeholder
+    editor.insertText(range.index, placeholderId);
+
+    // Add whitespace after if there's no space
+    if (textAfter && !/\s/.test(textAfter)) {
+      editor.insertText(range.index + placeholderId.length, " ");
+    }
   };
 
   // Handle saving template and printing row data
@@ -75,36 +91,23 @@ const AdminTemplatePage = () => {
       .replace(/<ol[^>]*>/g, "<ol>") // Convert ordered lists to unordered lists
       .replace(/<\/ol>/g, "</ol>") // Close unordered list tag
       .replace(/<li[^>]*>/g, "<li>") // Clean list item tags
-      .replace(/<br\s*\/?>/g, "\n"); // Convert breaks to new lines
+      .replace(/<br\s*\/?>/g, "\n") // Convert breaks to new lines
+      .replace(/(__\d+__)(\S)/g, "$1 $2") // Add space after the placeholder if there's none
+      .replace(/(\S)(__\d+__)/g, "$1 $2"); // Add space before the placeholder if there's none
 
     const rowData = questions.map(({ question, placeholderId }) => ({
       question,
       placeholderId,
     }));
-
+    console.log("templateContent", templateContent);
+    console.log("rowData", rowData);
+    console.log("cleanTemplateContent", cleanTemplateContent);
     if (!validateFields()) return; // Stop if validation fails
-    // "category": {
-    //             "id": 1,
-    //             "name": "Technology",
-    //             "sub_categories": [
-    //                 {
-    //                     "id": 1,
-    //                     "name": "AI"
-    //                 },
-    //                 {
-    //                     "id": 2,
-    //                     "name": "Cloud Computing"
-    //                 }
-    //             ]
-    //         },
-    //         "SubCategory": {
-    //             "id": 2,
-    //             "name": "Cloud Computing"
-    //         },
+
     const newTemplate = await createNewTemplate(
       {
         name: templateName,
-        content: templateContent,
+        content: cleanTemplateContent,
         questions: questions,
         category: templateType.id,
         sub_category: templateSubType.id,
@@ -119,8 +122,6 @@ const AdminTemplatePage = () => {
       setNewQuestion(""); // Temp new question
       setTemplateType(""); // Temp new question
     }
-    console.log("New Template", newTemplate);
-    // }
   };
   const [fetchLoading, setFetchLoading] = useState(false); // Loading state
 

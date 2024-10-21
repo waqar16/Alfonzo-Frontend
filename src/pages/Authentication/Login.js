@@ -68,6 +68,7 @@ const Login = () => {
         setLoading
       );
       console.log("response", response.data);
+      console.log("status", response.status);
       // alert(response.error.error || response.data);
       if (response.status == 400) {
         console.log(response);

@@ -3,7 +3,11 @@ import { FaTimes } from "react-icons/fa";
 import { NavLink, useNavigate } from "react-router-dom";
 import { setTemplate } from "../../redux/reducers/template-reducer";
 import { useDispatch } from "react-redux";
-const TemplatesRightSection = ({ templates,previewTemplate,setPreviewTemplate }) => {
+const TemplatesRightSection = ({
+  templates,
+  previewTemplate,
+  setPreviewTemplate,
+}) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   React.useEffect(() => {
@@ -58,10 +62,20 @@ const TemplatesRightSection = ({ templates,previewTemplate,setPreviewTemplate })
           </h3>
 
           {/* Image */}
-          <div className="w-full flex flex-col items-center z-20">
-            <img
+          <div className="w-full flex flex-col items-center   z-20  h-[400px] overflow-y-hidden">
+            {/* <img
               src="/thumbnail4.png"
               className="w-full h-auto object-cover opacity-35"
+            /> */}
+            <img
+              src={"./logo.png"}
+              alt="Placeholder Image"
+              className="w-auto h-auto max-w-[200px] top-[50%] max-h-[200px] object-cover opacity-35 absolute"
+            />
+            <div
+              dangerouslySetInnerHTML={{
+                __html: template.content,
+              }}
             />
           </div>
 

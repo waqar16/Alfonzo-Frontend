@@ -6,6 +6,9 @@
   body {
     @apply font-satoshi font-normal text-base text-body bg-whiten relative z-1;
   }
+  ul, ol {
+    list-style-type: none; /* Removes bullets and numbers globally */
+  }
 }
 
 @layer components {

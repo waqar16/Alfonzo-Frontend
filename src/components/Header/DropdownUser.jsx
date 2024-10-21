@@ -23,7 +23,7 @@ const DropdownUser = () => {
           <span className="block text-xs">Admin</span>
         </span>
 
-        <span className="h-12 w-12 rounded-full">
+        <span className="h-12 w-12 rounded-full overflow-hidden">
           {localStorage.getItem("profilepic") ? (
             <img src={localStorage.getItem("profilepic")} alt="User" />
           ) : (

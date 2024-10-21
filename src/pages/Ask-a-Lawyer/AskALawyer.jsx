@@ -26,7 +26,8 @@ const AskALawyer = () => {
       },
       setLoading
     );
-    if (addNewQuery.status == 200) {
+    console.log(addNewQuery.status);
+    if (addNewQuery.status == 201) {
       notify("Your Query Added Succesfully", "Success");
       reset();
     } else {
