@@ -170,7 +170,12 @@ const SelectLawyer = () => {
     sdas();
   }, []);
   let filteredLawyers;
+  let PreferredLawyer;
   if (lawyers) {
+    PreferredLawyer = lawyers.find(
+      (lawyer) => lawyer.id == parseInt(localStorage.getItem("preferredLawyer"))
+    );
+
     filteredLawyers = lawyers.filter(
       (lawyer) =>
         lawyer.first_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -191,6 +196,53 @@ const SelectLawyer = () => {
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
       />
+      {lawyers && PreferredLawyer && (
+        <div className="w-10/12 flex flex-col items-start mt-8">
+          <h1 className="dark:text-white text-black text-2xl font-bold mb-2">
+            Your preferred lawyer
+          </h1>
+          <div
+            key={PreferredLawyer.id}
+            onClick={() => {
+              dispatch(setLawyer(PreferredLawyer));
+              navigateToPage();
+            }}
+            className="dark:bg-slate-900 bg-white shadow-lg rounded-lg overflow-hidden  cursor-pointer relative"
+          >
+            <img
+              src={PreferredLawyer.profile_pic}
+              alt={PreferredLawyer.name}
+              className="w-full h-40 object-cover  "
+            />
+            <div className="p-4">
+              <h2 className="text-lg font-semibold dark:text-white">{`${PreferredLawyer.first_name} ${PreferredLawyer.last_name}`}</h2>
+            </div>
+
+            {/* {selectedLawyer && selectedLawyer.id === PreferredLawyer.id && (
+              <div className="absolute top-0 left-0 w-full h-full bg-black bg-opacity-75 flex items-center justify-center text-white transition-opacity duration-300">
+                <div className="p-4 text-center">
+                  <h3 className="text-lg font-bold">{PreferredLawyer.name}</h3>
+                  <p className="mt-2">{PreferredLawyer.description}</p>
+                  <button
+                    className="dark:bg-slate-900 dark:text-white bg-white text-black p-2 px-4 rounded-md mt-4 border hover:border-white hover:text-white hover:bg-black transition-colors duration-300"
+                    onClick={() => {
+                      dispatch(setLawyer(PreferredLawyer));
+                      navigateToPage();
+                    }}
+                  >
+                    Hire
+                  </button>
+                </div>
+              </div>
+            )} */}
+          </div>
+        </div>
+      )}
+      {lawyers && !loading && PreferredLawyer && (
+        <h1 className="dark:text-white text-black text-2xl font-bold mb-2 w-full text-center">
+          Other Lawyers
+        </h1>
+      )}
       {lawyers && !loading && lawyers.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mt-8 w-10/12">
           {filteredLawyers.map((lawyer) => (

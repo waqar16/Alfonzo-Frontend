@@ -12,7 +12,11 @@ import { Toaster } from "react-hot-toast";
 import { notify } from "../../utilities/toast";
 import { useNavigate } from "react-router-dom";
 import Loader from "../../components/Loader/Loader";
-import { changePassword, changeUsername } from "../../services/user-services";
+import {
+  changePassword,
+  changeUsername,
+  deleteAccount,
+} from "../../services/user-services";
 
 // Sample function to simulate fetching user data
 const fetchUserData = () => ({
@@ -98,15 +102,17 @@ const ProfileManagementPage = () => {
       notify(response.error, "error");
     }
   };
-  const handleDeleteAccount = async () => {
+  const handleDeleteAccount = async (id) => {
     setLoading(true);
-    // const response = await deleteAccount(); // Assuming you have this function in services
-    // if (response.status === 200) {
-    //   notify("Account deleted successfully", "success");
-    //   navigate("/login"); // Redirect after account deletion
-    // } else {
-    //   notify(response.error, "error");
-    // }
+    const response = await deleteAccount(setButtonLoading); // Assuming you have this function in services
+    if (response.status === 200) {
+      notify("Account deleted successfully", "success");
+      setTimeout(()=>{
+        navigate("/login"); // Redirect after account deletion
+      },3000)
+    } else {
+      notify(response.error, "error");
+    }
     setLoading(false);
   };
 
@@ -114,7 +120,7 @@ const ProfileManagementPage = () => {
     const { name, value } = e.target;
     setNewProfile((prev) => ({ ...prev, [name]: value }));
   };
-
+  const [buttonLoading, setButtonLoading] = useState(false);
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
   const [isUsernameModalOpen, setIsUsernameModalOpen] = useState(false); // New state for username modal
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false); // New state for delete modal
@@ -261,7 +267,7 @@ const ProfileManagementPage = () => {
           </p>
           <div className="flex justify-between">
             <button
-              onClick={handleDeleteAccount}
+              onClick={() => handleDeleteAccount()}
               className="bg-red-600 text-white px-4 py-2 rounded-lg shadow-md hover:bg-red-500 transition-all duration-200"
             >
               {loading ? <Loader color={"white"} /> : "Confirm"}

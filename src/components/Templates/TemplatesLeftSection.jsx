@@ -43,7 +43,7 @@ const TemplatesLeftSection = ({
       {/* List for larger screens */}
       <div className="hidden md:flex flex-col w-full">
         <div
-          className={`flex flex-row items-center p-2 ${
+          className={`flex flex-row items-center dark:border border-white p-2 ${
             selected === "all" ? "bg-black text-gray-200" : "bg-gray-200"
           } w-full mt-2 rounded-md justify-between cursor-pointer`}
           onClick={() => {
@@ -64,7 +64,7 @@ const TemplatesLeftSection = ({
         {Object.keys(templates).map((category) => (
           <div
             key={category}
-            className={`flex flex-row items-center p-2 ${
+            className={`flex flex-row dark:border border-white items-center p-2 ${
               selected === category ? "bg-black text-gray-200" : "bg-gray-200"
             } w-full mt-2 rounded-md justify-between cursor-pointer`}
             onClick={() => {

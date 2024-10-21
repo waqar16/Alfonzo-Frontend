@@ -1,83 +1,58 @@
 import { useEffect, useState } from "react";
-import BrandOne from "../../images/brand/brand-01.svg";
-import BrandTwo from "../../images/brand/brand-02.svg";
-import BrandThree from "../../images/brand/brand-03.svg";
-import BrandFour from "../../images/brand/brand-04.svg";
-import BrandFive from "../../images/brand/brand-05.svg";
 import { fetchAllUsers } from "../../services/user-services";
-
-const brandData = [
-  {
-    logo: BrandOne,
-    name: "Google",
-    visitors: 3.5,
-    revenues: "5,768",
-    sales: 590,
-    conversion: 4.8,
-  },
-  {
-    logo: BrandTwo,
-    name: "Twitter",
-    visitors: 2.2,
-    revenues: "4,635",
-    sales: 467,
-    conversion: 4.3,
-  },
-  {
-    logo: BrandThree,
-    name: "Github",
-    visitors: 2.1,
-    revenues: "4,290",
-    sales: 420,
-    conversion: 3.7,
-  },
-  {
-    logo: BrandFour,
-    name: "Vimeo",
-    visitors: 1.5,
-    revenues: "3,580",
-    sales: 389,
-    conversion: 2.5,
-  },
-  {
-    logo: BrandFive,
-    name: "Facebook",
-    visitors: 3.5,
-    revenues: "6,768",
-    sales: 390,
-    conversion: 4.2,
-  },
-];
 
 const TableOne = () => {
   const [loading, setLoading] = useState(false);
-  const [users, setUsers] = useState(null);
+  const [users, setUsers] = useState([]);
+  const [nextPage, setNextPage] = useState(null);
+  const [prevPage, setPrevPage] = useState(null);
+
+  const fetchUsers = async (url) => {
+    setLoading(true);
+    const response = await fetchAllUsers(url, setLoading);
+    if (response.status === 200) {
+      setUsers(response.data.results);
+      setNextPage(response.data.next);
+      setPrevPage(response.data.previous);
+    }
+    setLoading(false);
+  };
+
   useEffect(() => {
-    const fetchUsers = async () => {
-      const users = await fetchAllUsers(setLoading);
-      if (users.status == 200) {
-        setUsers(users.data.results);
-      }
-      console.log(users);
-    };
-    fetchUsers();
+    fetchUsers(null); // Initial fetch
   }, []);
+
+  const handleNextPage = () => {
+    if (nextPage) {
+      fetchUsers(nextPage);
+    }
+  };
+
+  const handlePrevPage = () => {
+    if (prevPage) {
+      fetchUsers(prevPage);
+    }
+  };
+
   return (
     <div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
       <h4 className="mb-6 text-xl font-semibold text-black dark:text-white">
         Users
       </h4>
-      {users && users.length < 1 && (
+      {loading && <p>Loading...</p>}
+
+      {!loading && users && users.length === 0 && (
         <div className="flex flex-col items-center w-full">
           No Users to Show
         </div>
       )}
-      {users && users.length > 0 && (
+
+      {!loading && users && users.length > 0 && (
         <div className="flex flex-col">
           <div className="grid grid-cols-3 rounded-sm bg-gray-2 dark:bg-meta-4 sm:grid-cols-5">
             <div className="p-2.5 xl:p-5">
               <h5 className="text-sm font-medium uppercase xsm:text-base">
-                email
+                Email
               </h5>
             </div>
             <div className="p-2.5 text-center xl:p-5">
@@ -87,7 +62,7 @@ const TableOne = () => {
             </div>
             <div className="p-2.5 text-center xl:p-5">
               <h5 className="text-sm font-medium uppercase xsm:text-base">
-                name
+                Name
               </h5>
             </div>
             <div className="hidden p-2.5 text-center sm:block xl:p-5">
@@ -102,17 +77,17 @@ const TableOne = () => {
             </div>
           </div>
 
-          {users.map((user, key) => (
+          {users.map((user, index) => (
             <div
               className={`grid grid-cols-3 sm:grid-cols-5 ${
-                key === user.id
-                  ? ""
-                  : "border-b border-stroke dark:border-strokedark"
+                index !== users.length - 1
+                  ? "border-b border-stroke dark:border-strokedark"
+                  : ""
               }`}
-              key={key}
+              key={index}
             >
               <div className="flex items-center gap-3 p-2.5 xl:p-5 overflow-x-hidden w-[120px] sm:w-auto">
-                <p className="  text-black dark:text-white ">{user.email}</p>
+                <p className="text-black dark:text-white">{user.email}</p>
               </div>
 
               <div className="flex items-center justify-center p-2.5 xl:p-5">
@@ -134,6 +109,7 @@ const TableOne = () => {
                   {user.phone ? user.phone : "not specified"}
                 </p>
               </div>
+
               <div className="hidden  justify-center p-2.5 sm:flex xl:p-5  items-center space-x-3.5">
                 <button className="hover:text-primary">
                   <svg
@@ -203,6 +179,23 @@ const TableOne = () => {
               </div>
             </div>
           ))}
+
+          <div className="flex justify-between mt-4">
+            <button
+              disabled={!prevPage}
+              className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md disabled:opacity-50 disabled:cursor-not-allowed"
+              onClick={handlePrevPage}
+            >
+              Previous
+            </button>
+            <button
+              disabled={!nextPage}
+              className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md disabled:opacity-50 disabled:cursor-not-allowed"
+              onClick={handleNextPage}
+            >
+              Next
+            </button>
+          </div>
         </div>
       )}
     </div>

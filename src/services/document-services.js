@@ -21,11 +21,11 @@ export const createDocument = async (data, setLoading) => {
       : error.message;
   }
 };
-
-export const fetchUserDocuments = async (setLoading) => {
+export const deleteUserDocument = async (id, setLoading) => {
   try {
-    const response = await axios.get(
-      `${config.SERVER_URL}/api/documents
+    setLoading(true);
+    const response = await axios.delete(
+      `${config.SERVER_URL}/api/documents/${id}/
         `,
       getAuthHeaders()
     );
@@ -40,7 +40,44 @@ export const fetchUserDocuments = async (setLoading) => {
       : error.message;
   }
 };
+export const fetchUserDocuments = async (setLoading) => {
+  try {
+    setLoading(true);
+    const response = await axios.get(
+      `${config.SERVER_URL}/api/documents/
+        `,
+      getAuthHeaders()
+    );
+    setLoading(false);
 
+    return { data: response.data, status: response.status };
+  } catch (error) {
+    setLoading(false);
+
+    return error.response
+      ? { error: error.response.data.error, status: error.response.status }
+      : error.message;
+  }
+};
+export const fetchAllDocuments = async (url, setLoading) => {
+  try {
+    setLoading(true);
+    const response = await axios.get(
+      `${url}
+        `,
+      getAuthHeaders()
+    );
+    setLoading(false);
+
+    return { data: response.data, status: response.status };
+  } catch (error) {
+    setLoading(false);
+
+    return error.response
+      ? { error: error.response.data.error, status: error.response.status }
+      : error.message;
+  }
+};
 export const fetchLawyerRelatedDocuments = async (setLoading) => {
   try {
     setLoading(true);

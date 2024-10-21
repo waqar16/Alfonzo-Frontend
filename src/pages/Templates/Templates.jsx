@@ -51,25 +51,28 @@ const Templates = () => {
     setSearchTemplates(filteredTemplates);
   };
 
-  const groupedTemplates = React.useMemo(() => {
-    if (selectedFilter === "cat") {
-      return apiTemplates.reduce((acc, template) => {
-        const { category } = template;
-        if (!acc[category.name]) {
-          acc[category.name] = [];
-        }
-        acc[category.name].push(template);
-        return acc;
-      }, {});
-    } else if (selectedFilter === "subCat") {
-      return apiTemplates.reduce((acc, template) => {
-        const { sub_category } = template;
-        if (!acc[sub_category.name]) {
-          acc[sub_category.name] = [];
-        }
-        acc[sub_category.name].push(template);
-        return acc;
-      }, {});
+  let groupedTemplates;
+  groupedTemplates = React.useMemo(() => {
+    if (apiTemplates && apiTemplates.length > 0) {
+      if (selectedFilter === "cat") {
+        return apiTemplates.reduce((acc, template) => {
+          const { category } = template;
+          if (!acc[category.name]) {
+            acc[category.name] = [];
+          }
+          acc[category.name].push(template);
+          return acc;
+        }, {});
+      } else if (selectedFilter === "subCat") {
+        return apiTemplates.reduce((acc, template) => {
+          const { sub_category } = template;
+          if (!acc[sub_category.name]) {
+            acc[sub_category.name] = [];
+          }
+          acc[sub_category.name].push(template);
+          return acc;
+        }, {});
+      }
     }
   }, [apiTemplates, selectedFilter]);
 
@@ -237,7 +240,7 @@ const Templates = () => {
           )}
         </div>
       )}
-      {apiTemplates && apiTemplates.length < 1 && (
+      {((apiTemplates && apiTemplates.length < 1) || !apiTemplates) && (
         <div className="w-full flex flex-col items-center my-12">
           <h1 className="text-center ">No Templates to show</h1>
         </div>

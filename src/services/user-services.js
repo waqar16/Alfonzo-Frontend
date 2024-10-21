@@ -5,8 +5,8 @@ import { config } from "../config/config";
 export const fetchUserBasicDetails = async (setLoading) => {
   try {
     const response = await axios.get(
-      `${config.SERVER_URL}/auth/user/me/`,
-      // `${config.SERVER_URL}/api/user-profile`,
+      // `${config.SERVER_URL}/auth/user/me/`,
+      `${config.SERVER_URL}/api/user-profile`,
 
       getAuthHeaders()
     );
@@ -83,13 +83,61 @@ export const updateMfa = async (mfa, setLoading) => {
   }
 };
 
-export const fetchAllUsers = async (setLoading) => {
+export const fetchAllUsers = async (url, setLoading) => {
   try {
     setLoading(true);
     const response = await axios.get(
-      `${config.SERVER_URL}/api/users
+      url
+        ? url
+        : `${config.SERVER_URL}/api/users
     `,
       // mfa,
+      getAuthHeaders()
+    );
+
+    setLoading(false);
+
+    return { data: response.data, status: response.status };
+  } catch (error) {
+    setLoading(false);
+
+    return error.response
+      ? { error: error.response.data.error, status: error.response.status }
+      : error.message;
+  }
+};
+
+export const deleteAccount = async (setLoading) => {
+  try {
+    setLoading(true);
+    const response = await axios.delete(
+      `${config.SERVER_URL}/auth/delete-user/
+
+    `,
+      // mfa,
+      getAuthHeaders()
+    );
+
+    setLoading(false);
+
+    return { data: response.data, status: response.status };
+  } catch (error) {
+    setLoading(false);
+
+    return error.response
+      ? { error: error.response.data.error, status: error.response.status }
+      : error.message;
+  }
+};
+
+export const setPreferedLawyer = async (id, setLoading) => {
+  try {
+    setLoading(true);
+    const response = await axios.patch(
+      `${config.SERVER_URL}/api/user-profile/`,
+      {
+        prefered_lawyer: id,
+      },
       getAuthHeaders()
     );
 

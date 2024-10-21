@@ -52,6 +52,7 @@ import LinkedinLogin from "./pages/LinkedinLogin/LinkedinLogin";
 import Notifications from "./pages/Notifications/Notification";
 import AddCategory from "./pages/Add-Category/AddCategory";
 import TemplatesAdmin from "./components/Tables/Templates-Admin";
+import UserDocumentsAdmin from "./pages/UserDocuments/UserDocumentsAdmin";
 
 function App() {
   useEffect(() => {
@@ -219,6 +220,17 @@ function Content() {
                 <DefaultLayout>
                   <PageTitle title="Legal Ease | Admin" />
                   <AddCategory />
+                </DefaultLayout>
+              }
+            />
+          </Route>
+          <Route element={<PrivateRoutes userRole={"admin"} />}>
+            <Route
+              path="/admin/user-documents"
+              element={
+                <DefaultLayout>
+                  <PageTitle title="Legal Ease | Admin" />
+                  <UserDocumentsAdmin />
                 </DefaultLayout>
               }
             />

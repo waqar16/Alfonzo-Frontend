@@ -3,9 +3,13 @@ import { getUpdatedTemplateContent } from "../../pages/Edit-Template/Edit-Templa
 
 const TemplateQuestions = ({ template, setFormData, formData }) => {
   const handleChange = (e, index) => {
+    const cleanedInput = e.target.value
+      .trim() // Remove leading and trailing whitespace
+      .replace(/\s+/g, " ") // Replace multiple spaces with a single space
+      .toUpperCase();
     setFormData({
       ...formData,
-      [`answer${index + 1}`]: e.target.value.toUpperCase(), // Update the corresponding answer
+      [`answer${index + 1}`]: cleanedInput, // Update the corresponding answer
     });
   };
 
